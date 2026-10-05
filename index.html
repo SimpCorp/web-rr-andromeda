@@ -1,261 +1,1083 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rashmi Associates</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Rashmi Associates | Enterprise Loan Operations & Performance Tracking</title>
+  
+  <!-- Inter font (Apple SF-like clarity and metrics) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
+              950: '#020617',
+            },
+            apple: {
+              dark: '#0a0a0c',
+              surface: '#141417',
+              card: '#18181c',
+              border: 'rgba(255, 255, 255, 0.08)',
+              borderHover: 'rgba(255, 255, 255, 0.16)',
+              blue: '#0071e3',
+              blueHover: '#0077ed',
+              accent: '#2997ff',
+            }
+          },
+          letterSpacing: {
+            tighter: '-0.035em',
+            tight: '-0.02em',
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { opacity: '0', transform: 'translateY(18px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    };
+  </script>
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+  <style>
+    /* Apple typography refinement */
+    body {
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #000000;
+      color: #f5f5f7;
+    }
 
-:root{
-    --bg:#f5f5f7;
-    --card:rgba(255,255,255,.75);
-    --text:#1d1d1f;
-    --secondary:#6e6e73;
-    --border:rgba(0,0,0,.08);
-    --shadow:0 12px 35px rgba(0,0,0,.08);
-}
+    /* Subtle Glassmorphism with high contrast legibility */
+    .apple-glass {
+      background: rgba(18, 18, 20, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
 
-html{
-    scroll-behavior:smooth;
-}
+    .apple-glass-light {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
 
-body{
-    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    min-height:100vh;
-    line-height:1.6;
-}
+    /* Custom subtle scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27272a;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3f3f46;
+    }
 
-/* Navigation */
-
-nav{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 8%;
-    backdrop-filter:blur(18px);
-    background:rgba(245,245,247,.72);
-    border-bottom:1px solid rgba(0,0,0,.05);
-    z-index:1000;
-}
-
-.logo{
-    font-size:15px;
-    font-weight:600;
-    letter-spacing:.2px;
-}
-
-nav ul{
-    list-style:none;
-    display:flex;
-    gap:30px;
-}
-
-nav a{
-    color:var(--secondary);
-    text-decoration:none;
-    font-size:14px;
-    transition:.25s;
-}
-
-nav a:hover{
-    color:var(--text);
-}
-
-/* Hero */
-
-.hero{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    padding:120px 20px 60px;
-}
-
-.card{
-    width:100%;
-    max-width:760px;
-    background:var(--card);
-    backdrop-filter:blur(25px);
-    border:1px solid var(--border);
-    border-radius:28px;
-    padding:60px;
-    text-align:center;
-    box-shadow:var(--shadow);
-}
-
-h1{
-    font-size:clamp(2.4rem,5vw,4rem);
-    font-weight:600;
-    letter-spacing:-1.5px;
-}
-
-.subtitle{
-    margin-top:16px;
-    font-size:1.2rem;
-    color:var(--secondary);
-}
-
-.info{
-    margin-top:40px;
-    display:grid;
-    gap:18px;
-    text-align:left;
-}
-
-.row{
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
-    border-bottom:1px solid rgba(0,0,0,.06);
-    padding-bottom:14px;
-}
-
-.label{
-    color:var(--secondary);
-}
-
-.value{
-    font-weight:500;
-}
-
-/* About */
-
-section{
-    max-width:900px;
-    margin:auto;
-    padding:80px 25px;
-}
-
-.about-card{
-    background:white;
-    border-radius:24px;
-    padding:40px;
-    border:1px solid var(--border);
-    box-shadow:0 8px 30px rgba(0,0,0,.05);
-}
-
-.about-card h2{
-    margin-bottom:18px;
-    font-weight:600;
-    letter-spacing:-.5px;
-}
-
-.about-card p{
-    color:var(--secondary);
-    max-width:700px;
-}
-
-/* Footer */
-
-footer{
-    padding:40px 20px;
-    text-align:center;
-    color:var(--secondary);
-    font-size:14px;
-}
-
-/* Responsive */
-
-@media(max-width:768px){
-
-nav{
-    padding:18px 20px;
-}
-
-nav ul{
-    gap:18px;
-}
-
-.card{
-    padding:40px 28px;
-}
-
-.row{
-    flex-direction:column;
-    gap:4px;
-}
-
-}
-</style>
-
+    /* Refined focus rings */
+    input:focus, select:focus, textarea:focus, button:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.4);
+    }
+  </style>
 </head>
 
-<body>
+<body class="bg-black text-[#f5f5f7] selection:bg-[#0071e3] selection:text-white min-h-screen flex flex-col justify-between overflow-x-hidden">
 
-<nav>
+  <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 apple-glass border-b border-white/[0.08]" id="main-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
+      <!-- Brand identity -->
+      <a href="#" class="flex items-center space-x-2.5 group">
+        <div class="w-8 h-8 rounded-lg bg-neutral-900 border border-white/10 flex items-center justify-center text-white font-semibold text-xs tracking-wider transition-all duration-300 group-hover:border-white/30">
+          RA
+        </div>
+        <div class="flex flex-col">
+          <span class="text-sm font-semibold tracking-tight text-white leading-none">Rashmi Associates</span>
+          <span class="text-[10px] text-neutral-400 font-normal tracking-normal mt-0.5">Loan & Finance Advisory</span>
+        </div>
+      </a>
 
-<div class="logo">
-Rashmi Associates
-</div>
+      <!-- Desktop Nav links -->
+      <nav class="hidden md:flex items-center space-x-8 text-xs font-medium text-neutral-400 tracking-tight">
+        <a href="#overview" class="hover:text-white transition-colors duration-200">Overview</a>
+        <a href="#partners" class="hover:text-white transition-colors duration-200">Lending Partners</a>
+        <a href="#performance" class="hover:text-white transition-colors duration-200">Metrics</a>
+        <a href="#governance" class="hover:text-white transition-colors duration-200">Compliance</a>
+      </nav>
 
-<ul>
-<li><a href="#">Home</a></li>
-<li><a href="#about">About</a></li>
-</ul>
+      <!-- Action & Portal button -->
+      <div class="flex items-center space-x-3">
+        <button onclick="openPortalModal('login')" class="relative inline-flex items-center justify-center px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-medium text-white bg-white/10 hover:bg-white/15 active:scale-[0.98] border border-white/15 rounded-full transition-all duration-200 shadow-sm backdrop-blur-md">
+          <i data-lucide="lock" class="w-3.5 h-3.5 mr-1.5 text-neutral-300"></i>
+          <span>Internal Portal</span>
+        </button>
+      </div>
+    </div>
+  </header>
 
-</nav>
+  <main class="flex-grow pt-24 sm:pt-28 pb-16">
+    <section id="overview" class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-12 pb-16">
+      
+      <!-- Operational tag -->
+      <div class="flex items-center justify-center mb-6">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-normal bg-neutral-900/90 border border-white/10 text-neutral-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Institutional Channel Partner</span>
+          <span class="text-neutral-500">•</span>
+          <span class="text-neutral-400">Q3 Disbursals Active</span>
+        </div>
+      </div>
 
-<section class="hero">
+      <!-- Main Headline (Apple Style Hierarchy) -->
+      <div class="text-center max-w-4xl mx-auto space-y-4">
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tighter text-white leading-[1.12]">
+          Institutional loan tracking.<br class="hidden sm:inline">
+          <span class="text-neutral-400 font-normal">Engineered for precision.</span>
+        </h1>
+        <p class="max-w-2xl mx-auto text-sm sm:text-base text-neutral-400 font-normal leading-relaxed pt-2">
+          Rashmi Associates syndicates and monitors retail, corporate, and SME credit pipelines across top-tier private banks and NBFCs with zero friction and auditable turnaround times.
+        </p>
+      </div>
 
-<div class="card">
+      <!-- Hero Actions -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-8">
+        <button onclick="openPortalModal('intake')" class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-[#0071e3] hover:bg-[#0077ed] active:scale-[0.98] rounded-full transition-all duration-200 shadow-md">
+          <span>Enter Customer Loan File</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+        </button>
 
-<h1>Rashmi Associates</h1>
+        <a href="#performance" class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-neutral-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] active:scale-[0.98] border border-white/10 rounded-full transition-all duration-200">
+          <span>Review Portfolio Metrics</span>
+        </a>
+      </div>
 
-<p class="subtitle">
-Site is Under Development
-</p>
+      <div class="mt-14 max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+        <div class="apple-glass-light p-4 sm:p-5 rounded-2xl border border-white/[0.06] flex flex-col justify-between">
+          <span class="text-xs text-neutral-400 font-medium">Monthly Disbursals</span>
+          <div class="mt-2">
+            <span class="text-xl sm:text-2xl font-semibold tracking-tight text-white">₹38.4 Cr</span>
+            <span class="text-[11px] text-emerald-400 block mt-0.5">↑ 14.2% MoM</span>
+          </div>
+        </div>
 
-<div class="info">
+        <div class="apple-glass-light p-4 sm:p-5 rounded-2xl border border-white/[0.06] flex flex-col justify-between">
+          <span class="text-xs text-neutral-400 font-medium">Turnaround TAT</span>
+          <div class="mt-2">
+            <span class="text-xl sm:text-2xl font-semibold tracking-tight text-white">4.8 Days</span>
+            <span class="text-[11px] text-neutral-400 block mt-0.5">Avg bank sanction</span>
+          </div>
+        </div>
 
-<div class="row">
-<span class="label">Start Date</span>
-<span class="value">October 4, 2026</span>
-</div>
+        <div class="apple-glass-light p-4 sm:p-5 rounded-2xl border border-white/[0.06] flex flex-col justify-between">
+          <span class="text-xs text-neutral-400 font-medium">NBFC & Bank Network</span>
+          <div class="mt-2">
+            <span class="text-xl sm:text-2xl font-semibold tracking-tight text-white">22+ Partners</span>
+            <span class="text-[11px] text-neutral-400 block mt-0.5">Direct DSA Codes</span>
+          </div>
+        </div>
 
-<div class="row">
-<span class="label">Estimated Completion</span>
-<span class="value">October 10, 2026</span>
-</div>
+        <div class="apple-glass-light p-4 sm:p-5 rounded-2xl border border-white/[0.06] flex flex-col justify-between">
+          <span class="text-xs text-neutral-400 font-medium">Sanction Rate</span>
+          <div class="mt-2">
+            <span class="text-xl sm:text-2xl font-semibold tracking-tight text-white">93.1%</span>
+            <span class="text-[11px] text-emerald-400 block mt-0.5">Verified profile ratio</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-</div>
+    <section id="partners" class="py-14 border-t border-white/[0.06] bg-neutral-950/40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-neutral-400">Institutional Network</h2>
+            <p class="text-2xl sm:text-3xl font-semibold tracking-tight text-white mt-1">Associated Banking & NBFC Partners</p>
+          </div>
+          <p class="text-xs text-neutral-400 mt-2 sm:mt-0">Direct integration with premier lending institutions</p>
+        </div>
 
-</div>
+        <!-- Grid of Bank Partners -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          <div class="p-4 rounded-xl apple-glass-light border border-white/[0.06] flex flex-col items-center text-center">
+            <div class="w-10 h-10 rounded-full bg-blue-950/40 text-blue-400 flex items-center justify-center font-bold text-xs mb-2">HDFC</div>
+            <span class="text-xs font-medium text-white">HDFC Bank</span>
+            <span class="text-[10px] text-neutral-400">Retail & Mortgages</span>
+          </div>
 
-</section>
+          <div class="p-4 rounded-xl apple-glass-light border border-white/[0.06] flex flex-col items-center text-center">
+            <div class="w-10 h-10 rounded-full bg-orange-950/40 text-orange-400 flex items-center justify-center font-bold text-xs mb-2">ICICI</div>
+            <span class="text-xs font-medium text-white">ICICI Bank</span>
+            <span class="text-[10px] text-neutral-400">Working Capital / LAP</span>
+          </div>
 
-<section id="about">
+          <div class="p-4 rounded-xl apple-glass-light border border-white/[0.06] flex flex-col items-center text-center">
+            <div class="w-10 h-10 rounded-full bg-blue-900/40 text-sky-400 flex items-center justify-center font-bold text-xs mb-2">SBI</div>
+            <span class="text-xs font-medium text-white">State Bank of India</span>
+            <span class="text-[10px] text-neutral-400">Term Loans & SME</span>
+          </div>
 
-<div class="about-card">
+          <div class="p-4 rounded-xl apple-glass-light border border-white/[0.06] flex flex-col items-center text-center">
+            <div class="w-10 h-10 rounded-full bg-rose-950/40 text-rose-400 flex items-center justify-center font-bold text-xs mb-2">AXIS</div>
+            <span class="text-xs font-medium text-white">Axis Bank</span>
+            <span class="text-[10px] text-neutral-400">Unsecured & Business</span>
+          </div>
 
-<h2>About</h2>
+          <div class="p-4 rounded-xl apple-glass-light border border-white/[0.06] flex flex-col items-center text-center">
+            <div class="w-10 h-10 rounded-full bg-amber-950/40 text-amber-400 flex items-center justify-center font-bold text-xs mb-2">BAJAJ</div>
+            <span class="text-xs font-medium text-white">Bajaj Finserv</span>
+            <span class="text-[10px] text-neutral-400">Fast-track NBFC</span>
+          </div>
 
-<p>
-This platform is being developed as an internal dashboard for analysing loan frequency reports and evaluating employee-level individual performance. The focus is on presenting business insights through a clean, structured, and efficient interface designed for everyday operational use.
-</p>
+          <div class="p-4 rounded-xl apple-glass-light border border-white/[0.06] flex flex-col items-center text-center">
+            <div class="w-10 h-10 rounded-full bg-indigo-950/40 text-indigo-400 flex items-center justify-center font-bold text-xs mb-2">TATA</div>
+            <span class="text-xs font-medium text-white">Tata Capital</span>
+            <span class="text-[10px] text-neutral-400">Custom Commercial</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-</div>
+    <section id="performance" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <h2 class="text-xs font-semibold uppercase tracking-wider text-neutral-400">Performance Architecture</h2>
+        <p class="text-2xl sm:text-3xl font-semibold tracking-tight text-white mt-1">Real-time Turnaround & Allocation</p>
+        <p class="text-xs sm:text-sm text-neutral-400 mt-2">Comprehensive performance oversight from initial customer submission to banker sanction.</p>
+      </div>
 
-</section>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Interactive Category Switcher / Disbursal breakdown -->
+        <div class="lg:col-span-2 apple-glass p-5 sm:p-6 rounded-2xl border border-white/[0.08]">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/[0.08] gap-2">
+            <div>
+              <span class="text-xs text-neutral-400 font-medium">Portfolio Distribution by Product</span>
+              <p class="text-lg font-semibold text-white">Active Pipeline Overview</p>
+            </div>
+            <div class="flex items-center space-x-1.5 bg-neutral-900 p-1 rounded-lg border border-white/10 text-[11px]">
+              <button onclick="filterMetrics('all')" id="btn-metric-all" class="px-2.5 py-1 rounded bg-white/10 text-white font-medium">All Segments</button>
+              <button onclick="filterMetrics('mortgage')" id="btn-metric-mortgage" class="px-2.5 py-1 rounded text-neutral-400 hover:text-white">Mortgage</button>
+              <button onclick="filterMetrics('business')" id="btn-metric-business" class="px-2.5 py-1 rounded text-neutral-400 hover:text-white">Business / SME</button>
+            </div>
+          </div>
 
-<footer>
-© 2026 Rashmi Associates
-</footer>
+          <!-- Dynamic visual representation -->
+          <div class="mt-6 space-y-4" id="metrics-container">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-neutral-300 font-medium">Home Loans & LAP (HDFC, SBI, ICICI)</span>
+                <span class="text-white font-semibold">₹21.6 Cr (56%)</span>
+              </div>
+              <div class="w-full h-2 rounded-full bg-neutral-900 overflow-hidden">
+                <div class="h-full bg-[#0071e3] rounded-full transition-all duration-500" style="width: 56%"></div>
+              </div>
+            </div>
 
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-neutral-300 font-medium">SME Working Capital & Term Loans (Axis, Tata Capital)</span>
+                <span class="text-white font-semibold">₹11.2 Cr (29%)</span>
+              </div>
+              <div class="w-full h-2 rounded-full bg-neutral-900 overflow-hidden">
+                <div class="h-full bg-sky-400 rounded-full transition-all duration-500" style="width: 29%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="text-neutral-300 font-medium">Unsecured & Professional Personal Loans (Bajaj Finserv)</span>
+                <span class="text-white font-semibold">₹5.6 Cr (15%)</span>
+              </div>
+              <div class="w-full h-2 rounded-full bg-neutral-900 overflow-hidden">
+                <div class="h-full bg-indigo-400 rounded-full transition-all duration-500" style="width: 15%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Audit timeline row -->
+          <div class="mt-8 pt-5 border-t border-white/[0.06] grid grid-cols-3 gap-2 text-center">
+            <div>
+              <span class="text-[11px] text-neutral-400">File Ingestion</span>
+              <p class="text-sm font-semibold text-white mt-0.5">&lt; 30 mins</p>
+            </div>
+            <div>
+              <span class="text-[11px] text-neutral-400">Bank Desk Submission</span>
+              <p class="text-sm font-semibold text-white mt-0.5">&lt; 24 hours</p>
+            </div>
+            <div>
+              <span class="text-[11px] text-neutral-400">Decision Disbursal</span>
+              <p class="text-sm font-semibold text-white mt-0.5">3-5 days</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick actions and portal entry card -->
+        <div class="apple-glass p-5 sm:p-6 rounded-2xl border border-white/[0.08] flex flex-col justify-between">
+          <div>
+            <div class="w-9 h-9 rounded-xl bg-neutral-900 border border-white/10 flex items-center justify-center text-white mb-4">
+              <i data-lucide="file-plus-2" class="w-5 h-5 text-neutral-200"></i>
+            </div>
+            <h3 class="text-base font-semibold text-white tracking-tight">Direct Case Desk</h3>
+            <p class="text-xs text-neutral-400 leading-relaxed mt-2">
+              Authorized associates can register new borrowers, attach required identity tokens (Aadhaar/PAN), and assign cases directly to partner underwriting pools.
+            </p>
+
+            <div class="mt-5 p-3 rounded-xl bg-neutral-950/70 border border-white/[0.06] space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-neutral-400">Active Pipeline:</span>
+                <span class="text-white font-medium" id="active-cases-count">3 Cases</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-neutral-400">Pending Review:</span>
+                <span class="text-amber-400 font-medium">1 Incomplete</span>
+              </div>
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-neutral-400">Mandatory Checks:</span>
+                <span class="text-emerald-400 font-medium">Aadhaar Strict UIDAI</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-white/[0.06]">
+            <button onclick="openPortalModal('intake')" class="w-full py-2.5 px-4 text-xs font-medium text-white bg-white/10 hover:bg-white/15 active:scale-[0.98] border border-white/15 rounded-xl transition-all flex items-center justify-center space-x-2">
+              <span>Open Customer Entry Terminal</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+      <div class="apple-glass rounded-2xl border border-white/[0.08] p-5 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+          <div>
+            <h3 class="text-sm font-semibold text-white tracking-tight">Recent Active Processing Files</h3>
+            <p class="text-xs text-neutral-400 mt-0.5">Real-time status updates from partner banks</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-[11px] text-neutral-400">Auto-refresh active</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          </div>
+        </div>
+
+        <!-- Table responsive wrapper -->
+        <div class="overflow-x-auto -mx-5 sm:mx-0">
+          <table class="w-full text-left text-xs min-w-[620px]">
+            <thead>
+              <tr class="border-b border-white/[0.06] text-neutral-400 font-normal">
+                <th class="py-2.5 px-3">Borrower Name</th>
+                <th class="py-2.5 px-3">Contact</th>
+                <th class="py-2.5 px-3">Loan Class</th>
+                <th class="py-2.5 px-3">Lending Entity</th>
+                <th class="py-2.5 px-3">Amount</th>
+                <th class="py-2.5 px-3">Mandatory Docs</th>
+                <th class="py-2.5 px-3 text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody id="case-ledger-tbody" class="divide-y divide-white/[0.04]">
+              <!-- Dynamically populated via JS state -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="governance" class="py-12 border-t border-white/[0.06] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="apple-glass-light p-5 rounded-2xl border border-white/[0.06]">
+          <div class="w-8 h-8 rounded-lg bg-neutral-900 flex items-center justify-center text-white mb-3">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+          </div>
+          <h4 class="text-sm font-medium text-white">Aadhaar & KYC Compliance</h4>
+          <p class="text-xs text-neutral-400 mt-1 leading-relaxed">
+            Strict mandate execution. Aadhaar verification is enforced at ingestion to prevent duplicate lead submission across partner banks.
+          </p>
+        </div>
+
+        <div class="apple-glass-light p-5 rounded-2xl border border-white/[0.06]">
+          <div class="w-8 h-8 rounded-lg bg-neutral-900 flex items-center justify-center text-white mb-3">
+            <i data-lucide="landmark" class="w-4 h-4 text-blue-400"></i>
+          </div>
+          <h4 class="text-sm font-medium text-white">Direct Banker Escalation</h4>
+          <p class="text-xs text-neutral-400 mt-1 leading-relaxed">
+            Direct coordination with designated Area Credit Managers at HDFC, SBI, and ICICI for rapid query resolution and fast sanctions.
+          </p>
+        </div>
+
+        <div class="apple-glass-light p-5 rounded-2xl border border-white/[0.06]">
+          <div class="w-8 h-8 rounded-lg bg-neutral-900 flex items-center justify-center text-white mb-3">
+            <i data-lucide="bar-chart-3" class="w-4 h-4 text-purple-400"></i>
+          </div>
+          <h4 class="text-sm font-medium text-white">Performance Analytics</h4>
+          <p class="text-xs text-neutral-400 mt-1 leading-relaxed">
+            Transparent reporting of branch-wise run rates, rejection trends, and turnaround milestones for institutional review.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/[0.08] bg-black py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between text-xs text-neutral-400 gap-4">
+        <div class="flex items-center space-x-3">
+          <span class="text-white font-medium">Rashmi Associates</span>
+          <span>•</span>
+          <span>Performance & Loan Origination Desk</span>
+          <span>•</span>
+          <span class="text-neutral-400">ralogs.pages.dev</span>
+        </div>
+
+        <div class="flex items-center space-x-6">
+          <button onclick="openNotification('All document transmissions are encrypted following institutional banking standards.')" class="hover:text-white transition-colors">Data Privacy Policy</button>
+          <button onclick="openNotification('Official Channel Partner Agreements active for Fiscal Year 2026-2027.')" class="hover:text-white transition-colors">Banker Declarations</button>
+          <span class="text-neutral-400">© 2026 Rashmi Associates. All rights reserved.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="portal-modal" class="fixed inset-0 z-50 hidden transition-opacity duration-300">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closePortalModal()"></div>
+
+    <!-- Modal Content Window -->
+    <div class="relative min-h-screen sm:min-h-0 sm:h-auto sm:my-8 max-w-2xl mx-auto flex items-center justify-center p-3 sm:p-4">
+      <div class="w-full bg-[#121215] border border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] transition-all">
+        
+        <!-- Modal Top Bar -->
+        <div class="px-5 py-4 border-b border-white/[0.08] flex items-center justify-between bg-neutral-900/60">
+          <div class="flex items-center space-x-2">
+            <div class="w-6 h-6 rounded-md bg-white/10 flex items-center justify-center text-xs font-semibold text-white">RA</div>
+            <span class="text-xs sm:text-sm font-semibold text-white tracking-tight" id="modal-title">Associate Terminal</span>
+          </div>
+
+          <!-- Close button -->
+          <button onclick="closePortalModal()" class="w-7 h-7 rounded-full bg-white/[0.06] hover:bg-white/[0.12] flex items-center justify-center text-neutral-400 hover:text-white transition-colors">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Modal Inner Content Scrollable -->
+        <div class="p-5 sm:p-6 overflow-y-auto space-y-6">
+
+          <!-- View 1: Authentication View -->
+          <div id="view-login" class="space-y-4">
+            <div class="text-center max-w-sm mx-auto">
+              <div class="w-12 h-12 rounded-2xl bg-neutral-900 border border-white/10 flex items-center justify-center text-white mx-auto mb-3">
+                <i data-lucide="shield" class="w-6 h-6 text-neutral-200"></i>
+              </div>
+              <h3 class="text-base font-semibold text-white">Associate Authentication</h3>
+              <p class="text-xs text-neutral-400 mt-1">Please log in to your Rashmi Associates desk to register borrower records and review bank disbursals.</p>
+            </div>
+
+            <form onsubmit="handleLogin(event)" class="max-w-sm mx-auto space-y-3 pt-2">
+              <div>
+                <label class="block text-xs font-medium text-neutral-300 mb-1">Associate ID / Email</label>
+                <input type="text" id="login-id" required value="associate@rashmiassociates.in" class="w-full px-3.5 py-2 text-xs rounded-xl bg-neutral-950 border border-white/10 text-white placeholder-neutral-500 focus:border-white/30 transition-all">
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-neutral-300 mb-1">Access PIN / Password</label>
+                <input type="password" id="login-pass" required value="••••••••" class="w-full px-3.5 py-2 text-xs rounded-xl bg-neutral-950 border border-white/10 text-white placeholder-neutral-500 focus:border-white/30 transition-all">
+              </div>
+
+              <div class="pt-2">
+                <button type="submit" class="w-full py-2.5 text-xs font-medium text-white bg-[#0071e3] hover:bg-[#0077ed] active:scale-[0.99] rounded-xl transition-all shadow-sm">
+                  Sign In to Loan Workspace
+                </button>
+              </div>
+
+              <p class="text-[11px] text-center text-neutral-400 pt-1">
+                Authorized Personnel Only • Audit Log Active
+              </p>
+            </form>
+          </div>
+
+          <!-- View 2: Customer Loan Entry Form -->
+          <div id="view-intake" class="hidden space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b border-white/[0.06]">
+              <div>
+                <h3 class="text-sm font-semibold text-white">Customer Loan Origination File</h3>
+                <p class="text-xs text-neutral-400">Enter applicant information, loan parameters, and required KYC proofs.</p>
+              </div>
+              <span class="text-[10px] uppercase font-semibold tracking-wider text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">Verified Session</span>
+            </div>
+
+            <form onsubmit="handleCustomerSubmit(event)" class="space-y-5" id="customer-intake-form">
+              
+              <!-- Section 1: Customer Personal Details -->
+              <div>
+                <h4 class="text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-2.5">1. Borrower Information</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-medium text-neutral-400 mb-1">Customer Full Name <span class="text-rose-400">*</span></label>
+                    <input type="text" id="cust-name" placeholder="e.g. Kunal Sharma" required class="w-full px-3 py-2 text-xs rounded-xl bg-neutral-950 border border-white/10 text-white placeholder-neutral-600 focus:border-white/30">
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-medium text-neutral-400 mb-1">Age (Years) <span class="text-rose-400">*</span></label>
+                    <input type="number" id="cust-age" min="18" max="75" placeholder="e.g. 32" required class="w-full px-3 py-2 text-xs rounded-xl bg-neutral-950 border border-white/10 text-white placeholder-neutral-600 focus:border-white/30">
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-medium text-neutral-400 mb-1">Mobile Phone Number <span class="text-rose-400">*</span></label>
+                    <input type="tel" id="cust-phone" placeholder="e.g. 98765 43210" pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number" required class="w-full px-3 py-2 text-xs rounded-xl bg-neutral-950 border border-white/10 text-white placeholder-neutral-600 focus:border-white/30">
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-medium text-neutral-400 mb-1">Email Address <span class="text-rose-400">*</span></label>
+                    <input type="email" id="cust-email" placeholder="e.g. kunal@example.com" required class="w-full px-3 py-2 text-xs rounded-xl bg-neutral-950 border border-white/10 text-white placeholder-neutral-600 focus:border-white/30">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section 2: Loan Particulars & Institution Selection -->
+              <div class="pt-2 border-t border-white/[0.06]">
+                <h4 class="text-xs font-semibold text-neutral-300 uppercase tracking-wider mb-2.5">2. Loan Specifications & Bank Allocation</h4>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label class="block text-xs font-medium text-neutral-400 mb-1">Loan Category <span class="text-rose-400">*</span></label>
+                    <select id="loan-type" required class="w-full px-3 py-2 text-xs rounded-xl bg-neutral-950 border border-white/10 text-white focus:border-white/30">
+                      <option value="Home Loan">Home Loan</option>
+                      <option value="Business Loan">Business / MSME Loan</option>
+                      <option value="Personal Loan">Personal Loan</option>
+                      <option value="Loan Against Property (LAP)">Loan Against Property (LAP)</option>
+                      <option value="Working Capital (CC/OD)">Working Capital (CC/OD)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-medium text-neutral-400 mb-1">Processing Bank / NBFC <span class="text-rose-400">*</span></label>
+                    <select id="bank-partner" required class="w-full px-3 py-2 text-xs rounded-xl bg-neutral-950 border border-white/10 text-white focus:border-white/30">
+                      <option value="HDFC Bank">HDFC Bank</option>
+                      <option value="ICICI Bank">ICICI Bank</option>
+                      <option value="State Bank of India">State Bank of India (SBI)</option>
+                      <option value="Axis Bank">Axis Bank</option>
+                      <option value="Bajaj Finserv">Bajaj Finserv</option>
+                      <option value="Tata Capital">Tata Capital</option>
+                      <option value="Kotak Mahindra Bank">Kotak Mahindra Bank</option>
+                      <option value="Aditya Birla Finance">Aditya Birla Finance</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-medium text-neutral-400 mb-1">Requested Amount (₹) <span class="text-rose-400">*</span></label>
+                    <input type="text" id="loan-amount" placeholder="e.g. 45,00,000" required class="w-full px-3 py-2 text-xs rounded-xl bg-neutral-950 border border-white/10 text-white placeholder-neutral-600 focus:border-white/30">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section 3: Document Verification Checklist (Aadhaar Mandatory) -->
+              <div class="pt-2 border-t border-white/[0.06]">
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="text-xs font-semibold text-neutral-300 uppercase tracking-wider">3. Document Enclosures</h4>
+                  <span class="text-[10px] text-neutral-400">PDF, JPG, or PNG (Max 15MB)</span>
+                </div>
+
+                <div class="space-y-2.5">
+                  <!-- Aadhaar Card (MANDATORY) -->
+                  <div class="p-3 rounded-xl bg-neutral-950 border border-blue-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex items-start space-x-2.5">
+                      <div class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
+                        <i data-lucide="file-check-2" class="w-4 h-4"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center space-x-2">
+                          <span class="text-xs font-medium text-white">Aadhaar Card (Front & Back)</span>
+                          <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-rose-950/80 text-rose-300 border border-rose-800/50">Mandatory</span>
+                        </div>
+                        <p class="text-[11px] text-neutral-400 mt-0.5" id="aadhaar-status-text">UIDAI compliant proof required for processing.</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input type="file" id="file-aadhaar" required accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="updateDocFeedback('aadhaar')">
+                      <label for="file-aadhaar" id="btn-label-aadhaar" class="cursor-pointer inline-flex items-center px-3 py-1.5 text-[11px] font-medium text-white bg-blue-600 hover:bg-blue-500 active:scale-[0.98] rounded-lg transition-all">
+                        <i data-lucide="upload" class="w-3 h-3 mr-1.5"></i>
+                        <span>Upload Aadhaar</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- PAN Card (Mandatory for Finance) -->
+                  <div class="p-3 rounded-xl bg-neutral-950 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex items-start space-x-2.5">
+                      <div class="w-7 h-7 rounded-lg bg-neutral-900 text-neutral-300 flex items-center justify-center shrink-0 mt-0.5">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center space-x-2">
+                          <span class="text-xs font-medium text-white">PAN Card</span>
+                          <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-rose-950/80 text-rose-300 border border-rose-800/50">Mandatory</span>
+                        </div>
+                        <p class="text-[11px] text-neutral-400 mt-0.5" id="pan-status-text">Income tax verification identification.</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input type="file" id="file-pan" required accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="updateDocFeedback('pan')">
+                      <label for="file-pan" id="btn-label-pan" class="cursor-pointer inline-flex items-center px-3 py-1.5 text-[11px] font-medium text-neutral-300 hover:text-white bg-white/10 hover:bg-white/15 active:scale-[0.98] rounded-lg transition-all">
+                        <i data-lucide="upload" class="w-3 h-3 mr-1.5"></i>
+                        <span>Upload PAN</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Income Proof / ITR (Optional for now) -->
+                  <div class="p-3 rounded-xl bg-neutral-950/70 border border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex items-start space-x-2.5">
+                      <div class="w-7 h-7 rounded-lg bg-neutral-900 text-neutral-400 flex items-center justify-center shrink-0 mt-0.5">
+                        <i data-lucide="file" class="w-4 h-4"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center space-x-2">
+                          <span class="text-xs font-medium text-neutral-300">Income Tax Returns (ITR) / Salary Slips</span>
+                          <span class="px-1.5 py-0.5 rounded text-[9px] font-medium uppercase tracking-wider bg-neutral-800 text-neutral-400">Optional</span>
+                        </div>
+                        <p class="text-[11px] text-neutral-400 mt-0.5" id="itr-status-text">Latest 2 years statement or last 3 months salary credit.</p>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center">
+                      <input type="file" id="file-itr" accept=".pdf,.jpg,.jpeg,.png" class="hidden" onchange="updateDocFeedback('itr')">
+                      <label for="file-itr" id="btn-label-itr" class="cursor-pointer inline-flex items-center px-3 py-1.5 text-[11px] font-medium text-neutral-400 hover:text-neutral-200 bg-white/[0.05] hover:bg-white/[0.08] active:scale-[0.98] rounded-lg transition-all">
+                        <i data-lucide="upload" class="w-3 h-3 mr-1.5"></i>
+                        <span>Upload (Optional)</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submission buttons -->
+              <div class="pt-3 border-t border-white/[0.06] flex items-center justify-end space-x-3">
+                <button type="button" onclick="closePortalModal()" class="px-4 py-2 text-xs font-medium text-neutral-400 hover:text-white transition-colors">
+                  Cancel
+                </button>
+
+                <button type="submit" class="inline-flex items-center px-5 py-2.5 text-xs font-medium text-white bg-[#0071e3] hover:bg-[#0077ed] active:scale-[0.98] rounded-xl transition-all shadow-md">
+                  <i data-lucide="send" class="w-3.5 h-3.5 mr-1.5"></i>
+                  <span>Register & Assign to Bank</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- View 3: Success Confirmation View -->
+          <div id="view-success" class="hidden text-center py-6 space-y-4">
+            <div class="w-12 h-12 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto">
+              <i data-lucide="check" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-semibold text-white">Loan Case Registered Successfully</h3>
+              <p class="text-xs text-neutral-400 mt-1 max-w-sm mx-auto" id="success-message">
+                Applicant record has been assigned to the underwriting queue with verified documents.
+              </p>
+            </div>
+            <div class="pt-2 flex justify-center space-x-3">
+              <button onclick="switchModalTab('intake')" class="px-4 py-2 text-xs font-medium text-neutral-300 bg-neutral-900 hover:bg-neutral-800 rounded-xl border border-white/10 transition-colors">
+                New Customer File
+              </button>
+              <button onclick="closePortalModal()" class="px-4 py-2 text-xs font-medium text-white bg-[#0071e3] hover:bg-[#0077ed] rounded-xl transition-colors">
+                View Ledger
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="custom-toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 max-w-sm w-full pointer-events-none">
+    <div class="apple-glass p-3.5 rounded-xl border border-white/15 shadow-2xl flex items-center space-x-3 text-xs text-neutral-200 pointer-events-auto">
+      <i data-lucide="info" class="w-4 h-4 text-sky-400 shrink-0"></i>
+      <span id="toast-message" class="leading-snug">Notice message</span>
+    </div>
+  </div>
+
+  <script>
+    // State management for Customer Loan Ledger
+    let isAuthenticated = false;
+    
+    // Initial verified and active mock records (including default Kunal file as requested)
+    let loanCases = [
+      {
+        id: "RA-2026-081",
+        name: "Kunal Sharma",
+        age: 34,
+        phone: "+91 98450 11244",
+        email: "kunal.s@enterprise.in",
+        type: "Home Loan",
+        bank: "HDFC Bank",
+        amount: "₹65,00,000",
+        aadhaarVerified: true,
+        status: "Processing with Bank"
+      },
+      {
+        id: "RA-2026-082",
+        name: "Pooja V. Reddy",
+        age: 41,
+        phone: "+91 94481 88320",
+        email: "pooja.reddy@techsol.com",
+        type: "Working Capital (CC/OD)",
+        bank: "State Bank of India",
+        amount: "₹1,20,00,000",
+        aadhaarVerified: true,
+        status: "Under Review"
+      },
+      {
+        id: "RA-2026-083",
+        name: "Arjun Singhania",
+        age: 29,
+        phone: "+91 99002 44719",
+        email: "arjun@singhania.co",
+        type: "Business Loan",
+        bank: "Axis Bank",
+        amount: "₹35,00,000",
+        aadhaarVerified: true,
+        status: "Sanctioned"
+      }
+    ];
+
+    // Initialize application and render active ledger table
+    document.addEventListener("DOMContentLoaded", () => {
+      renderLedger();
+      lucide.createIcons();
+    });
+
+    // Render table rows
+    function renderLedger() {
+      const tbody = document.getElementById("case-ledger-tbody");
+      if (!tbody) return;
+
+      tbody.innerHTML = "";
+
+      loanCases.forEach(item => {
+        const row = document.createElement("tr");
+        row.className = "hover:bg-white/[0.02] transition-colors";
+
+        let statusBadge = "";
+        if (item.status === "Sanctioned" || item.status === "Disbursed") {
+          statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-950/80 text-emerald-400 border border-emerald-800/40">● Disbursed / Approved</span>`;
+        } else if (item.status === "Processing with Bank") {
+          statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-950/80 text-blue-400 border border-blue-800/40">● Processing with Bank</span>`;
+        } else {
+          statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-amber-950/80 text-amber-400 border border-amber-800/40">● Under Desk Review</span>`;
+        }
+
+        row.innerHTML = `
+          <td class="py-3 px-3 font-medium text-white">
+            <div>${item.name}</div>
+            <div class="text-[10px] text-neutral-400">${item.id} • ${item.age} yrs</div>
+          </td>
+          <td class="py-3 px-3 text-neutral-400">
+            <div>${item.phone}</div>
+            <div class="text-[10px] text-neutral-400">${item.email}</div>
+          </td>
+          <td class="py-3 px-3 text-neutral-300">${item.type}</td>
+          <td class="py-3 px-3">
+            <span class="px-2 py-0.5 rounded bg-neutral-900 border border-white/10 text-[11px] text-neutral-300 font-medium">
+              ${item.bank}
+            </span>
+          </td>
+          <td class="py-3 px-3 font-semibold text-white">${item.amount}</td>
+          <td class="py-3 px-3">
+            <span class="inline-flex items-center text-[11px] text-emerald-400">
+              <i data-lucide="check-circle-2" class="w-3.5 h-3.5 mr-1 text-emerald-400"></i>
+              Aadhaar Verified
+            </span>
+          </td>
+          <td class="py-3 px-3 text-right">
+            ${statusBadge}
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      // Update case counter
+      const counter = document.getElementById("active-cases-count");
+      if (counter) {
+        counter.textContent = `${loanCases.length} Active Cases`;
+      }
+
+      lucide.createIcons();
+    }
+
+    // Modal Control
+    function openPortalModal(preferredView = 'login') {
+      const modal = document.getElementById('portal-modal');
+      modal.classList.remove('hidden');
+
+      if (isAuthenticated) {
+        switchModalTab('intake');
+      } else {
+        if (preferredView === 'intake') {
+          // If user clicked direct intake, let them into the demo session
+          switchModalTab('login');
+        } else {
+          switchModalTab('login');
+        }
+      }
+    }
+
+    function closePortalModal() {
+      const modal = document.getElementById('portal-modal');
+      modal.classList.add('hidden');
+    }
+
+    function switchModalTab(viewName) {
+      document.getElementById('view-login').classList.add('hidden');
+      document.getElementById('view-intake').classList.add('hidden');
+      document.getElementById('view-success').classList.add('hidden');
+
+      const title = document.getElementById('modal-title');
+
+      if (viewName === 'login') {
+        document.getElementById('view-login').classList.remove('hidden');
+        title.textContent = 'Associate Terminal Login';
+      } else if (viewName === 'intake') {
+        document.getElementById('view-intake').classList.remove('hidden');
+        title.textContent = 'Rashmi Associates | Customer File Origination';
+      } else if (viewName === 'success') {
+        document.getElementById('view-success').classList.remove('hidden');
+        title.textContent = 'Case Assigned to Underwriting';
+      }
+      lucide.createIcons();
+    }
+
+    // Handle Login submission
+    function handleLogin(event) {
+      event.preventDefault();
+      isAuthenticated = true;
+      openNotification("Session authenticated. Direct customer intake enabled.");
+      switchModalTab('intake');
+    }
+
+    // Update file upload feedback label without alerts
+    function updateDocFeedback(type) {
+      const input = document.getElementById(`file-${type}`);
+      const label = document.getElementById(`btn-label-${type}`);
+      const statusText = document.getElementById(`${type}-status-text`);
+
+      if (input.files && input.files[0]) {
+        const fileName = input.files[0].name;
+        label.classList.remove('bg-blue-600', 'bg-white/10', 'bg-white/[0.05]');
+        label.classList.add('bg-emerald-600', 'text-white');
+        label.innerHTML = `<i data-lucide="check" class="w-3 h-3 mr-1"></i> Attached`;
+        statusText.textContent = `Attached: ${fileName} (${(input.files[0].size / 1024).toFixed(0)} KB)`;
+        statusText.classList.add('text-emerald-400');
+        lucide.createIcons();
+      }
+    }
+
+    // Handle Customer Intake Form Submission
+    function handleCustomerSubmit(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('cust-name').value.trim();
+      const age = document.getElementById('cust-age').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const email = document.getElementById('cust-email').value.trim();
+      const loanType = document.getElementById('loan-type').value;
+      const bank = document.getElementById('bank-partner').value;
+      let amount = document.getElementById('loan-amount').value.trim();
+
+      // Ensure currency symbol representation
+      if (!amount.startsWith('₹')) {
+        amount = '₹' + amount;
+      }
+
+      // Check Aadhaar Upload presence
+      const aadhaarInput = document.getElementById('file-aadhaar');
+      if (!aadhaarInput.files || aadhaarInput.files.length === 0) {
+        openNotification("Mandatory Requirement: Please upload the Aadhaar Card document before proceeding.");
+        return;
+      }
+
+      // Generate new Case Record
+      const newId = `RA-2026-0${80 + loanCases.length + 1}`;
+      const newCase = {
+        id: newId,
+        name: name,
+        age: parseInt(age, 10),
+        phone: "+91 " + phone.replace(/^(\+91|0)/, '').trim(),
+        email: email,
+        type: loanType,
+        bank: bank,
+        amount: amount,
+        aadhaarVerified: true,
+        status: "Processing with Bank"
+      };
+
+      // Add to beginning of active ledger
+      loanCases.unshift(newCase);
+      renderLedger();
+
+      // Reset form
+      document.getElementById('customer-intake-form').reset();
+      
+      // Reset doc labels
+      ['aadhaar', 'pan', 'itr'].forEach(doc => {
+        const label = document.getElementById(`btn-label-${doc}`);
+        const statusText = document.getElementById(`${doc}-status-text`);
+        if (label && statusText) {
+          label.innerHTML = `<i data-lucide="upload" class="w-3 h-3 mr-1.5"></i> <span>Upload</span>`;
+          label.className = "cursor-pointer inline-flex items-center px-3 py-1.5 text-[11px] font-medium text-neutral-300 hover:text-white bg-white/10 hover:bg-white/15 active:scale-[0.98] rounded-lg transition-all";
+          statusText.classList.remove('text-emerald-400');
+          if (doc === 'aadhaar') statusText.textContent = "UIDAI compliant proof required for processing.";
+          if (doc === 'pan') statusText.textContent = "Income tax verification identification.";
+          if (doc === 'itr') statusText.textContent = "Latest 2 years statement or last 3 months salary credit.";
+        }
+      });
+
+      // Show success view
+      document.getElementById('success-message').textContent = 
+        `Customer profile for ${name} has been created under ID ${newId} and routed to ${bank} desk.`;
+      switchModalTab('success');
+    }
+
+    // Interactive Metric Switcher
+    function filterMetrics(filter) {
+      const container = document.getElementById('metrics-container');
+      const btnAll = document.getElementById('btn-metric-all');
+      const btnMort = document.getElementById('btn-metric-mortgage');
+      const btnBiz = document.getElementById('btn-metric-business');
+
+      [btnAll, btnMort, btnBiz].forEach(btn => {
+        btn.className = "px-2.5 py-1 rounded text-neutral-400 hover:text-white transition-colors";
+      });
+
+      if (filter === 'all') {
+        btnAll.className = "px-2.5 py-1 rounded bg-white/10 text-white font-medium";
+        container.innerHTML = `
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-neutral-300 font-medium">Home Loans & LAP (HDFC, SBI, ICICI)</span>
+              <span class="text-white font-semibold">₹21.6 Cr (56%)</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-neutral-900 overflow-hidden">
+              <div class="h-full bg-[#0071e3] rounded-full transition-all duration-500" style="width: 56%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-neutral-300 font-medium">SME Working Capital & Term Loans (Axis, Tata Capital)</span>
+              <span class="text-white font-semibold">₹11.2 Cr (29%)</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-neutral-900 overflow-hidden">
+              <div class="h-full bg-sky-400 rounded-full transition-all duration-500" style="width: 29%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-neutral-300 font-medium">Unsecured & Professional Personal Loans (Bajaj Finserv)</span>
+              <span class="text-white font-semibold">₹5.6 Cr (15%)</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-neutral-900 overflow-hidden">
+              <div class="h-full bg-indigo-400 rounded-full transition-all duration-500" style="width: 15%"></div>
+            </div>
+          </div>
+        `;
+      } else if (filter === 'mortgage') {
+        btnMort.className = "px-2.5 py-1 rounded bg-white/10 text-white font-medium";
+        container.innerHTML = `
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-neutral-300 font-medium">Salaried Home Loans (Prime Rates 8.40% - 8.65%)</span>
+              <span class="text-white font-semibold">₹15.2 Cr (70%)</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-neutral-900 overflow-hidden">
+              <div class="h-full bg-[#0071e3] rounded-full transition-all duration-500" style="width: 70%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-neutral-300 font-medium">Loan Against Commercial Property (LAP)</span>
+              <span class="text-white font-semibold">₹6.4 Cr (30%)</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-neutral-900 overflow-hidden">
+              <div class="h-full bg-sky-400 rounded-full transition-all duration-500" style="width: 30%"></div>
+            </div>
+          </div>
+        `;
+      } else if (filter === 'business') {
+        btnBiz.className = "px-2.5 py-1 rounded bg-white/10 text-white font-medium";
+        container.innerHTML = `
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-neutral-300 font-medium">Cash Credit & Overdraft Limits (SBI & ICICI)</span>
+              <span class="text-white font-semibold">₹7.8 Cr (69%)</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-neutral-900 overflow-hidden">
+              <div class="h-full bg-sky-400 rounded-full transition-all duration-500" style="width: 69%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-neutral-300 font-medium">Unsecured Business Expansion Lines</span>
+              <span class="text-white font-semibold">₹3.4 Cr (31%)</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-neutral-900 overflow-hidden">
+              <div class="h-full bg-indigo-400 rounded-full transition-all duration-500" style="width: 31%"></div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // Elegant Toast Notification
+    function openNotification(message) {
+      const toast = document.getElementById('custom-toast');
+      const text = document.getElementById('toast-message');
+      text.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3500);
+    }
+  </script>
 </body>
 </html>
