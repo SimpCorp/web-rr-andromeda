@@ -20,16 +20,15 @@
     * {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
     }
 
-    /* Mobile scroll lock prevention & dynamic viewport handling */
     .modal-container {
       max-height: 90dvh;
       overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Print styles for PDF engine */
     @media print {
       body { background: #fff !important; }
       .no-print { display: none !important; }
@@ -51,7 +50,7 @@
     <!-- Right Controls -->
     <div class="flex items-center space-x-2 sm:space-x-3">
       <!-- Unauthenticated Button -->
-      <button id="btn-header-login" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1.5 shadow-sm">
+      <button id="btn-header-login" type="button" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1.5 shadow-sm cursor-pointer">
         <i data-lucide="log-in" class="w-4 h-4"></i>
         <span>Access Portal</span>
       </button>
@@ -64,17 +63,17 @@
         </div>
 
         <!-- Kailash Exclusive Admin Security Reset Tool -->
-        <button id="btn-open-admin-security" title="Admin Staff Security Panel" class="hidden p-2 text-amber-700 hover:text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors">
+        <button id="btn-open-admin-security" type="button" title="Admin Staff Security Panel" class="hidden p-2 text-amber-700 hover:text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors cursor-pointer">
           <i data-lucide="shield-alert" class="w-4 h-4"></i>
         </button>
 
         <!-- Self-Service Password Change Trigger (For all accounts) -->
-        <button id="btn-open-password" title="Change Own Password" class="p-2 text-zinc-600 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 rounded-lg transition-colors">
+        <button id="btn-open-password" type="button" title="Change Own Password" class="p-2 text-zinc-600 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 rounded-lg transition-colors cursor-pointer">
           <i data-lucide="key" class="w-4 h-4"></i>
         </button>
 
         <!-- Logout Trigger -->
-        <button id="btn-logout" title="Sign Out" class="p-2 text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-lg transition-colors">
+        <button id="btn-logout" type="button" title="Sign Out" class="p-2 text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-lg transition-colors cursor-pointer">
           <i data-lucide="log-out" class="w-4 h-4"></i>
         </button>
       </div>
@@ -92,6 +91,7 @@
           src="./logoreveal.mp4" 
           class="w-full h-full object-contain"
           muted 
+          autoplay
           playsinline 
           preload="auto">
           Your browser does not support HTML5 video.
@@ -106,7 +106,7 @@
         Authorized portal for Rashmi Associates. Sign in with your assigned staff credentials to manage borrower files and analyze performance metrics.
       </p>
 
-      <button id="btn-hero-login" class="w-full max-w-xs py-3 px-4 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-sm rounded-lg transition-colors flex items-center justify-center space-x-2 shadow-sm">
+      <button id="btn-hero-login" type="button" class="w-full max-w-xs py-3 px-4 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-sm rounded-lg transition-colors flex items-center justify-center space-x-2 shadow-sm cursor-pointer">
         <i data-lucide="shield-check" class="w-4 h-4"></i>
         <span>Sign In to Continue</span>
       </button>
@@ -120,20 +120,20 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 rounded-xl border border-zinc-200 shadow-sm">
       <!-- Tab Navigation -->
       <div class="flex items-center space-x-1.5 bg-zinc-100 p-1 rounded-lg">
-        <button id="tab-btn-records" class="px-4 py-1.5 text-xs sm:text-sm font-semibold rounded-md bg-white text-zinc-900 shadow-sm transition-all">Customer Records</button>
-        <button id="tab-btn-stats" class="px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md text-zinc-600 hover:text-zinc-900 transition-all">Reports & Stats</button>
+        <button id="tab-btn-records" type="button" class="px-4 py-1.5 text-xs sm:text-sm font-semibold rounded-md bg-white text-zinc-900 shadow-sm transition-all cursor-pointer">Customer Records</button>
+        <button id="tab-btn-stats" type="button" class="px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md text-zinc-600 hover:text-zinc-900 transition-all cursor-pointer">Reports & Stats</button>
       </div>
 
       <!-- Action Buttons -->
       <div class="flex items-center space-x-2">
-        <button id="btn-open-create" class="flex-1 sm:flex-none px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center justify-center space-x-1.5 shadow-sm">
+        <button id="btn-open-create" type="button" class="flex-1 sm:flex-none px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center justify-center space-x-1.5 shadow-sm cursor-pointer">
           <i data-lucide="plus-circle" class="w-4 h-4"></i>
           <span>New Customer Entry</span>
         </button>
 
         <!-- Multi-Option Export Dropdown -->
         <div class="relative">
-          <button id="btn-report-menu" class="px-3.5 py-2 bg-white border border-zinc-300 hover:bg-zinc-50 text-zinc-800 rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1.5 shadow-xs">
+          <button id="btn-report-menu" type="button" class="px-3.5 py-2 bg-white border border-zinc-300 hover:bg-zinc-50 text-zinc-800 rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1.5 shadow-xs cursor-pointer">
             <i data-lucide="download" class="w-4 h-4"></i>
             <span class="hidden sm:inline">Export Report</span>
             <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-zinc-500"></i>
@@ -141,21 +141,21 @@
           
           <div id="report-dropdown" class="hidden absolute right-0 mt-1 w-60 bg-white border border-zinc-200 rounded-xl shadow-xl py-1.5 z-20 text-xs divide-y divide-zinc-100">
             <div class="py-1">
-              <button id="btn-export-pdf" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-800">
+              <button id="btn-export-pdf" type="button" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-800 cursor-pointer">
                 <i data-lucide="file-text" class="w-4 h-4 text-rose-600"></i>
                 <span class="font-medium">Download PDF Report (Printable)</span>
               </button>
             </div>
             <div class="py-1">
-              <button id="btn-export-csv-week" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-700">
+              <button id="btn-export-csv-week" type="button" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-700 cursor-pointer">
                 <i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i>
                 <span>Weekly CSV Ledger</span>
               </button>
-              <button id="btn-export-csv-month" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-700">
+              <button id="btn-export-csv-month" type="button" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-700 cursor-pointer">
                 <i data-lucide="calendar-days" class="w-4 h-4 text-indigo-600"></i>
                 <span>Monthly CSV Ledger</span>
               </button>
-              <button id="btn-export-csv-all" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-700">
+              <button id="btn-export-csv-all" type="button" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-700 cursor-pointer">
                 <i data-lucide="database" class="w-4 h-4 text-emerald-600"></i>
                 <span>Full Master Sheet (CSV)</span>
               </button>
@@ -254,10 +254,10 @@
         <div class="flex items-center space-x-2">
           <span class="text-xs font-semibold text-zinc-700">Analytics Timeframe:</span>
           <div class="flex items-center space-x-1 bg-zinc-100 p-0.5 rounded-lg text-xs">
-            <button data-period="all" class="btn-period px-3 py-1 font-semibold bg-white text-zinc-900 rounded-md shadow-xs">All Time</button>
-            <button data-period="year" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Year</button>
-            <button data-period="month" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Month</button>
-            <button data-period="week" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Week</button>
+            <button data-period="all" type="button" class="btn-period px-3 py-1 font-semibold bg-white text-zinc-900 rounded-md shadow-xs cursor-pointer">All Time</button>
+            <button data-period="year" type="button" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md cursor-pointer">This Year</button>
+            <button data-period="month" type="button" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md cursor-pointer">This Month</button>
+            <button data-period="week" type="button" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md cursor-pointer">This Week</button>
           </div>
         </div>
         <p id="scope-indicator-text" class="text-xs text-zinc-500 font-medium">Aggregating records for your account</p>
@@ -334,7 +334,7 @@
           <h3 id="modal-record-title" class="text-sm sm:text-base font-bold text-zinc-900">New Customer Entry</h3>
           <p class="text-xs text-zinc-500">Record and verify borrower loan profile</p>
         </div>
-        <button type="button" class="btn-close-modal p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg">
+        <button type="button" class="btn-close-modal p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg cursor-pointer">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -438,8 +438,8 @@
 
         <!-- Actions -->
         <div class="pt-3 border-t border-zinc-200 flex items-center justify-end space-x-2">
-          <button type="button" class="btn-close-modal px-4 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-lg text-xs sm:text-sm font-medium transition-colors">Cancel</button>
-          <button type="submit" id="btn-save-record" class="px-5 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center space-x-1.5">
+          <button type="button" class="btn-close-modal px-4 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-lg text-xs sm:text-sm font-medium transition-colors cursor-pointer">Cancel</button>
+          <button type="submit" id="btn-save-record" class="px-5 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center space-x-1.5 cursor-pointer">
             <span>Save Record</span>
           </button>
         </div>
@@ -455,7 +455,7 @@
           <h3 class="text-base font-bold text-zinc-900">Sign In</h3>
           <p class="text-xs text-zinc-500">Enter your assigned username and password</p>
         </div>
-        <button type="button" class="btn-close-login p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg">
+        <button type="button" class="btn-close-login p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg cursor-pointer">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
@@ -472,14 +472,14 @@
 
         <div id="login-error-msg" class="hidden text-xs text-rose-600 bg-rose-50 border border-rose-200 p-2.5 rounded-lg font-medium"></div>
 
-        <button type="submit" id="btn-submit-login" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5 mt-2 shadow-xs">
+        <button type="submit" id="btn-submit-login" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5 mt-2 shadow-xs cursor-pointer">
           <span>Authorize Access</span>
         </button>
       </form>
     </div>
   </div>
 
-  <!-- ================= MODAL: SELF-SERVICE PASSWORD CHANGE (FOR ALL USERS) ================= -->
+  <!-- ================= MODAL: SELF-SERVICE PASSWORD CHANGE ================= -->
   <div id="modal-password" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
     <div class="bg-white border border-zinc-200 rounded-2xl w-full max-w-sm shadow-2xl p-6">
       <div class="flex items-center justify-between mb-4">
@@ -487,7 +487,7 @@
           <h3 class="text-base font-bold text-zinc-900">Change Password</h3>
           <p class="text-xs text-zinc-500">Update your account security key</p>
         </div>
-        <button type="button" class="btn-close-password p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg">
+        <button type="button" class="btn-close-password p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg cursor-pointer">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
@@ -504,7 +504,7 @@
 
         <div id="pass-feedback-msg" class="hidden text-xs p-2.5 rounded-lg font-medium"></div>
 
-        <button type="submit" id="btn-submit-password" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5 mt-2">
+        <button type="submit" id="btn-submit-password" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5 mt-2 cursor-pointer">
           <span>Update Password</span>
         </button>
       </form>
@@ -519,7 +519,7 @@
           <h3 class="text-base font-bold text-zinc-900">Admin Staff Password Reset</h3>
           <p class="text-xs text-zinc-500">Overwrite credentials for any staff user</p>
         </div>
-        <button type="button" class="btn-close-admin-security p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg">
+        <button type="button" class="btn-close-admin-security p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg cursor-pointer">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
@@ -541,13 +541,13 @@
           <input type="password" id="admin-new-pass" required minlength="6" placeholder="Assign new password" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1">Admin Authorization (Your Kailash Password)</label>
+          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1">Admin Authorization (Kailash Password)</label>
           <input type="password" id="admin-verify-pass" required placeholder="Enter Kailash password" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none">
         </div>
 
         <div id="admin-security-feedback" class="hidden text-xs p-2.5 rounded-lg font-medium"></div>
 
-        <button type="submit" id="btn-submit-admin-security" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5 mt-2">
+        <button type="submit" id="btn-submit-admin-security" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5 mt-2 cursor-pointer">
           <span>Apply Override</span>
         </button>
       </form>
@@ -559,9 +559,9 @@
     <!-- Populated dynamically via JS prior to PDF render -->
   </div>
 
-  <!-- ================= LOGIC & BACKEND INTEGRATION LAYER ================= -->
+  <!-- ================= SAFE JAVASCRIPT CONTROLLER ================= -->
   <script>
-    // --- 1. System Config & Domain Entities ---
+    // System Config
     const SUPABASE_URL = 'https://aghrnlpkycuormsdweki.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnaHJubHBreWN1b3Jtc2R3ZWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2Nzk2NzIsImV4cCI6MjA2MjI1NTY3Mn0.oJ69B4g0Vp5Cq92v8164bdf64bd829bf';
 
@@ -580,23 +580,23 @@
       'Education Loan', 'Consumer Durable Loan', 'Loan Against Fixed Deposit'
     ];
 
-    // Supabase Client Safe Initialization
+    // Supabase Client Safe Instance
     let supabase = null;
     try {
       if (window.supabase) {
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       }
     } catch (e) {
-      console.error('Supabase Client Init Error:', e);
+      console.warn('Supabase Client Init Warning:', e);
     }
 
-    // App State
+    // State
     let currentSession = null;
     let recordsData = [];
     let currentPeriod = 'all';
     let videoIdleTimer = null;
 
-    // --- 2. Helper Utilities ---
+    // Helpers
     function formatIndianCurrency(num) {
       if (!num || isNaN(num)) return '₹0';
       const n = parseFloat(num);
@@ -635,177 +635,140 @@
         .replace(/'/g, '&#039;');
     }
 
-    // --- 3. DOM Elements ---
-    const preloginSection = document.getElementById('prelogin-section');
-    const appWorkspace = document.getElementById('app-workspace');
-    const btnHeaderLogin = document.getElementById('btn-header-login');
-    const btnHeroLogin = document.getElementById('btn-hero-login');
-    const authControls = document.getElementById('auth-controls');
-    const sessionUsername = document.getElementById('session-username');
-    const sessionRole = document.getElementById('session-role');
-    const btnLogout = document.getElementById('btn-logout');
-    const btnOpenPassword = document.getElementById('btn-open-password');
-    const btnOpenAdminSecurity = document.getElementById('btn-open-admin-security');
+    // Helper safely closing and opening
+    function openModal(el) { if (el) el.classList.remove('hidden'); }
+    function closeModal(el) { if (el) el.classList.add('hidden'); }
 
-    const revealVideo = document.getElementById('reveal-video');
-    const videoReplayBadge = document.getElementById('video-replay-badge');
-
-    const modalLogin = document.getElementById('modal-login');
-    const loginForm = document.getElementById('login-form');
-    const loginUser = document.getElementById('login-user');
-    const loginPass = document.getElementById('login-pass');
-    const loginErrorMsg = document.getElementById('login-error-msg');
-
-    const modalPassword = document.getElementById('modal-password');
-    const passwordForm = document.getElementById('password-form');
-    const passCurrent = document.getElementById('pass-current');
-    const passNew = document.getElementById('pass-new');
-    const passFeedbackMsg = document.getElementById('pass-feedback-msg');
-
-    const modalAdminSecurity = document.getElementById('modal-admin-security');
-    const adminSecurityForm = document.getElementById('admin-security-form');
-    const adminTargetUser = document.getElementById('admin-target-user');
-    const adminNewPass = document.getElementById('admin-new-pass');
-    const adminVerifyPass = document.getElementById('admin-verify-pass');
-    const adminSecurityFeedback = document.getElementById('admin-security-feedback');
-
-    const modalRecord = document.getElementById('modal-record');
-    const recordForm = document.getElementById('record-form');
-    const modalRecordTitle = document.getElementById('modal-record-title');
-    const inpRecordId = document.getElementById('inp-record-id');
-    const inpName = document.getElementById('inp-name');
-    const inpDob = document.getElementById('inp-dob');
-    const dobAgeDisplay = document.getElementById('dob-age-display');
-    const inpAmount = document.getElementById('inp-amount');
-    const amountBadgePreview = document.getElementById('amount-badge-preview');
-    const inpLoanType = document.getElementById('inp-loan-type');
-    const inpBankName = document.getElementById('inp-bank-name');
-    const inpAddress = document.getElementById('inp-address');
-
-    // 7 Document Checkboxes
-    const chkAadhaarPan = document.getElementById('chk-aadhaar-pan');
-    const chkBankStmt = document.getElementById('chk-bank-stmt');
-    const chkBusinessProof = document.getElementById('chk-business-proof');
-    const chkSalarySlip = document.getElementById('chk-salary-slip');
-    const chkRevenueSlip = document.getElementById('chk-revenue-slip');
-    const chkSaleDeed = document.getElementById('chk-sale-deed');
-    const chkUdyam = document.getElementById('chk-udyam');
-
-    const tabBtnRecords = document.getElementById('tab-btn-records');
-    const tabBtnStats = document.getElementById('tab-btn-stats');
-    const viewRecords = document.getElementById('view-records');
-    const viewStats = document.getElementById('view-stats');
-    const btnOpenCreate = document.getElementById('btn-open-create');
-
-    const filterSearch = document.getElementById('filter-search');
-    const filterBank = document.getElementById('filter-bank');
-    const filterType = document.getElementById('filter-type');
-    const filterSort = document.getElementById('filter-sort');
-    const recordsTableBody = document.getElementById('records-table-body');
-    const recordsMobileCards = document.getElementById('records-mobile-cards');
-    const emptyRecordsState = document.getElementById('empty-records-state');
-    const crossMatrixTbody = document.getElementById('cross-matrix-tbody');
-    const scopeIndicatorText = document.getElementById('scope-indicator-text');
-
-    const btnReportMenu = document.getElementById('btn-report-menu');
-    const reportDropdown = document.getElementById('report-dropdown');
-    const btnExportPdf = document.getElementById('btn-export-pdf');
-    const btnExportCsvWeek = document.getElementById('btn-export-csv-week');
-    const btnExportCsvMonth = document.getElementById('btn-export-csv-month');
-    const btnExportCsvAll = document.getElementById('btn-export-csv-all');
-
-    // --- 4. Video Reveal & Idle Loop Logic ---
+    // --- VIDEO ENGINE SAFE BOOT ---
     function initVideoReveal() {
-      if (!revealVideo) return;
+      const vid = document.getElementById('reveal-video');
+      const badge = document.getElementById('video-replay-badge');
+      if (!vid) return;
 
-      revealVideo.play().catch(e => {
-        console.log('Autoplay prevented by browser:', e);
-      });
+      // Ensure properties are strictly applied in JS to prevent browser autoplay blockers
+      vid.muted = true;
+      vid.playsInline = true;
 
-      revealVideo.addEventListener('ended', () => {
-        revealVideo.pause();
-        if (videoReplayBadge) videoReplayBadge.classList.remove('hidden');
+      const playPromise = vid.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Fallback if browser requires touch interaction
+          console.log('Autoplay deferred until first user click.');
+        });
+      }
+
+      vid.onended = () => {
+        vid.pause();
+        if (badge) badge.classList.remove('hidden');
 
         clearTimeout(videoIdleTimer);
         videoIdleTimer = setTimeout(() => {
-          if (!currentSession) {
-            revealVideo.currentTime = 0;
-            if (videoReplayBadge) videoReplayBadge.classList.add('hidden');
-            revealVideo.play().catch(() => {});
+          if (!currentSession && vid) {
+            vid.currentTime = 0;
+            if (badge) badge.classList.add('hidden');
+            const retryPlay = vid.play();
+            if (retryPlay !== undefined) retryPlay.catch(() => {});
           }
-        }, 10000); // 10 seconds idle loop
-      });
+        }, 10000);
+      };
     }
 
-    // --- 5. Populating Dropdowns ---
+    // --- POPULATE STATIC DROPDOWNS ---
     function populateDropdowns() {
-      inpBankName.innerHTML = '<option value="" disabled selected>Select Approved Bank / NBFC</option>' +
-        APPROVED_BANKS.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
+      const inpBankName = document.getElementById('inp-bank-name');
+      const inpLoanType = document.getElementById('inp-loan-type');
+      const filterBank = document.getElementById('filter-bank');
+      const filterType = document.getElementById('filter-type');
 
-      inpLoanType.innerHTML = '<option value="" disabled selected>Select Loan Product</option>' +
-        APPROVED_LOAN_TYPES.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
-
-      filterBank.innerHTML = '<option value="">All Partner Banks (30)</option>' +
-        APPROVED_BANKS.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
-
-      filterType.innerHTML = '<option value="">All Loan Products (12)</option>' +
-        APPROVED_LOAN_TYPES.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
-    }
-
-    // --- 6. Auth & Session Management ---
-    function restoreSession() {
-      const saved = sessionStorage.getItem('ra_session');
-      if (saved) {
-        try {
-          currentSession = JSON.parse(saved);
-          applySessionUI();
-          loadRecords();
-        } catch (e) {
-          sessionStorage.removeItem('ra_session');
-        }
+      if (inpBankName) {
+        inpBankName.innerHTML = '<option value="" disabled selected>Select Approved Bank / NBFC</option>' +
+          APPROVED_BANKS.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
+      }
+      if (inpLoanType) {
+        inpLoanType.innerHTML = '<option value="" disabled selected>Select Loan Product</option>' +
+          APPROVED_LOAN_TYPES.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
+      }
+      if (filterBank) {
+        filterBank.innerHTML = '<option value="">All Partner Banks (30)</option>' +
+          APPROVED_BANKS.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
+      }
+      if (filterType) {
+        filterType.innerHTML = '<option value="">All Loan Products (12)</option>' +
+          APPROVED_LOAN_TYPES.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
       }
     }
 
+    // --- SESSION MANAGEMENT ---
     function applySessionUI() {
-      if (currentSession) {
-        preloginSection.classList.add('hidden');
-        btnHeaderLogin.classList.add('hidden');
-        appWorkspace.classList.remove('hidden');
-        authControls.classList.remove('hidden');
-        authControls.classList.add('flex');
+      const preloginSection = document.getElementById('prelogin-section');
+      const btnHeaderLogin = document.getElementById('btn-header-login');
+      const appWorkspace = document.getElementById('app-workspace');
+      const authControls = document.getElementById('auth-controls');
+      const sessionUsername = document.getElementById('session-username');
+      const sessionRole = document.getElementById('session-role');
+      const btnOpenAdminSecurity = document.getElementById('btn-open-admin-security');
+      const scopeIndicatorText = document.getElementById('scope-indicator-text');
+      const vid = document.getElementById('reveal-video');
 
-        sessionUsername.textContent = currentSession.username;
-        sessionRole.textContent = currentSession.role === 'admin' ? 'Administrator' : 'Staff Account';
+      if (currentSession) {
+        if (preloginSection) preloginSection.classList.add('hidden');
+        if (btnHeaderLogin) btnHeaderLogin.classList.add('hidden');
+        if (appWorkspace) appWorkspace.classList.remove('hidden');
+        if (authControls) {
+          authControls.classList.remove('hidden');
+          authControls.classList.add('flex');
+        }
+
+        if (sessionUsername) sessionUsername.textContent = currentSession.username;
+        if (sessionRole) sessionRole.textContent = currentSession.role === 'admin' ? 'Administrator' : 'Staff Account';
 
         if (currentSession.role === 'admin') {
-          btnOpenAdminSecurity.classList.remove('hidden');
-          scopeIndicatorText.textContent = 'Aggregating records company-wide across all staff';
+          if (btnOpenAdminSecurity) btnOpenAdminSecurity.classList.remove('hidden');
+          if (scopeIndicatorText) scopeIndicatorText.textContent = 'Aggregating records company-wide across all staff';
         } else {
-          btnOpenAdminSecurity.classList.add('hidden');
-          scopeIndicatorText.textContent = `Aggregating records for your account (${currentSession.username})`;
+          if (btnOpenAdminSecurity) btnOpenAdminSecurity.classList.add('hidden');
+          if (scopeIndicatorText) scopeIndicatorText.textContent = `Aggregating records for your account (${currentSession.username})`;
         }
 
-        if (revealVideo) {
+        if (vid) {
           clearTimeout(videoIdleTimer);
-          revealVideo.pause();
+          vid.pause();
         }
       } else {
-        preloginSection.classList.remove('hidden');
-        btnHeaderLogin.classList.remove('hidden');
-        appWorkspace.classList.add('hidden');
-        authControls.classList.add('hidden');
-        authControls.classList.remove('flex');
-        btnOpenAdminSecurity.classList.add('hidden');
+        if (preloginSection) preloginSection.classList.remove('hidden');
+        if (btnHeaderLogin) btnHeaderLogin.classList.remove('hidden');
+        if (appWorkspace) appWorkspace.classList.add('hidden');
+        if (authControls) {
+          authControls.classList.add('hidden');
+          authControls.classList.remove('flex');
+        }
+        if (btnOpenAdminSecurity) btnOpenAdminSecurity.classList.add('hidden');
         recordsData = [];
         initVideoReveal();
       }
-      lucide.createIcons();
+
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
     }
 
-    function openModal(el) { el.classList.remove('hidden'); }
-    function closeModal(el) { el.classList.add('hidden'); }
+    function restoreSession() {
+      try {
+        const saved = sessionStorage.getItem('ra_session');
+        if (saved) {
+          currentSession = JSON.parse(saved);
+          applySessionUI();
+          loadRecords();
+        } else {
+          applySessionUI();
+        }
+      } catch (e) {
+        sessionStorage.removeItem('ra_session');
+        applySessionUI();
+      }
+    }
 
-    // --- 7. Data Operations (Isolated per Staff / Universal for Kailash) ---
+    // --- DATA FETCHER ---
     async function loadRecords() {
       if (!currentSession || !supabase) return;
 
@@ -815,7 +778,6 @@
           .select('*')
           .order('created_at', { ascending: false });
 
-        // Multi-Tenant Isolation
         if (currentSession.role !== 'admin') {
           query = query.eq('created_by', currentSession.username);
         }
@@ -831,12 +793,22 @@
       }
     }
 
-    // --- 8. Table & Mobile Cards Rendering with Sorting ---
+    // --- RENDER TABLE & MOBILE CARDS ---
     function renderRecords() {
-      const searchTerm = filterSearch.value.trim().toLowerCase();
-      const selectedBank = filterBank.value;
-      const selectedType = filterType.value;
-      const sortOption = filterSort.value;
+      const filterSearch = document.getElementById('filter-search');
+      const filterBank = document.getElementById('filter-bank');
+      const filterType = document.getElementById('filter-type');
+      const filterSort = document.getElementById('filter-sort');
+      const recordsTableBody = document.getElementById('records-table-body');
+      const recordsMobileCards = document.getElementById('records-mobile-cards');
+      const emptyRecordsState = document.getElementById('empty-records-state');
+
+      if (!recordsTableBody || !recordsMobileCards) return;
+
+      const searchTerm = filterSearch ? filterSearch.value.trim().toLowerCase() : '';
+      const selectedBank = filterBank ? filterBank.value : '';
+      const selectedType = filterType ? filterType.value : '';
+      const sortOption = filterSort ? filterSort.value : 'newest';
 
       let filtered = recordsData.filter(rec => {
         const matchesSearch = !searchTerm ||
@@ -850,7 +822,6 @@
         return matchesSearch && matchesBank && matchesType;
       });
 
-      // Sorting Logic
       filtered.sort((a, b) => {
         if (sortOption === 'newest') return new Date(b.created_at || 0) - new Date(a.created_at || 0);
         if (sortOption === 'oldest') return new Date(a.created_at || 0) - new Date(b.created_at || 0);
@@ -863,13 +834,13 @@
       if (filtered.length === 0) {
         recordsTableBody.innerHTML = '';
         recordsMobileCards.innerHTML = '';
-        emptyRecordsState.classList.remove('hidden');
+        if (emptyRecordsState) emptyRecordsState.classList.remove('hidden');
         return;
       }
 
-      emptyRecordsState.classList.add('hidden');
+      if (emptyRecordsState) emptyRecordsState.classList.add('hidden');
 
-      // Desktop Rows
+      // Desktop
       recordsTableBody.innerHTML = filtered.map(rec => {
         const age = calculateAge(rec.dob);
         const shorthand = getShorthandCurrency(rec.loan_amount);
@@ -901,11 +872,11 @@
             </td>
             <td class="py-3 px-4 text-zinc-600 max-w-[160px] truncate" title="${escapeHtml(rec.address || '')}">${escapeHtml(rec.address || '-')}</td>
             <td class="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
-              <button onclick="editRecord('${rec.id}')" class="p-1 text-zinc-600 hover:text-zinc-900 transition-colors" title="Edit">
+              <button onclick="editRecord('${rec.id}')" class="p-1 text-zinc-600 hover:text-zinc-900 transition-colors cursor-pointer" title="Edit">
                 <i data-lucide="pencil" class="w-4 h-4"></i>
               </button>
               ${currentSession.role === 'admin' ? `
-                <button onclick="deleteRecord('${rec.id}')" class="p-1 text-rose-600 hover:text-rose-800 transition-colors" title="Delete">
+                <button onclick="deleteRecord('${rec.id}')" class="p-1 text-rose-600 hover:text-rose-800 transition-colors cursor-pointer" title="Delete">
                   <i data-lucide="trash-2" class="w-4 h-4"></i>
                 </button>
               ` : ''}
@@ -914,7 +885,7 @@
         `;
       }).join('');
 
-      // Mobile Cards
+      // Mobile
       recordsMobileCards.innerHTML = filtered.map(rec => {
         const age = calculateAge(rec.dob);
         const shorthand = getShorthandCurrency(rec.loan_amount);
@@ -947,9 +918,9 @@
             <div class="flex items-center justify-between pt-2 border-t border-zinc-100 text-xs">
               <span class="text-zinc-500 truncate max-w-[200px]">${escapeHtml(rec.address || 'No address logged')}</span>
               <div class="flex items-center space-x-2">
-                <button onclick="editRecord('${rec.id}')" class="px-2.5 py-1 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 rounded text-xs font-medium">Edit</button>
+                <button onclick="editRecord('${rec.id}')" class="px-2.5 py-1 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 rounded text-xs font-medium cursor-pointer">Edit</button>
                 ${currentSession.role === 'admin' ? `
-                  <button onclick="deleteRecord('${rec.id}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded text-xs font-medium">Delete</button>
+                  <button onclick="deleteRecord('${rec.id}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded text-xs font-medium cursor-pointer">Delete</button>
                 ` : ''}
               </div>
             </div>
@@ -957,10 +928,12 @@
         `;
       }).join('');
 
-      lucide.createIcons();
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
     }
 
-    // --- 9. Analytics & Restored Cross-Matrix Engine ---
+    // --- RENDER STATS & ROUTING MATRIX ---
     function renderStats() {
       const now = new Date();
       let filtered = [...recordsData];
@@ -976,14 +949,18 @@
         filtered = filtered.filter(r => new Date(r.created_at) >= yearAgo);
       }
 
-      // Summary KPIs
       const totalCount = filtered.length;
       const totalAmount = filtered.reduce((acc, r) => acc + (parseFloat(r.loan_amount) || 0), 0);
       
-      document.getElementById('stat-total-count').textContent = totalCount;
-      document.getElementById('stat-total-amount').textContent = formatIndianCurrency(totalAmount);
+      const statTotalCount = document.getElementById('stat-total-count');
+      const statTotalAmount = document.getElementById('stat-total-amount');
+      const statTopBank = document.getElementById('stat-top-bank');
+      const statTopProduct = document.getElementById('stat-top-product');
+      const crossMatrixTbody = document.getElementById('cross-matrix-tbody');
 
-      // Aggregations
+      if (statTotalCount) statTotalCount.textContent = totalCount;
+      if (statTotalAmount) statTotalAmount.textContent = formatIndianCurrency(totalAmount);
+
       const bankMap = {};
       const productMap = {};
       const matrixMap = {};
@@ -999,7 +976,6 @@
         bankMap[b] = (bankMap[b] || 0) + amt;
         productMap[p] = (productMap[p] || 0) + amt;
 
-        // Cross Matrix Mapping
         const key = `${b}___${p}`;
         if (!matrixMap[key]) {
           matrixMap[key] = { bank: b, product: p, count: 0, amount: 0 };
@@ -1007,7 +983,6 @@
         matrixMap[key].count += 1;
         matrixMap[key].amount += amt;
 
-        // Documents
         if (r.doc_aadhaar_pan) docCounters.aadhaar_pan++;
         if (r.doc_bank_statement_1yr) docCounters.bank_stmt++;
         if (r.doc_business_proof) docCounters.business++;
@@ -1017,186 +992,208 @@
         if (r.doc_udyam_aadhaar) docCounters.udyam++;
       });
 
-      // Top Highlights
       const topBank = Object.entries(bankMap).sort((a,b) => b[1] - a[1])[0];
       const topProduct = Object.entries(productMap).sort((a,b) => b[1] - a[1])[0];
       
-      document.getElementById('stat-top-bank').textContent = topBank ? topBank[0] : '-';
-      document.getElementById('stat-top-product').textContent = topProduct ? topProduct[0] : '-';
+      if (statTopBank) statTopBank.textContent = topBank ? topBank[0] : '-';
+      if (statTopProduct) statTopProduct.textContent = topProduct ? topProduct[0] : '-';
 
       // Bank Breakdown Bars
       const sortedBanks = Object.entries(bankMap).sort((a,b) => b[1] - a[1]);
       const maxBankVal = sortedBanks.length > 0 ? sortedBanks[0][1] : 1;
-      
       const chartBankEl = document.getElementById('chart-bank-breakdown');
-      if (sortedBanks.length === 0) {
-        chartBankEl.innerHTML = '<p class="text-zinc-400">No records in selected timeframe</p>';
-      } else {
-        chartBankEl.innerHTML = sortedBanks.map(([bName, val]) => {
-          const pct = Math.round((val / (totalAmount || 1)) * 100);
-          const barPct = Math.round((val / maxBankVal) * 100);
-          return `
-            <div>
-              <div class="flex justify-between mb-1">
-                <span class="font-medium text-zinc-800">${escapeHtml(bName)}</span>
-                <span class="font-semibold text-zinc-900">${formatIndianCurrency(val)} <span class="text-zinc-400">(${pct}%)</span></span>
+      
+      if (chartBankEl) {
+        if (sortedBanks.length === 0) {
+          chartBankEl.innerHTML = '<p class="text-zinc-400">No records in selected timeframe</p>';
+        } else {
+          chartBankEl.innerHTML = sortedBanks.map(([bName, val]) => {
+            const pct = Math.round((val / (totalAmount || 1)) * 100);
+            const barPct = Math.round((val / maxBankVal) * 100);
+            return `
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="font-medium text-zinc-800">${escapeHtml(bName)}</span>
+                  <span class="font-semibold text-zinc-900">${formatIndianCurrency(val)} <span class="text-zinc-400">(${pct}%)</span></span>
+                </div>
+                <div class="w-full bg-zinc-100 rounded-full h-2 overflow-hidden">
+                  <div class="bg-zinc-800 h-2 rounded-full" style="width: ${barPct}%"></div>
+                </div>
               </div>
-              <div class="w-full bg-zinc-100 rounded-full h-2 overflow-hidden">
-                <div class="bg-zinc-800 h-2 rounded-full" style="width: ${barPct}%"></div>
-              </div>
-            </div>
-          `;
-        }).join('');
+            `;
+          }).join('');
+        }
       }
 
       // Product Breakdown Bars
       const sortedProducts = Object.entries(productMap).sort((a,b) => b[1] - a[1]);
       const maxProductVal = sortedProducts.length > 0 ? sortedProducts[0][1] : 1;
-
       const chartProductEl = document.getElementById('chart-product-breakdown');
-      if (sortedProducts.length === 0) {
-        chartProductEl.innerHTML = '<p class="text-zinc-400">No records in selected timeframe</p>';
-      } else {
-        chartProductEl.innerHTML = sortedProducts.map(([pName, val]) => {
-          const pct = Math.round((val / (totalAmount || 1)) * 100);
-          const barPct = Math.round((val / maxProductVal) * 100);
+
+      if (chartProductEl) {
+        if (sortedProducts.length === 0) {
+          chartProductEl.innerHTML = '<p class="text-zinc-400">No records in selected timeframe</p>';
+        } else {
+          chartProductEl.innerHTML = sortedProducts.map(([pName, val]) => {
+            const pct = Math.round((val / (totalAmount || 1)) * 100);
+            const barPct = Math.round((val / maxProductVal) * 100);
+            return `
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="font-medium text-zinc-800">${escapeHtml(pName)}</span>
+                  <span class="font-semibold text-zinc-900">${formatIndianCurrency(val)} <span class="text-zinc-400">(${pct}%)</span></span>
+                </div>
+                <div class="w-full bg-zinc-100 rounded-full h-2 overflow-hidden">
+                  <div class="bg-zinc-800 h-2 rounded-full" style="width: ${barPct}%"></div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      // Cross Matrix Table
+      if (crossMatrixTbody) {
+        const sortedMatrix = Object.values(matrixMap).sort((a,b) => b.amount - a.amount);
+        if (sortedMatrix.length === 0) {
+          crossMatrixTbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-zinc-400">No routed data available</td></tr>`;
+        } else {
+          crossMatrixTbody.innerHTML = sortedMatrix.map(m => {
+            const avg = m.count > 0 ? (m.amount / m.count) : 0;
+            return `
+              <tr class="hover:bg-zinc-50/80 transition-colors">
+                <td class="py-2 px-3 font-semibold text-zinc-900">${escapeHtml(m.bank)}</td>
+                <td class="py-2 px-3 text-zinc-700">${escapeHtml(m.product)}</td>
+                <td class="py-2 px-3 font-medium text-zinc-800">${m.count} files</td>
+                <td class="py-2 px-3 font-semibold text-zinc-900">${formatIndianCurrency(m.amount)}</td>
+                <td class="py-2 px-3 text-right text-zinc-600">${formatIndianCurrency(avg)}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+      }
+
+      // Compliance Grid
+      const docComplianceGrid = document.getElementById('doc-compliance-grid');
+      if (docComplianceGrid) {
+        const docLabels = [
+          { label: 'Aadhaar & PAN', count: docCounters.aadhaar_pan },
+          { label: '1Yr Bank Stmt', count: docCounters.bank_stmt },
+          { label: 'Business Proof', count: docCounters.business },
+          { label: '3M Salary Slip', count: docCounters.salary },
+          { label: 'Revenue Slip', count: docCounters.revenue },
+          { label: 'Sale Deed', count: docCounters.deed },
+          { label: 'Udyam Aadhaar', count: docCounters.udyam }
+        ];
+
+        docComplianceGrid.innerHTML = docLabels.map(item => {
+          const pct = totalCount > 0 ? Math.round((item.count / totalCount) * 100) : 0;
           return `
-            <div>
-              <div class="flex justify-between mb-1">
-                <span class="font-medium text-zinc-800">${escapeHtml(pName)}</span>
-                <span class="font-semibold text-zinc-900">${formatIndianCurrency(val)} <span class="text-zinc-400">(${pct}%)</span></span>
-              </div>
-              <div class="w-full bg-zinc-100 rounded-full h-2 overflow-hidden">
-                <div class="bg-zinc-800 h-2 rounded-full" style="width: ${barPct}%"></div>
-              </div>
+            <div class="bg-zinc-50 border border-zinc-200 rounded-lg p-3">
+              <p class="text-[11px] font-semibold text-zinc-500 truncate" title="${item.label}">${item.label}</p>
+              <p class="text-lg font-bold text-zinc-900 mt-0.5">${pct}%</p>
+              <p class="text-[10px] text-zinc-400">${item.count} / ${totalCount}</p>
             </div>
           `;
         }).join('');
       }
-
-      // Render Cross Matrix Table
-      const sortedMatrix = Object.values(matrixMap).sort((a,b) => b.amount - a.amount);
-      if (sortedMatrix.length === 0) {
-        crossMatrixTbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-zinc-400">No routed data available</td></tr>`;
-      } else {
-        crossMatrixTbody.innerHTML = sortedMatrix.map(m => {
-          const avg = m.count > 0 ? (m.amount / m.count) : 0;
-          return `
-            <tr class="hover:bg-zinc-50/80 transition-colors">
-              <td class="py-2 px-3 font-semibold text-zinc-900">${escapeHtml(m.bank)}</td>
-              <td class="py-2 px-3 text-zinc-700">${escapeHtml(m.product)}</td>
-              <td class="py-2 px-3 font-medium text-zinc-800">${m.count} files</td>
-              <td class="py-2 px-3 font-semibold text-zinc-900">${formatIndianCurrency(m.amount)}</td>
-              <td class="py-2 px-3 text-right text-zinc-600">${formatIndianCurrency(avg)}</td>
-            </tr>
-          `;
-        }).join('');
-      }
-
-      // Render Document Compliance Grid
-      const docLabels = [
-        { label: 'Aadhaar & PAN', count: docCounters.aadhaar_pan },
-        { label: '1Yr Bank Stmt', count: docCounters.bank_stmt },
-        { label: 'Business Proof', count: docCounters.business },
-        { label: '3M Salary Slip', count: docCounters.salary },
-        { label: 'Revenue Slip', count: docCounters.revenue },
-        { label: 'Sale Deed', count: docCounters.deed },
-        { label: 'Udyam Aadhaar', count: docCounters.udyam }
-      ];
-
-      document.getElementById('doc-compliance-grid').innerHTML = docLabels.map(item => {
-        const pct = totalCount > 0 ? Math.round((item.count / totalCount) * 100) : 0;
-        return `
-          <div class="bg-zinc-50 border border-zinc-200 rounded-lg p-3">
-            <p class="text-[11px] font-semibold text-zinc-500 truncate" title="${item.label}">${item.label}</p>
-            <p class="text-lg font-bold text-zinc-900 mt-0.5">${pct}%</p>
-            <p class="text-[10px] text-zinc-400">${item.count} / ${totalCount}</p>
-          </div>
-        `;
-      }).join('');
     }
 
-    // --- 10. Record Form Handlers & Calculations ---
+    // --- FORM LISTENERS & RECORD WORKFLOW ---
     function setupFormListeners() {
-      // Live age calculation
-      inpDob.addEventListener('input', () => {
-        const age = calculateAge(inpDob.value);
-        if (age !== null) {
-          dobAgeDisplay.textContent = `${age} years old`;
-          dobAgeDisplay.classList.add('text-zinc-900', 'font-semibold');
-          dobAgeDisplay.classList.remove('text-zinc-600');
-        } else {
-          dobAgeDisplay.textContent = 'Select DOB';
-          dobAgeDisplay.classList.remove('text-zinc-900', 'font-semibold');
-          dobAgeDisplay.classList.add('text-zinc-600');
-        }
-      });
+      const inpDob = document.getElementById('inp-dob');
+      const dobAgeDisplay = document.getElementById('dob-age-display');
+      const inpAmount = document.getElementById('inp-amount');
+      const amountBadgePreview = document.getElementById('amount-badge-preview');
+      const btnOpenCreate = document.getElementById('btn-open-create');
+      const modalRecord = document.getElementById('modal-record');
+      const recordForm = document.getElementById('record-form');
+      const inpRecordId = document.getElementById('inp-record-id');
+      const modalRecordTitle = document.getElementById('modal-record-title');
 
-      // Shorthand Indian currency preview badge
-      inpAmount.addEventListener('input', () => {
-        const val = inpAmount.value;
-        const shorthand = getShorthandCurrency(val);
-        if (shorthand) {
-          amountBadgePreview.textContent = `${formatIndianCurrency(val)} (${shorthand})`;
-          amountBadgePreview.classList.remove('hidden');
-        } else {
-          amountBadgePreview.classList.add('hidden');
-        }
-      });
-
-      // Trigger New Modal
-      btnOpenCreate.addEventListener('click', () => {
-        inpRecordId.value = '';
-        recordForm.reset();
-        modalRecordTitle.textContent = 'New Customer Entry';
-        dobAgeDisplay.textContent = 'Select DOB';
-        amountBadgePreview.classList.add('hidden');
-        openModal(modalRecord);
-      });
-
-      // Save / Update Form Submission
-      recordForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (!currentSession || !supabase) return;
-
-        const recordId = inpRecordId.value;
-        const payload = {
-          customer_name: inpName.value.trim(),
-          dob: inpDob.value,
-          loan_amount: parseFloat(inpAmount.value),
-          loan_type: inpLoanType.value,
-          bank_name: inpBankName.value,
-          address: inpAddress.value.trim(),
-          doc_aadhaar_pan: chkAadhaarPan.checked,
-          doc_bank_statement_1yr: chkBankStmt.checked,
-          doc_business_proof: chkBusinessProof.checked,
-          doc_salary_slip_3m: chkSalarySlip.checked,
-          doc_revenue_tax_slip: chkRevenueSlip.checked,
-          doc_sale_deed: chkSaleDeed.checked,
-          doc_udyam_aadhaar: chkUdyam.checked
-        };
-
-        try {
-          if (recordId) {
-            const { error } = await supabase
-              .from('customer_records')
-              .update(payload)
-              .eq('id', recordId);
-            if (error) throw error;
+      if (inpDob && dobAgeDisplay) {
+        inpDob.addEventListener('input', () => {
+          const age = calculateAge(inpDob.value);
+          if (age !== null) {
+            dobAgeDisplay.textContent = `${age} years old`;
+            dobAgeDisplay.classList.add('text-zinc-900', 'font-semibold');
+            dobAgeDisplay.classList.remove('text-zinc-600');
           } else {
-            payload.created_by = currentSession.username;
-            const { error } = await supabase
-              .from('customer_records')
-              .insert([payload]);
-            if (error) throw error;
+            dobAgeDisplay.textContent = 'Select DOB';
+            dobAgeDisplay.classList.remove('text-zinc-900', 'font-semibold');
+            dobAgeDisplay.classList.add('text-zinc-600');
           }
+        });
+      }
 
-          closeModal(modalRecord);
-          loadRecords();
-        } catch (err) {
-          alert('Failed to save record: ' + (err.message || err));
-        }
-      });
+      if (inpAmount && amountBadgePreview) {
+        inpAmount.addEventListener('input', () => {
+          const val = inpAmount.value;
+          const shorthand = getShorthandCurrency(val);
+          if (shorthand) {
+            amountBadgePreview.textContent = `${formatIndianCurrency(val)} (${shorthand})`;
+            amountBadgePreview.classList.remove('hidden');
+          } else {
+            amountBadgePreview.classList.add('hidden');
+          }
+        });
+      }
+
+      if (btnOpenCreate) {
+        btnOpenCreate.addEventListener('click', () => {
+          if (inpRecordId) inpRecordId.value = '';
+          if (recordForm) recordForm.reset();
+          if (modalRecordTitle) modalRecordTitle.textContent = 'New Customer Entry';
+          if (dobAgeDisplay) dobAgeDisplay.textContent = 'Select DOB';
+          if (amountBadgePreview) amountBadgePreview.classList.add('hidden');
+          openModal(modalRecord);
+        });
+      }
+
+      if (recordForm) {
+        recordForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          if (!currentSession || !supabase) return;
+
+          const recordId = inpRecordId ? inpRecordId.value : '';
+          const payload = {
+            customer_name: (document.getElementById('inp-name')?.value || '').trim(),
+            dob: document.getElementById('inp-dob')?.value,
+            loan_amount: parseFloat(document.getElementById('inp-amount')?.value || 0),
+            loan_type: document.getElementById('inp-loan-type')?.value,
+            bank_name: document.getElementById('inp-bank-name')?.value,
+            address: (document.getElementById('inp-address')?.value || '').trim(),
+            doc_aadhaar_pan: !!document.getElementById('chk-aadhaar-pan')?.checked,
+            doc_bank_statement_1yr: !!document.getElementById('chk-bank-stmt')?.checked,
+            doc_business_proof: !!document.getElementById('chk-business-proof')?.checked,
+            doc_salary_slip_3m: !!document.getElementById('chk-salary-slip')?.checked,
+            doc_revenue_tax_slip: !!document.getElementById('chk-revenue-slip')?.checked,
+            doc_sale_deed: !!document.getElementById('chk-sale-deed')?.checked,
+            doc_udyam_aadhaar: !!document.getElementById('chk-udyam')?.checked
+          };
+
+          try {
+            if (recordId) {
+              const { error } = await supabase
+                .from('customer_records')
+                .update(payload)
+                .eq('id', recordId);
+              if (error) throw error;
+            } else {
+              payload.created_by = currentSession.username;
+              const { error } = await supabase
+                .from('customer_records')
+                .insert([payload]);
+              if (error) throw error;
+            }
+
+            closeModal(modalRecord);
+            loadRecords();
+          } catch (err) {
+            alert('Failed to save record: ' + (err.message || err));
+          }
+        });
+      }
     }
 
     // Global Functions for Edit & Delete
@@ -1204,39 +1201,51 @@
       const rec = recordsData.find(r => r.id === id);
       if (!rec) return;
 
-      inpRecordId.value = rec.id;
-      inpName.value = rec.customer_name || '';
-      inpDob.value = rec.dob || '';
-      inpAmount.value = rec.loan_amount || '';
-      inpLoanType.value = rec.loan_type || '';
-      inpBankName.value = rec.bank_name || '';
-      inpAddress.value = rec.address || '';
+      const inpRecordId = document.getElementById('inp-record-id');
+      const inpName = document.getElementById('inp-name');
+      const inpDob = document.getElementById('inp-dob');
+      const inpAmount = document.getElementById('inp-amount');
+      const inpLoanType = document.getElementById('inp-loan-type');
+      const inpBankName = document.getElementById('inp-bank-name');
+      const inpAddress = document.getElementById('inp-address');
+      const dobAgeDisplay = document.getElementById('dob-age-display');
+      const amountBadgePreview = document.getElementById('amount-badge-preview');
+      const modalRecordTitle = document.getElementById('modal-record-title');
+      const modalRecord = document.getElementById('modal-record');
 
-      chkAadhaarPan.checked = !!rec.doc_aadhaar_pan;
-      chkBankStmt.checked = !!rec.doc_bank_statement_1yr;
-      chkBusinessProof.checked = !!rec.doc_business_proof;
-      chkSalarySlip.checked = !!rec.doc_salary_slip_3m;
-      chkRevenueSlip.checked = !!rec.doc_revenue_tax_slip;
-      chkSaleDeed.checked = !!rec.doc_sale_deed;
-      chkUdyam.checked = !!rec.doc_udyam_aadhaar;
+      if (inpRecordId) inpRecordId.value = rec.id;
+      if (inpName) inpName.value = rec.customer_name || '';
+      if (inpDob) inpDob.value = rec.dob || '';
+      if (inpAmount) inpAmount.value = rec.loan_amount || '';
+      if (inpLoanType) inpLoanType.value = rec.loan_type || '';
+      if (inpBankName) inpBankName.value = rec.bank_name || '';
+      if (inpAddress) inpAddress.value = rec.address || '';
+
+      if (document.getElementById('chk-aadhaar-pan')) document.getElementById('chk-aadhaar-pan').checked = !!rec.doc_aadhaar_pan;
+      if (document.getElementById('chk-bank-stmt')) document.getElementById('chk-bank-stmt').checked = !!rec.doc_bank_statement_1yr;
+      if (document.getElementById('chk-business-proof')) document.getElementById('chk-business-proof').checked = !!rec.doc_business_proof;
+      if (document.getElementById('chk-salary-slip')) document.getElementById('chk-salary-slip').checked = !!rec.doc_salary_slip_3m;
+      if (document.getElementById('chk-revenue-slip')) document.getElementById('chk-revenue-slip').checked = !!rec.doc_revenue_tax_slip;
+      if (document.getElementById('chk-sale-deed')) document.getElementById('chk-sale-deed').checked = !!rec.doc_sale_deed;
+      if (document.getElementById('chk-udyam')) document.getElementById('chk-udyam').checked = !!rec.doc_udyam_aadhaar;
 
       const age = calculateAge(rec.dob);
-      dobAgeDisplay.textContent = age !== null ? `${age} years old` : 'Select DOB';
+      if (dobAgeDisplay) dobAgeDisplay.textContent = age !== null ? `${age} years old` : 'Select DOB';
 
       const shorthand = getShorthandCurrency(rec.loan_amount);
-      if (shorthand) {
+      if (shorthand && amountBadgePreview) {
         amountBadgePreview.textContent = `${formatIndianCurrency(rec.loan_amount)} (${shorthand})`;
         amountBadgePreview.classList.remove('hidden');
-      } else {
+      } else if (amountBadgePreview) {
         amountBadgePreview.classList.add('hidden');
       }
 
-      modalRecordTitle.textContent = 'Edit Customer Record';
+      if (modalRecordTitle) modalRecordTitle.textContent = 'Edit Customer Record';
       openModal(modalRecord);
     };
 
     window.deleteRecord = async function(id) {
-      if (currentSession.role !== 'admin') {
+      if (!currentSession || currentSession.role !== 'admin') {
         alert('Permission denied. Only administrator Kailash can delete files.');
         return;
       }
@@ -1251,18 +1260,26 @@
       }
     };
 
-    // --- 11. Multi-Format Exports (Weekly/Monthly CSV & Branded PDF) ---
+    // --- MULTI-FORMAT EXPORTS ---
     function setupExportHandlers() {
-      btnReportMenu.addEventListener('click', (e) => {
-        e.stopPropagation();
-        reportDropdown.classList.toggle('hidden');
-      });
+      const btnReportMenu = document.getElementById('btn-report-menu');
+      const reportDropdown = document.getElementById('report-dropdown');
+      const btnExportCsvWeek = document.getElementById('btn-export-csv-week');
+      const btnExportCsvMonth = document.getElementById('btn-export-csv-month');
+      const btnExportCsvAll = document.getElementById('btn-export-csv-all');
+      const btnExportPdf = document.getElementById('btn-export-pdf');
 
-      document.addEventListener('click', () => {
-        reportDropdown.classList.add('hidden');
-      });
+      if (btnReportMenu && reportDropdown) {
+        btnReportMenu.addEventListener('click', (e) => {
+          e.stopPropagation();
+          reportDropdown.classList.toggle('hidden');
+        });
 
-      // CSV Export Generator Utility
+        document.addEventListener('click', () => {
+          reportDropdown.classList.add('hidden');
+        });
+      }
+
       function triggerCSVDownload(records, filename) {
         if (!records || records.length === 0) {
           alert('No records found for this timeframe.');
@@ -1304,248 +1321,311 @@
         document.body.removeChild(link);
       }
 
-      // Weekly CSV Export
-      btnExportCsvWeek.addEventListener('click', () => {
-        const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-        const weeklyRecords = recordsData.filter(r => new Date(r.created_at) >= weekAgo);
-        triggerCSVDownload(weeklyRecords, `Rashmi_Associates_Weekly_Report_${new Date().toISOString().slice(0,10)}.csv`);
-      });
-
-      // Monthly CSV Export
-      btnExportCsvMonth.addEventListener('click', () => {
-        const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-        const monthlyRecords = recordsData.filter(r => new Date(r.created_at) >= monthAgo);
-        triggerCSVDownload(monthlyRecords, `Rashmi_Associates_Monthly_Report_${new Date().toISOString().slice(0,10)}.csv`);
-      });
-
-      // Master CSV Export
-      btnExportCsvAll.addEventListener('click', () => {
-        triggerCSVDownload(recordsData, `Rashmi_Associates_Master_Ledger_${new Date().toISOString().slice(0,10)}.csv`);
-      });
-
-      // Branded PDF Generator via html2pdf
-      btnExportPdf.addEventListener('click', () => {
-        if (recordsData.length === 0) {
-          alert('No records available to export.');
-          return;
-        }
-
-        const totalAmount = recordsData.reduce((acc, r) => acc + (parseFloat(r.loan_amount) || 0), 0);
-        const template = document.getElementById('pdf-report-template');
-        template.classList.remove('hidden');
-
-        template.innerHTML = `
-          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #18181b; padding: 24px; max-width: 800px; margin: 0 auto;">
-            
-            <!-- Letterhead Header -->
-            <div style="border-bottom: 2px solid #18181b; padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
-              <div>
-                <h1 style="font-size: 24px; font-weight: 800; margin: 0; color: #09090b; letter-spacing: -0.5px;">RASHMI ASSOCIATES</h1>
-                <p style="font-size: 11px; color: #71717a; margin: 4px 0 0 0; text-transform: uppercase; tracking: 1px;">Loan Portfolio & Underwriting Performance Summary</p>
-              </div>
-              <div style="text-align: right;">
-                <p style="font-size: 11px; margin: 0; font-weight: 600;">Account: <span style="font-weight: 400; text-transform: capitalize;">${escapeHtml(currentSession.username)} (${currentSession.role})</span></p>
-                <p style="font-size: 11px; color: #71717a; margin: 2px 0 0 0;">Statement Date: ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
-              </div>
-            </div>
-
-            <!-- Key Metric Highlights -->
-            <div style="display: flex; gap: 12px; margin-bottom: 24px;">
-              <div style="flex: 1; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px; background: #fafafa;">
-                <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0; font-weight: 600;">Total Active Files</p>
-                <p style="font-size: 18px; font-weight: 700; margin: 4px 0 0 0; color: #09090b;">${recordsData.length}</p>
-              </div>
-              <div style="flex: 1.5; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px; background: #fafafa;">
-                <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0; font-weight: 600;">Total Volume Requested</p>
-                <p style="font-size: 18px; font-weight: 700; margin: 4px 0 0 0; color: #09090b;">${formatIndianCurrency(totalAmount)}</p>
-              </div>
-              <div style="flex: 1; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px; background: #fafafa;">
-                <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0; font-weight: 600;">Compliance Checks</p>
-                <p style="font-size: 18px; font-weight: 700; margin: 4px 0 0 0; color: #09090b;">7 Points</p>
-              </div>
-            </div>
-
-            <!-- Customer Records Table -->
-            <h3 style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; color: #27272a;">Customer Ledger Details</h3>
-            <table style="width: 100%; border-collapse: collapse; font-size: 10px; text-align: left;">
-              <thead>
-                <tr style="background: #f4f4f5; border-bottom: 1px solid #d4d4d8;">
-                  <th style="padding: 7px 8px; font-weight: 600;">Borrower Name</th>
-                  <th style="padding: 7px 8px; font-weight: 600;">Age</th>
-                  <th style="padding: 7px 8px; font-weight: 600;">Loan Amount</th>
-                  <th style="padding: 7px 8px; font-weight: 600;">Product</th>
-                  <th style="padding: 7px 8px; font-weight: 600;">Partner Bank</th>
-                  <th style="padding: 7px 8px; font-weight: 600;">Docs (7)</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${recordsData.map(r => {
-                  const docCount = [
-                    r.doc_aadhaar_pan, r.doc_bank_statement_1yr, r.doc_business_proof,
-                    r.doc_salary_slip_3m, r.doc_revenue_tax_slip, r.doc_sale_deed, r.doc_udyam_aadhaar
-                  ].filter(Boolean).length;
-                  return `
-                    <tr style="border-bottom: 1px solid #e4e4e7;">
-                      <td style="padding: 7px 8px; font-weight: 600;">${escapeHtml(r.customer_name)}</td>
-                      <td style="padding: 7px 8px;">${calculateAge(r.dob) || '-'} yrs</td>
-                      <td style="padding: 7px 8px; font-weight: 600;">${formatIndianCurrency(r.loan_amount)}</td>
-                      <td style="padding: 7px 8px;">${escapeHtml(r.loan_type)}</td>
-                      <td style="padding: 7px 8px;">${escapeHtml(r.bank_name)}</td>
-                      <td style="padding: 7px 8px;">${docCount}/7 Verified</td>
-                    </tr>
-                  `;
-                }).join('')}
-              </tbody>
-            </table>
-
-            <div style="margin-top: 30px; border-top: 1px solid #e4e4e7; padding-top: 12px; display: flex; justify-content: space-between; font-size: 9px; color: #a1a1aa;">
-              <span>Rashmi Associates Internal Records System</span>
-              <span>Confidential • Authorized Use Only</span>
-            </div>
-          </div>
-        `;
-
-        const opt = {
-          margin: 8,
-          filename: `Rashmi_Associates_Report_${new Date().toISOString().slice(0,10)}.pdf`,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        html2pdf().set(opt).from(template).save().then(() => {
-          template.classList.add('hidden');
-          template.innerHTML = '';
+      if (btnExportCsvWeek) {
+        btnExportCsvWeek.addEventListener('click', () => {
+          const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+          const weeklyRecords = recordsData.filter(r => new Date(r.created_at) >= weekAgo);
+          triggerCSVDownload(weeklyRecords, `Rashmi_Associates_Weekly_Report_${new Date().toISOString().slice(0,10)}.csv`);
         });
-      });
+      }
+
+      if (btnExportCsvMonth) {
+        btnExportCsvMonth.addEventListener('click', () => {
+          const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+          const monthlyRecords = recordsData.filter(r => new Date(r.created_at) >= monthAgo);
+          triggerCSVDownload(monthlyRecords, `Rashmi_Associates_Monthly_Report_${new Date().toISOString().slice(0,10)}.csv`);
+        });
+      }
+
+      if (btnExportCsvAll) {
+        btnExportCsvAll.addEventListener('click', () => {
+          triggerCSVDownload(recordsData, `Rashmi_Associates_Master_Ledger_${new Date().toISOString().slice(0,10)}.csv`);
+        });
+      }
+
+      if (btnExportPdf) {
+        btnExportPdf.addEventListener('click', () => {
+          if (recordsData.length === 0) {
+            alert('No records available to export.');
+            return;
+          }
+
+          const totalAmount = recordsData.reduce((acc, r) => acc + (parseFloat(r.loan_amount) || 0), 0);
+          const template = document.getElementById('pdf-report-template');
+          if (!template) return;
+
+          template.classList.remove('hidden');
+
+          template.innerHTML = `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #18181b; padding: 24px; max-width: 800px; margin: 0 auto;">
+              <div style="border-bottom: 2px solid #18181b; padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div>
+                  <h1 style="font-size: 24px; font-weight: 800; margin: 0; color: #09090b; letter-spacing: -0.5px;">RASHMI ASSOCIATES</h1>
+                  <p style="font-size: 11px; color: #71717a; margin: 4px 0 0 0; text-transform: uppercase;">Loan Portfolio & Underwriting Performance Summary</p>
+                </div>
+                <div style="text-align: right;">
+                  <p style="font-size: 11px; margin: 0; font-weight: 600;">Account: <span style="font-weight: 400; text-transform: capitalize;">${escapeHtml(currentSession.username)} (${currentSession.role})</span></p>
+                  <p style="font-size: 11px; color: #71717a; margin: 2px 0 0 0;">Statement Date: ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+                <div style="flex: 1; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px; background: #fafafa;">
+                  <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0; font-weight: 600;">Total Active Files</p>
+                  <p style="font-size: 18px; font-weight: 700; margin: 4px 0 0 0; color: #09090b;">${recordsData.length}</p>
+                </div>
+                <div style="flex: 1.5; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px; background: #fafafa;">
+                  <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0; font-weight: 600;">Total Volume Requested</p>
+                  <p style="font-size: 18px; font-weight: 700; margin: 4px 0 0 0; color: #09090b;">${formatIndianCurrency(totalAmount)}</p>
+                </div>
+                <div style="flex: 1; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px; background: #fafafa;">
+                  <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0; font-weight: 600;">Compliance Checks</p>
+                  <p style="font-size: 18px; font-weight: 700; margin: 4px 0 0 0; color: #09090b;">7 Points</p>
+                </div>
+              </div>
+
+              <h3 style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; color: #27272a;">Customer Ledger Details</h3>
+              <table style="width: 100%; border-collapse: collapse; font-size: 10px; text-align: left;">
+                <thead>
+                  <tr style="background: #f4f4f5; border-bottom: 1px solid #d4d4d8;">
+                    <th style="padding: 7px 8px; font-weight: 600;">Borrower Name</th>
+                    <th style="padding: 7px 8px; font-weight: 600;">Age</th>
+                    <th style="padding: 7px 8px; font-weight: 600;">Loan Amount</th>
+                    <th style="padding: 7px 8px; font-weight: 600;">Product</th>
+                    <th style="padding: 7px 8px; font-weight: 600;">Partner Bank</th>
+                    <th style="padding: 7px 8px; font-weight: 600;">Docs (7)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${recordsData.map(r => {
+                    const docCount = [
+                      r.doc_aadhaar_pan, r.doc_bank_statement_1yr, r.doc_business_proof,
+                      r.doc_salary_slip_3m, r.doc_revenue_tax_slip, r.doc_sale_deed, r.doc_udyam_aadhaar
+                    ].filter(Boolean).length;
+                    return `
+                      <tr style="border-bottom: 1px solid #e4e4e7;">
+                        <td style="padding: 7px 8px; font-weight: 600;">${escapeHtml(r.customer_name)}</td>
+                        <td style="padding: 7px 8px;">${calculateAge(r.dob) || '-'} yrs</td>
+                        <td style="padding: 7px 8px; font-weight: 600;">${formatIndianCurrency(r.loan_amount)}</td>
+                        <td style="padding: 7px 8px;">${escapeHtml(r.loan_type)}</td>
+                        <td style="padding: 7px 8px;">${escapeHtml(r.bank_name)}</td>
+                        <td style="padding: 7px 8px;">${docCount}/7 Verified</td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+
+              <div style="margin-top: 30px; border-top: 1px solid #e4e4e7; padding-top: 12px; display: flex; justify-content: space-between; font-size: 9px; color: #a1a1aa;">
+                <span>Rashmi Associates Internal Records System</span>
+                <span>Confidential • Authorized Operations</span>
+              </div>
+            </div>
+          `;
+
+          const opt = {
+            margin: 8,
+            filename: `Rashmi_Associates_Report_${new Date().toISOString().slice(0,10)}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+          };
+
+          if (window.html2pdf) {
+            html2pdf().set(opt).from(template).save().then(() => {
+              template.classList.add('hidden');
+              template.innerHTML = '';
+            });
+          } else {
+            alert('PDF generation library is still loading. Please try again.');
+          }
+        });
+      }
     }
 
-    // --- 12. Security Modals (Self-Service & Admin Password Overwrite) ---
+    // --- SECURITY & AUTHENTICATION HANDLERS ---
     function setupAuthHandlers() {
-      btnHeaderLogin.addEventListener('click', () => openModal(modalLogin));
-      btnHeroLogin.addEventListener('click', () => openModal(modalLogin));
+      const btnHeaderLogin = document.getElementById('btn-header-login');
+      const btnHeroLogin = document.getElementById('btn-hero-login');
+      const modalLogin = document.getElementById('modal-login');
+      const loginForm = document.getElementById('login-form');
+      const loginUser = document.getElementById('login-user');
+      const loginPass = document.getElementById('login-pass');
+      const loginErrorMsg = document.getElementById('login-error-msg');
+      const btnLogout = document.getElementById('btn-logout');
 
+      const modalPassword = document.getElementById('modal-password');
+      const btnOpenPassword = document.getElementById('btn-open-password');
+      const passwordForm = document.getElementById('password-form');
+      const passCurrent = document.getElementById('pass-current');
+      const passNew = document.getElementById('pass-new');
+      const passFeedbackMsg = document.getElementById('pass-feedback-msg');
+
+      const modalAdminSecurity = document.getElementById('modal-admin-security');
+      const btnOpenAdminSecurity = document.getElementById('btn-open-admin-security');
+      const adminSecurityForm = document.getElementById('admin-security-form');
+      const adminTargetUser = document.getElementById('admin-target-user');
+      const adminNewPass = document.getElementById('admin-new-pass');
+      const adminVerifyPass = document.getElementById('admin-verify-pass');
+      const adminSecurityFeedback = document.getElementById('admin-security-feedback');
+
+      const modalRecord = document.getElementById('modal-record');
+
+      // Login Triggers
+      if (btnHeaderLogin) btnHeaderLogin.addEventListener('click', () => openModal(modalLogin));
+      if (btnHeroLogin) btnHeroLogin.addEventListener('click', () => openModal(modalLogin));
+
+      // Global Close Buttons
       document.querySelectorAll('.btn-close-login').forEach(b => b.addEventListener('click', () => closeModal(modalLogin)));
       document.querySelectorAll('.btn-close-modal').forEach(b => b.addEventListener('click', () => closeModal(modalRecord)));
       document.querySelectorAll('.btn-close-password').forEach(b => b.addEventListener('click', () => closeModal(modalPassword)));
       document.querySelectorAll('.btn-close-admin-security').forEach(b => b.addEventListener('click', () => closeModal(modalAdminSecurity)));
 
-      // Sign In Handler
-      loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        loginErrorMsg.classList.add('hidden');
+      // Authenticate
+      if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          if (loginErrorMsg) loginErrorMsg.classList.add('hidden');
 
-        const u = loginUser.value.trim().toLowerCase();
-        const p = loginPass.value;
+          const u = loginUser.value.trim().toLowerCase();
+          const p = loginPass.value;
 
-        try {
-          const { data, error } = await supabase.rpc('app_login', {
-            p_username: u,
-            p_password: p
-          });
+          try {
+            const { data, error } = await supabase.rpc('app_login', {
+              p_username: u,
+              p_password: p
+            });
 
-          if (error) throw error;
-          if (!data || !data.success) {
-            loginErrorMsg.textContent = 'Invalid username or password.';
-            loginErrorMsg.classList.remove('hidden');
+            if (error) throw error;
+            if (!data || !data.success) {
+              if (loginErrorMsg) {
+                loginErrorMsg.textContent = 'Invalid username or password.';
+                loginErrorMsg.classList.remove('hidden');
+              }
+              return;
+            }
+
+            currentSession = { username: data.username, role: data.role };
+            sessionStorage.setItem('ra_session', JSON.stringify(currentSession));
+
+            closeModal(modalLogin);
+            loginForm.reset();
+            applySessionUI();
+            loadRecords();
+          } catch (err) {
+            if (loginErrorMsg) {
+              loginErrorMsg.textContent = err.message || 'Authentication error.';
+              loginErrorMsg.classList.remove('hidden');
+            }
+          }
+        });
+      }
+
+      // Logout
+      if (btnLogout) {
+        btnLogout.addEventListener('click', () => {
+          sessionStorage.removeItem('ra_session');
+          currentSession = null;
+          applySessionUI();
+        });
+      }
+
+      // Self Service Password Modal
+      if (btnOpenPassword) {
+        btnOpenPassword.addEventListener('click', () => {
+          if (passwordForm) passwordForm.reset();
+          if (passFeedbackMsg) passFeedbackMsg.classList.add('hidden');
+          openModal(modalPassword);
+        });
+      }
+
+      if (passwordForm) {
+        passwordForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          if (passFeedbackMsg) passFeedbackMsg.classList.add('hidden');
+
+          try {
+            const { data, error } = await supabase.rpc('change_own_password', {
+              p_username: currentSession.username,
+              p_current_password: passCurrent.value,
+              p_new_password: passNew.value
+            });
+
+            if (error) throw error;
+
+            if (passFeedbackMsg) {
+              passFeedbackMsg.textContent = 'Password updated successfully!';
+              passFeedbackMsg.className = 'text-xs p-2.5 rounded-lg font-medium bg-emerald-50 text-emerald-700 border border-emerald-200';
+              passFeedbackMsg.classList.remove('hidden');
+            }
+
+            setTimeout(() => closeModal(modalPassword), 1200);
+          } catch (err) {
+            if (passFeedbackMsg) {
+              passFeedbackMsg.textContent = err.message || 'Verification failed. Check current password.';
+              passFeedbackMsg.className = 'text-xs p-2.5 rounded-lg font-medium bg-rose-50 text-rose-700 border border-rose-200';
+              passFeedbackMsg.classList.remove('hidden');
+            }
+          }
+        });
+      }
+
+      // Kailash Admin Password Reset
+      if (btnOpenAdminSecurity) {
+        btnOpenAdminSecurity.addEventListener('click', () => {
+          if (adminSecurityForm) adminSecurityForm.reset();
+          if (adminSecurityFeedback) adminSecurityFeedback.classList.add('hidden');
+          openModal(modalAdminSecurity);
+        });
+      }
+
+      if (adminSecurityForm) {
+        adminSecurityForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          if (adminSecurityFeedback) adminSecurityFeedback.classList.add('hidden');
+
+          if (currentSession.username !== 'kailash') {
+            alert('Unauthorized action.');
             return;
           }
 
-          currentSession = { username: data.username, role: data.role };
-          sessionStorage.setItem('ra_session', JSON.stringify(currentSession));
+          try {
+            const { data, error } = await supabase.rpc('update_app_password', {
+              p_admin_username: 'kailash',
+              p_admin_password: adminVerifyPass.value,
+              p_target_username: adminTargetUser.value,
+              p_new_password: adminNewPass.value
+            });
 
-          closeModal(modalLogin);
-          loginForm.reset();
-          applySessionUI();
-          loadRecords();
-        } catch (err) {
-          loginErrorMsg.textContent = err.message || 'Authentication failed.';
-          loginErrorMsg.classList.remove('hidden');
-        }
-      });
+            if (error) throw error;
 
-      // Logout Handler
-      btnLogout.addEventListener('click', () => {
-        sessionStorage.removeItem('ra_session');
-        currentSession = null;
-        applySessionUI();
-      });
+            if (adminSecurityFeedback) {
+              adminSecurityFeedback.textContent = `Password for ${adminTargetUser.value} has been successfully reset!`;
+              adminSecurityFeedback.className = 'text-xs p-2.5 rounded-lg font-medium bg-emerald-50 text-emerald-700 border border-emerald-200';
+              adminSecurityFeedback.classList.remove('hidden');
+            }
 
-      // Self-Service Password Modal Handler
-      btnOpenPassword.addEventListener('click', () => {
-        passwordForm.reset();
-        passFeedbackMsg.classList.add('hidden');
-        openModal(modalPassword);
-      });
+            setTimeout(() => closeModal(modalAdminSecurity), 1400);
+          } catch (err) {
+            if (adminSecurityFeedback) {
+              adminSecurityFeedback.textContent = err.message || 'Reset failed. Check Kailash password.';
+              adminSecurityFeedback.className = 'text-xs p-2.5 rounded-lg font-medium bg-rose-50 text-rose-700 border border-rose-200';
+              adminSecurityFeedback.classList.remove('hidden');
+            }
+          }
+        });
+      }
 
-      passwordForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        passFeedbackMsg.classList.add('hidden');
+      // Filter Inputs
+      const filterSearch = document.getElementById('filter-search');
+      const filterBank = document.getElementById('filter-bank');
+      const filterType = document.getElementById('filter-type');
+      const filterSort = document.getElementById('filter-sort');
 
-        try {
-          const { data, error } = await supabase.rpc('change_own_password', {
-            p_username: currentSession.username,
-            p_current_password: passCurrent.value,
-            p_new_password: passNew.value
-          });
-
-          if (error) throw error;
-
-          passFeedbackMsg.textContent = 'Password updated successfully!';
-          passFeedbackMsg.className = 'text-xs p-2.5 rounded-lg font-medium bg-emerald-50 text-emerald-700 border border-emerald-200';
-          passFeedbackMsg.classList.remove('hidden');
-
-          setTimeout(() => closeModal(modalPassword), 1200);
-        } catch (err) {
-          passFeedbackMsg.textContent = err.message || 'Verification failed. Check current password.';
-          passFeedbackMsg.className = 'text-xs p-2.5 rounded-lg font-medium bg-rose-50 text-rose-700 border border-rose-200';
-          passFeedbackMsg.classList.remove('hidden');
-        }
-      });
-
-      // Kailash Admin Password Reset Modal Handler
-      btnOpenAdminSecurity.addEventListener('click', () => {
-        adminSecurityForm.reset();
-        adminSecurityFeedback.classList.add('hidden');
-        openModal(modalAdminSecurity);
-      });
-
-      adminSecurityForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        adminSecurityFeedback.classList.add('hidden');
-
-        if (currentSession.username !== 'kailash') {
-          alert('Unauthorized action.');
-          return;
-        }
-
-        try {
-          const { data, error } = await supabase.rpc('update_app_password', {
-            p_admin_username: 'kailash',
-            p_admin_password: adminVerifyPass.value,
-            p_target_username: adminTargetUser.value,
-            p_new_password: adminNewPass.value
-          });
-
-          if (error) throw error;
-
-          adminSecurityFeedback.textContent = `Password for ${adminTargetUser.value} has been successfully reset!`;
-          adminSecurityFeedback.className = 'text-xs p-2.5 rounded-lg font-medium bg-emerald-50 text-emerald-700 border border-emerald-200';
-          adminSecurityFeedback.classList.remove('hidden');
-
-          setTimeout(() => closeModal(modalAdminSecurity), 1400);
-        } catch (err) {
-          adminSecurityFeedback.textContent = err.message || 'Reset failed. Check Kailash password.';
-          adminSecurityFeedback.className = 'text-xs p-2.5 rounded-lg font-medium bg-rose-50 text-rose-700 border border-rose-200';
-          adminSecurityFeedback.classList.remove('hidden');
-        }
-      });
-
-      // Filter Inputs & Sorting
-      filterSearch.addEventListener('input', renderRecords);
-      filterBank.addEventListener('change', renderRecords);
-      filterType.addEventListener('change', renderRecords);
-      filterSort.addEventListener('change', renderRecords);
+      if (filterSearch) filterSearch.addEventListener('input', renderRecords);
+      if (filterBank) filterBank.addEventListener('change', renderRecords);
+      if (filterType) filterType.addEventListener('change', renderRecords);
+      if (filterSort) filterSort.addEventListener('change', renderRecords);
 
       // Period Filter Tabs
       document.querySelectorAll('.btn-period').forEach(btn => {
@@ -1562,39 +1642,50 @@
       });
 
       // Main Navigation Tabs
-      tabBtnRecords.addEventListener('click', () => {
-        tabBtnRecords.classList.add('bg-white', 'text-zinc-900', 'shadow-sm');
-        tabBtnRecords.classList.remove('text-zinc-600');
-        tabBtnStats.classList.remove('bg-white', 'text-zinc-900', 'shadow-sm');
-        tabBtnStats.classList.add('text-zinc-600');
+      const tabBtnRecords = document.getElementById('tab-btn-records');
+      const tabBtnStats = document.getElementById('tab-btn-stats');
+      const viewRecords = document.getElementById('view-records');
+      const viewStats = document.getElementById('view-stats');
 
-        viewRecords.classList.remove('hidden');
-        viewStats.classList.add('hidden');
-      });
+      if (tabBtnRecords && tabBtnStats && viewRecords && viewStats) {
+        tabBtnRecords.addEventListener('click', () => {
+          tabBtnRecords.classList.add('bg-white', 'text-zinc-900', 'shadow-sm');
+          tabBtnRecords.classList.remove('text-zinc-600');
+          tabBtnStats.classList.remove('bg-white', 'text-zinc-900', 'shadow-sm');
+          tabBtnStats.classList.add('text-zinc-600');
 
-      tabBtnStats.addEventListener('click', () => {
-        tabBtnStats.classList.add('bg-white', 'text-zinc-900', 'shadow-sm');
-        tabBtnStats.classList.remove('text-zinc-600');
-        tabBtnRecords.classList.remove('bg-white', 'text-zinc-900', 'shadow-sm');
-        tabBtnRecords.classList.add('text-zinc-600');
+          viewRecords.classList.remove('hidden');
+          viewStats.classList.add('hidden');
+        });
 
-        viewStats.classList.remove('hidden');
-        viewRecords.classList.add('hidden');
-        renderStats();
-      });
+        tabBtnStats.addEventListener('click', () => {
+          tabBtnStats.classList.add('bg-white', 'text-zinc-900', 'shadow-sm');
+          tabBtnStats.classList.remove('text-zinc-600');
+          tabBtnRecords.classList.remove('bg-white', 'text-zinc-900', 'shadow-sm');
+          tabBtnRecords.classList.add('text-zinc-600');
+
+          viewStats.classList.remove('hidden');
+          viewRecords.classList.add('hidden');
+          renderStats();
+        });
+      }
     }
 
-    // --- 13. System Initialization ---
+    // --- SYSTEM INITIALIZATION WITH SAFE CATCH ---
     document.addEventListener('DOMContentLoaded', () => {
-      populateDropdowns();
-      setupFormListeners();
-      setupAuthHandlers();
-      setupExportHandlers();
-      restoreSession();
+      try { populateDropdowns(); } catch (e) { console.warn('Dropdown error:', e); }
+      try { setupFormListeners(); } catch (e) { console.warn('Form setup error:', e); }
+      try { setupAuthHandlers(); } catch (e) { console.warn('Auth setup error:', e); }
+      try { setupExportHandlers(); } catch (e) { console.warn('Export setup error:', e); }
+      try { restoreSession(); } catch (e) { console.warn('Session restore error:', e); }
+      
       if (!currentSession) {
-        initVideoReveal();
+        try { initVideoReveal(); } catch (e) { console.warn('Video init error:', e); }
       }
-      lucide.createIcons();
+
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
     });
   </script>
 </body>
