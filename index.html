@@ -1,1830 +1,1389 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-[#f4f5f7]">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Rashmi Associates - Loan & Customer Portal</title>
-
-  <!-- Typography: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS CDN -->
+  <title>Rashmi Associates - Loan Management System</title>
+  
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- Supabase JS Client v2 -->
+  <!-- Supabase JS Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- html2pdf.js for Client-Side PDF Generation -->
+  <!-- html2pdf for client-side reporting -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-          }
-        }
-      }
-    };
-  </script>
-
   <style>
-    /* Grounded Minimalist Base */
-    html, body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f4f5f7;
-      color: #111827;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* Resilient Mobile Modal: Dynamic Viewport Units and Scroll Isolation */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      background-color: rgba(17, 24, 39, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.75rem;
+    /* Mobile scroll lock prevention */
+    .modal-container {
+      max-height: 90dvh;
       overscroll-behavior: contain;
-    }
-
-    .modal-box {
-      width: 100%;
-      background: #ffffff;
-      border-radius: 0.5rem;
-      border: 1px solid #d1d5db;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      max-height: 90dvh; /* dvh prevents keyboard clipping on Android/iOS */
-      overflow: hidden;
-    }
-
-    .modal-body {
-      overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
     }
 
-    /* Form Inputs Focus */
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #1e3a8a;
-      box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.15);
-    }
-
-    /* Print/PDF Container Hidden from Regular View */
-    #pdf-printable-area {
-      display: none;
+    /* Print styles for PDF engine */
+    @media print {
+      body { background: #fff !important; }
+      .no-print { display: none !important; }
     }
   </style>
 </head>
+<body class="bg-[#f4f5f7] text-zinc-900 min-h-screen flex flex-col antialiased selection:bg-zinc-800 selection:text-white">
 
-<body class="h-full flex flex-col min-h-screen">
-
-  <!-- TOP HEADER / NAVIGATION -->
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      
-      <!-- Company Branding -->
-      <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded bg-gray-900 text-white flex items-center justify-center font-bold text-sm tracking-wide">
-          RA
-        </div>
-        <div>
-          <span class="text-base font-bold text-gray-900 leading-tight block">Rashmi Associates</span>
-          <span class="text-xs text-gray-500 font-medium leading-none block">Loan Tracking & Management</span>
-        </div>
+  <!-- ================= TOP NAVIGATION ================= -->
+  <header class="bg-white border-b border-zinc-200 sticky top-0 z-30 px-4 sm:px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 rounded bg-zinc-900 flex items-center justify-center text-white font-bold text-sm tracking-wider">RA</div>
+      <div>
+        <h1 class="text-sm sm:text-base font-bold tracking-tight text-zinc-900 leading-tight">Rashmi Associates</h1>
+        <p class="text-[11px] text-zinc-500 font-medium leading-none">Loan Portfolio & Operations</p>
       </div>
+    </div>
 
-      <!-- Navigation Tabs (Desktop) -->
-      <nav id="desktop-nav" class="hidden md:flex items-center space-x-1 border border-gray-200 rounded-md p-1 bg-gray-50 text-xs font-semibold">
-        <button id="tab-btn-records" class="px-4 py-1.5 rounded text-gray-900 bg-white shadow-sm border border-gray-200">
-          Customer Records
-        </button>
-        <button id="tab-btn-stats" class="px-4 py-1.5 rounded text-gray-600 hover:text-gray-900">
-          Reports & Stats
-        </button>
-      </nav>
+    <!-- Right Controls -->
+    <div class="flex items-center space-x-2 sm:space-x-3">
+      <!-- Unauthenticated Button -->
+      <button id="btn-header-login" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1.5">
+        <i data-lucide="log-in" class="w-4 h-4"></i>
+        <span>Access Portal</span>
+      </button>
 
-      <!-- User Auth Section -->
-      <div class="flex items-center space-x-2">
-        <div id="auth-logged-out" class="flex items-center">
-          <button id="btn-open-login" class="px-3.5 py-1.5 text-xs font-medium text-white bg-gray-900 hover:bg-black rounded transition-colors">
-            Login
-          </button>
+      <!-- Authenticated Session Badge & Actions -->
+      <div id="auth-controls" class="hidden flex items-center space-x-2 sm:space-x-3">
+        <div class="hidden sm:flex flex-col text-right">
+          <span id="session-username" class="text-xs font-semibold text-zinc-900 capitalize leading-tight">User</span>
+          <span id="session-role" class="text-[10px] text-zinc-500 font-medium capitalize leading-tight">Role</span>
         </div>
 
-        <div id="auth-logged-in" class="hidden flex items-center space-x-2">
-          <!-- Role & User Pill -->
-          <div class="hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded border border-gray-200 bg-gray-50 text-xs">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span id="user-display-name" class="font-semibold text-gray-900 capitalize">user</span>
-            <span id="user-role-badge" class="text-[10px] text-gray-500 uppercase font-medium">(Staff)</span>
-          </div>
+        <!-- Password Change Trigger -->
+        <button id="btn-open-password" title="Change Password" class="p-2 text-zinc-600 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 rounded-lg transition-colors">
+          <i data-lucide="key" class="w-4 h-4"></i>
+        </button>
 
-          <!-- Add Customer Button -->
-          <button id="btn-open-new-customer" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 rounded transition-colors">
-            <i data-lucide="plus" class="w-4 h-4 mr-1"></i>
-            <span class="hidden sm:inline">New Customer Entry</span>
-            <span class="sm:hidden">New Entry</span>
-          </button>
-
-          <!-- Password Settings Button (Self-service for all users) -->
-          <button id="btn-open-password" title="Change Password" class="p-1.5 text-gray-600 hover:text-gray-900 border border-gray-200 rounded hover:bg-gray-50">
-            <i data-lucide="key" class="w-4 h-4"></i>
-          </button>
-
-          <!-- Logout Button -->
-          <button id="btn-logout" title="Sign Out" class="p-1.5 text-gray-500 hover:text-red-600 border border-gray-200 rounded hover:bg-gray-50">
-            <i data-lucide="log-out" class="w-4 h-4"></i>
-          </button>
-        </div>
+        <!-- Logout Trigger -->
+        <button id="btn-logout" title="Sign Out" class="p-2 text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-lg transition-colors">
+          <i data-lucide="log-out" class="w-4 h-4"></i>
+        </button>
       </div>
     </div>
   </header>
 
-  <!-- MOBILE TAB NAVIGATION BAR -->
-  <div id="mobile-nav" class="md:hidden bg-white border-b border-gray-200 px-4 py-2 flex space-x-2 text-xs font-medium">
-    <button id="mob-btn-records" class="flex-1 py-2 text-center rounded bg-gray-100 text-gray-900 font-semibold border border-gray-300">
-      Customer Records
-    </button>
-    <button id="mob-btn-stats" class="flex-1 py-2 text-center rounded text-gray-600 border border-transparent">
-      Reports & Stats
-    </button>
-  </div>
-
-  <!-- MAIN WORKSPACE -->
-  <main class="flex-grow max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5 space-y-5">
-
-    <!-- KPI STRIP -->
-    <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+  <!-- ================= PRE-LOGIN CINEMATIC HERO (DEFAULT VIEW) ================= -->
+  <main id="prelogin-section" class="flex-1 flex flex-col items-center justify-center p-4 sm:p-8">
+    <div class="w-full max-w-2xl bg-white border border-zinc-200 rounded-2xl shadow-sm p-6 sm:p-10 flex flex-col items-center text-center">
       
-      <div class="bg-white p-4 rounded border border-gray-200 shadow-sm">
-        <span class="text-xs font-medium text-gray-500 block" id="kpi-label-volume">Total Loan Volume</span>
-        <div class="mt-1.5 text-lg sm:text-xl font-bold text-gray-900" id="kpi-total-volume">₹0</div>
-        <span class="text-[11px] text-gray-500" id="kpi-total-volume-sub">0 Lakhs / 0 Cr</span>
+      <!-- Video Container -->
+      <div class="w-full max-w-md aspect-video bg-zinc-950 rounded-xl overflow-hidden shadow-inner relative flex items-center justify-center mb-6">
+        <video 
+          id="reveal-video" 
+          src="./logoreveal.mp4" 
+          class="w-full h-full object-contain"
+          muted 
+          playsinline 
+          preload="auto">
+          Your browser does not support HTML5 video.
+        </video>
+        <div id="video-replay-badge" class="hidden absolute bottom-2 right-2 px-2 py-0.5 bg-black/70 backdrop-blur text-[10px] text-zinc-400 rounded">
+          Idling...
+        </div>
       </div>
 
-      <div class="bg-white p-4 rounded border border-gray-200 shadow-sm">
-        <span class="text-xs font-medium text-gray-500 block" id="kpi-label-files">Customer Files</span>
-        <div class="mt-1.5 text-lg sm:text-xl font-bold text-gray-900" id="kpi-total-files">0</div>
-        <span class="text-[11px] text-gray-500" id="kpi-scope-hint">Logged records</span>
+      <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 mb-2">Loan Origination & Performance System</h2>
+      <p class="text-xs sm:text-sm text-zinc-600 max-w-md mb-6 leading-relaxed">
+        Authorized administrative and operations portal for Rashmi Associates. Sign in with your assigned staff credentials to manage customer files.
+      </p>
+
+      <button id="btn-hero-login" class="w-full max-w-xs py-3 px-4 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-sm rounded-lg transition-colors flex items-center justify-center space-x-2 shadow-sm">
+        <i data-lucide="shield-check" class="w-4 h-4"></i>
+        <span>Sign In to Continue</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- ================= AUTHENTICATED PORTAL WORKSPACE ================= -->
+  <main id="app-workspace" class="hidden flex-1 flex flex-col p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
+    
+    <!-- Top Workspace Toolbar -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 rounded-xl border border-zinc-200 shadow-sm">
+      <!-- Tab Navigation -->
+      <div class="flex items-center space-x-1.5 bg-zinc-100 p-1 rounded-lg">
+        <button id="tab-btn-records" class="px-4 py-1.5 text-xs sm:text-sm font-semibold rounded-md bg-white text-zinc-900 shadow-sm transition-all">Customer Records</button>
+        <button id="tab-btn-stats" class="px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md text-zinc-600 hover:text-zinc-900 transition-all">Reports & Stats</button>
       </div>
 
-      <div class="bg-white p-4 rounded border border-gray-200 shadow-sm">
-        <span class="text-xs font-medium text-gray-500 block">Top Bank / NBFC</span>
-        <div class="mt-1.5 text-sm sm:text-base font-bold text-gray-900 truncate" id="kpi-top-bank">—</div>
-        <span class="text-[11px] text-gray-500" id="kpi-top-bank-sub">Highest loan volume</span>
-      </div>
+      <!-- Action Buttons -->
+      <div class="flex items-center space-x-2">
+        <button id="btn-open-create" class="flex-1 sm:flex-none px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center justify-center space-x-1.5 shadow-sm">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span>New Customer Entry</span>
+        </button>
 
-      <div class="bg-white p-4 rounded border border-gray-200 shadow-sm">
-        <span class="text-xs font-medium text-gray-500 block">Top Loan Type</span>
-        <div class="mt-1.5 text-sm sm:text-base font-bold text-gray-900 truncate" id="kpi-top-loan">—</div>
-        <span class="text-[11px] text-gray-500" id="kpi-top-loan-sub">Most frequent</span>
-      </div>
-    </section>
-
-    <!-- SECTION 1: CUSTOMER RECORDS -->
-    <section id="view-records" class="space-y-4">
-      <div class="bg-white rounded border border-gray-200 shadow-sm p-4 sm:p-5">
-        
-        <!-- Controls Bar -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-gray-200">
+        <!-- Download Reports Dropdown Trigger -->
+        <div class="relative">
+          <button id="btn-report-menu" class="px-3.5 py-2 bg-white border border-zinc-300 hover:bg-zinc-50 text-zinc-800 rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1.5">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Export</span>
+            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-zinc-500"></i>
+          </button>
           
-          <!-- Search box -->
-          <div class="relative flex-1 max-w-sm">
-            <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
-            <input type="text" id="records-search" placeholder="Search customer, approver, or address..." class="w-full pl-9 pr-3 py-1.5 text-xs rounded border border-gray-300 bg-white text-gray-900">
-          </div>
-
-          <!-- Filters & Action Buttons -->
-          <div class="flex flex-wrap items-center gap-2">
-            
-            <select id="filter-bank" class="px-2.5 py-1.5 text-xs rounded border border-gray-300 bg-white text-gray-900 font-medium">
-              <option value="">All Banks & NBFCs</option>
-            </select>
-
-            <select id="filter-type" class="px-2.5 py-1.5 text-xs rounded border border-gray-300 bg-white text-gray-900 font-medium">
-              <option value="">All Loan Types</option>
-            </select>
-
-            <!-- Download Report Button (PDF) -->
-            <button id="btn-export-pdf" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors shadow-sm">
-              <i data-lucide="file-text" class="w-3.5 h-3.5 mr-1.5 text-red-600"></i>
-              <span>Download PDF</span>
+          <div id="report-dropdown" class="hidden absolute right-0 mt-1 w-52 bg-white border border-zinc-200 rounded-lg shadow-lg py-1 z-20 text-xs">
+            <button id="btn-export-pdf" class="w-full text-left px-3 py-2 hover:bg-zinc-100 flex items-center space-x-2 text-zinc-700">
+              <i data-lucide="file-text" class="w-4 h-4 text-rose-600"></i>
+              <span>Download PDF Report</span>
             </button>
-
-            <!-- Export CSV -->
-            <button id="btn-export-csv" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors shadow-sm">
-              <i data-lucide="download" class="w-3.5 h-3.5 mr-1.5 text-emerald-600"></i>
-              <span>Export CSV</span>
-            </button>
-
-            <button id="btn-refresh-data" title="Refresh Table" class="p-1.5 rounded border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors">
-              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            <button id="btn-export-csv" class="w-full text-left px-3 py-2 hover:bg-zinc-100 flex items-center space-x-2 text-zinc-700">
+              <i data-lucide="sheet" class="w-4 h-4 text-emerald-600"></i>
+              <span>Download CSV Sheet</span>
             </button>
           </div>
         </div>
+      </div>
+    </div>
 
-        <!-- Responsive Records Table -->
-        <div class="overflow-x-auto -mx-4 sm:mx-0 mt-3">
-          <table class="w-full text-left text-xs min-w-[950px]">
+    <!-- ================= VIEW 1: CUSTOMER RECORDS ================= -->
+    <div id="view-records" class="space-y-4">
+      <!-- Search & Filters -->
+      <div class="flex flex-col sm:flex-row gap-3">
+        <div class="relative flex-1">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3 text-zinc-400"></i>
+          <input type="text" id="filter-search" placeholder="Search by customer name, address or bank..." class="w-full pl-9 pr-4 py-2 bg-white border border-zinc-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:border-zinc-800 transition-colors">
+        </div>
+        <select id="filter-bank" class="bg-white border border-zinc-300 rounded-lg px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-zinc-800">
+          <option value="">All Partner Banks</option>
+        </select>
+        <select id="filter-type" class="bg-white border border-zinc-300 rounded-lg px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-zinc-800">
+          <option value="">All Loan Types</option>
+        </select>
+      </div>
+
+      <!-- Desktop Records Table -->
+      <div class="hidden md:block bg-white border border-zinc-200 rounded-xl overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
             <thead>
-              <tr class="bg-gray-50 text-gray-600 border-b border-gray-200 font-semibold uppercase tracking-wider text-[11px]">
-                <th class="py-2.5 px-3">Customer Name</th>
-                <th class="py-2.5 px-3">Age / DOB</th>
-                <th class="py-2.5 px-3">Loan Amount</th>
-                <th class="py-2.5 px-3">Loan Type</th>
-                <th class="py-2.5 px-3">Bank / NBFC</th>
-                <th class="py-2.5 px-3">Documents Collected (7)</th>
-                <th class="py-2.5 px-3">Address</th>
-                <th class="py-2.5 px-3">Approver</th>
-                <th class="py-2.5 px-3 text-right">Actions</th>
+              <tr class="bg-zinc-50 border-b border-zinc-200 text-zinc-600 font-semibold uppercase tracking-wider">
+                <th class="py-3 px-4">Customer Name</th>
+                <th class="py-3 px-4">Age / DOB</th>
+                <th class="py-3 px-4">Loan Amount</th>
+                <th class="py-3 px-4">Loan Product</th>
+                <th class="py-3 px-4">Partner Bank</th>
+                <th class="py-3 px-4">Documents (7)</th>
+                <th class="py-3 px-4">Address</th>
+                <th class="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody id="records-tbody" class="divide-y divide-gray-200 text-gray-800">
-              <!-- Dynamically populated via JS -->
+            <tbody id="records-table-body" class="divide-y divide-zinc-200">
+              <!-- Rendered via JS -->
             </tbody>
           </table>
         </div>
-
-        <!-- Empty State Container -->
-        <div id="records-empty" class="hidden text-center py-10 text-gray-500 text-xs">
-          No customer records found matching your filters.
-        </div>
       </div>
-    </section>
 
-    <!-- SECTION 2: REPORTS & STATS -->
-    <section id="view-stats" class="hidden space-y-5">
+      <!-- Mobile Records Cards -->
+      <div id="records-mobile-cards" class="md:hidden space-y-3">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-records-state" class="hidden bg-white border border-zinc-200 rounded-xl p-8 text-center">
+        <div class="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center mx-auto mb-2 text-zinc-400">
+          <i data-lucide="folder-open" class="w-5 h-5"></i>
+        </div>
+        <p class="text-sm font-semibold text-zinc-800">No customer files located</p>
+        <p class="text-xs text-zinc-500 mt-0.5">Add a new file or adjust your search filter criteria.</p>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 2: REPORTS & STATS ================= -->
+    <div id="view-stats" class="hidden space-y-6">
       
-      <!-- Time Period Switcher & Scope Notice -->
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white p-3.5 rounded border border-gray-200 shadow-sm gap-3">
-        <div>
-          <div class="flex items-center space-x-2">
-            <h2 class="text-sm font-bold text-gray-900">Performance Summary</h2>
-            <span id="stats-scope-badge" class="px-2 py-0.5 text-[10px] font-semibold bg-blue-50 text-blue-800 rounded border border-blue-200">
-              Personal Performance
-            </span>
-          </div>
-          <span class="text-xs text-gray-500" id="stats-scope-desc">Showing loan volume and metrics logged by your account.</span>
+      <!-- Key Metric Strip -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div class="bg-white border border-zinc-200 rounded-xl p-4">
+          <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Total Files Logged</p>
+          <p id="stat-total-count" class="text-xl sm:text-2xl font-bold text-zinc-900 mt-1">0</p>
         </div>
-        <div class="flex items-center space-x-1 border border-gray-200 p-0.5 rounded bg-gray-50 text-xs font-semibold">
-          <button id="btn-period-weekly" class="px-2.5 py-1 rounded text-gray-600 hover:text-gray-900">Weekly</button>
-          <button id="btn-period-monthly" class="px-2.5 py-1 rounded text-gray-600 hover:text-gray-900">Monthly</button>
-          <button id="btn-period-yearly" class="px-2.5 py-1 rounded text-gray-600 hover:text-gray-900">Yearly</button>
-          <button id="btn-period-all" class="px-2.5 py-1 rounded bg-white text-gray-900 shadow-sm border border-gray-200">All Time</button>
+        <div class="bg-white border border-zinc-200 rounded-xl p-4">
+          <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Total Value Requested</p>
+          <p id="stat-total-amount" class="text-xl sm:text-2xl font-bold text-zinc-900 mt-1">₹0</p>
+        </div>
+        <div class="bg-white border border-zinc-200 rounded-xl p-4">
+          <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Top Institution</p>
+          <p id="stat-top-bank" class="text-sm sm:text-base font-bold text-zinc-900 mt-1 truncate">-</p>
+        </div>
+        <div class="bg-white border border-zinc-200 rounded-xl p-4">
+          <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Top Loan Product</p>
+          <p id="stat-top-product" class="text-sm sm:text-base font-bold text-zinc-900 mt-1 truncate">-</p>
         </div>
       </div>
 
-      <!-- Two Column Layout: Bank Breakdown & Loan Type Breakdown -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <!-- Time Interval Filter -->
+      <div class="flex items-center space-x-2">
+        <span class="text-xs font-semibold text-zinc-600">Aggregation Period:</span>
+        <div class="flex items-center space-x-1 bg-zinc-200/80 p-0.5 rounded-lg text-xs">
+          <button data-period="all" class="btn-period px-3 py-1 font-semibold bg-white text-zinc-900 rounded-md shadow-sm">All Time</button>
+          <button data-period="year" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Year</button>
+          <button data-period="month" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Month</button>
+          <button data-period="week" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Week</button>
+        </div>
+      </div>
+
+      <!-- Statistical Breakdowns Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
-        <!-- Which bank disbursed the most loan? -->
-        <div class="bg-white p-4 sm:p-5 rounded border border-gray-200 shadow-sm">
-          <div class="border-b border-gray-200 pb-2 mb-4">
-            <h3 class="text-sm font-bold text-gray-900">Which Bank / NBFC disbursed the most loan?</h3>
-            <span class="text-xs text-gray-500">Ranked by total loan amount</span>
-          </div>
-          <div id="stat-banks-list" class="space-y-3 text-xs max-h-[380px] overflow-y-auto pr-1">
-            <!-- Dynamically populated -->
+        <!-- Disbursal by Partner Bank -->
+        <div class="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm">
+          <h3 class="text-sm font-bold text-zinc-900 mb-1">Volume by Banking Partner</h3>
+          <p class="text-xs text-zinc-500 mb-4">Ranked breakdown of requested amounts across institutions</p>
+          <div id="chart-bank-breakdown" class="space-y-3 text-xs">
+            <!-- Dynamic Bars -->
           </div>
         </div>
 
-        <!-- Which type of loan is most taken? -->
-        <div class="bg-white p-4 sm:p-5 rounded border border-gray-200 shadow-sm">
-          <div class="border-b border-gray-200 pb-2 mb-4">
-            <h3 class="text-sm font-bold text-gray-900">Which type of loan is most taken?</h3>
-            <span class="text-xs text-gray-500">Ranked by number of customer files</span>
-          </div>
-          <div id="stat-types-list" class="space-y-3 text-xs max-h-[380px] overflow-y-auto pr-1">
-            <!-- Dynamically populated -->
+        <!-- Volume by Loan Category -->
+        <div class="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm">
+          <h3 class="text-sm font-bold text-zinc-900 mb-1">Volume by Loan Product</h3>
+          <p class="text-xs text-zinc-500 mb-4">Distribution across categories and product lines</p>
+          <div id="chart-product-breakdown" class="space-y-3 text-xs">
+            <!-- Dynamic Bars -->
           </div>
         </div>
       </div>
 
-      <!-- 7 Documents Compliance Summary -->
-      <div class="bg-white p-4 sm:p-5 rounded border border-gray-200 shadow-sm">
-        <div class="border-b border-gray-200 pb-2 mb-4">
-          <h3 class="text-sm font-bold text-gray-900">Documents Collected Summary (7 Required)</h3>
-          <span class="text-xs text-gray-500">Verification rates across active files</span>
-        </div>
-        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-xs">
-          
-          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="Aadhaar & PAN (Applicant & Co-App)">Aadhaar & PAN</span>
-            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-aadhaar-pan">0%</span>
-            <span class="text-[10px] text-gray-500" id="doc-sub-aadhaar-pan">0 files</span>
-          </div>
-
-          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="1 Year Bank Statement">Bank Stmt (1 Yr)</span>
-            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-bank-stmt">0%</span>
-            <span class="text-[10px] text-gray-500" id="doc-sub-bank-stmt">0 files</span>
-          </div>
-
-          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="Business Proof">Business Proof</span>
-            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-business">0%</span>
-            <span class="text-[10px] text-gray-500" id="doc-sub-business">0 files</span>
-          </div>
-
-          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="3 Month Salary Slip">Salary Slip (3M)</span>
-            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-salary">0%</span>
-            <span class="text-[10px] text-gray-500" id="doc-sub-salary">0 files</span>
-          </div>
-
-          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="Revenue Tax Slip">Revenue Tax Slip</span>
-            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-tax">0%</span>
-            <span class="text-[10px] text-gray-500" id="doc-sub-tax">0 files</span>
-          </div>
-
-          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="Sale Deed">Sale Deed</span>
-            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-deed">0%</span>
-            <span class="text-[10px] text-gray-500" id="doc-sub-deed">0 files</span>
-          </div>
-
-          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="Udyam Aadhaar">Udyam Aadhaar</span>
-            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-udyam">0%</span>
-            <span class="text-[10px] text-gray-500" id="doc-sub-udyam">0 files</span>
-          </div>
-
+      <!-- Document Compliance Summary Strip -->
+      <div class="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm">
+        <h3 class="text-sm font-bold text-zinc-900 mb-1">Document Compliance Checkpoints (7 Proofs)</h3>
+        <p class="text-xs text-zinc-500 mb-4">Verification rates across all active logged customer records</p>
+        <div id="doc-compliance-grid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-center">
+          <!-- Rendered via JS -->
         </div>
       </div>
-    </section>
-
+    </div>
   </main>
 
-  <!-- FOOTER -->
-  <footer class="bg-white border-t border-gray-200 py-3.5 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-1.5">
-      <div class="font-medium text-gray-700">Rashmi Associates — Loan Operations Portal</div>
-      <div>Hosted on Cloudflare Pages (ralogs.pages.dev)</div>
-    </div>
-  </footer>
-
-  <!-- ======================== MODALS ======================== -->
-
-  <!-- 1. AUTHENTICATION MODAL -->
-  <div id="modal-login" class="modal-overlay hidden">
-    <div class="modal-box max-w-sm">
-      <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+  <!-- ================= MODAL: CUSTOMER RECORD ENTRY/EDIT ================= -->
+  <div id="modal-record" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="modal-container bg-white border border-zinc-200 rounded-2xl w-full max-w-xl shadow-2xl flex flex-col overflow-y-auto">
+      
+      <!-- Modal Header -->
+      <div class="px-5 py-4 border-b border-zinc-200 flex items-center justify-between sticky top-0 bg-white z-10">
         <div>
-          <h3 class="text-sm font-bold text-gray-900">Sign In</h3>
-          <span class="text-[11px] text-gray-500">Access your loan records</span>
+          <h3 id="modal-record-title" class="text-sm sm:text-base font-bold text-zinc-900">New Customer Entry</h3>
+          <p class="text-xs text-zinc-500">Record and verify borrower loan profile</p>
         </div>
-        <button id="btn-close-login" class="text-gray-400 hover:text-gray-700 p-1">
-          <i data-lucide="x" class="w-4 h-4"></i>
+        <button type="button" class="btn-close-modal p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <form id="form-login" class="p-4 space-y-3.5">
+      <!-- Modal Form -->
+      <form id="record-form" class="p-5 space-y-4">
+        <input type="hidden" id="inp-record-id">
+
+        <!-- Customer Full Name -->
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Username</label>
-          <input type="text" id="login-username" required placeholder="kailash or staff username" class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
+          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1.5">Borrower Full Name *</label>
+          <input type="text" id="inp-name" required placeholder="e.g. Ramesh Kumar Patel" class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors">
         </div>
 
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
-          <input type="password" id="login-password" required placeholder="Enter password" class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
-        </div>
-
-        <div id="login-error-box" class="hidden p-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded">
-          Invalid username or password.
-        </div>
-
-        <button type="submit" id="btn-submit-login" class="w-full py-2 px-4 text-xs font-semibold text-white bg-gray-900 hover:bg-black rounded transition-colors">
-          Sign In
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- 2. CUSTOMER ENTRY & EDIT MODAL -->
-  <div id="modal-customer" class="modal-overlay hidden">
-    <div class="modal-box max-w-2xl">
-      <div class="px-5 py-3.5 border-b border-gray-200 flex items-center justify-between bg-gray-50">
-        <div>
-          <h3 class="text-sm font-bold text-gray-900" id="modal-customer-heading">New Customer Entry</h3>
-          <span class="text-xs text-gray-500">Enter borrower information and select collected documents</span>
-        </div>
-        <button id="btn-close-customer" class="text-gray-400 hover:text-gray-700 p-1">
-          <i data-lucide="x" class="w-4 h-4"></i>
-        </button>
-      </div>
-
-      <form id="form-customer" class="modal-body p-5 space-y-4">
-        <input type="hidden" id="edit-record-id" value="">
-
-        <!-- Row: Name and DOB/Age -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <!-- DOB and Live Age Calculation -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Customer Name <span class="text-red-500">*</span></label>
-            <input type="text" id="input-customer-name" required placeholder="Full Name of Applicant" class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
+            <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1.5">Date of Birth *</label>
+            <input type="date" id="inp-dob" required class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors">
           </div>
-
           <div>
-            <div class="flex items-center justify-between mb-1">
-              <label class="block text-xs font-semibold text-gray-700">Date of Birth <span class="text-red-500">*</span></label>
-              <span id="badge-calculated-age" class="text-[11px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                Age: —
-              </span>
+            <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1.5">Calculated Age</label>
+            <div id="dob-age-display" class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-600 font-medium flex items-center">
+              Select DOB
             </div>
-            <input type="date" id="input-customer-dob" required class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
           </div>
         </div>
 
-        <!-- Loan Amount with Dynamic Indian Numbering Indicator -->
+        <!-- Loan Amount with Instant Indian Numbering Preview -->
         <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="block text-xs font-semibold text-gray-700">Loan Amount (INR) <span class="text-red-500">*</span></label>
-            <span id="badge-loan-amount-words" class="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300">
-              ₹0 (0 Lakh)
-            </span>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-xs font-semibold text-zinc-700 uppercase tracking-wider">Loan Amount (₹) *</label>
+            <span id="amount-badge-preview" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 hidden">₹0</span>
           </div>
-          <div class="relative">
-            <span class="absolute left-3 top-2 text-xs text-gray-500 font-semibold">₹</span>
-            <input type="number" id="input-loan-amount" step="1000" min="1000" required placeholder="e.g. 1000000" class="w-full pl-7 pr-3 py-2 text-xs rounded border border-gray-300 bg-white font-medium">
-          </div>
+          <input type="number" id="inp-amount" min="1" step="any" required placeholder="e.g. 2500000" class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors">
         </div>
 
-        <!-- Row: Loan Type (12) and Bank (30) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <!-- Loan Product and Partner Bank (Strict 30 Institutions) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Loan Type <span class="text-red-500">*</span></label>
-            <select id="select-loan-type" required class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
-              <!-- Populated via JS with 12 approved types -->
+            <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1.5">Loan Product *</label>
+            <select id="inp-loan-type" required class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors bg-white">
+              <!-- Populated dynamically via JS -->
             </select>
           </div>
-
           <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1">Bank / NBFC Partner <span class="text-red-500">*</span></label>
-            <select id="select-bank" required class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
-              <!-- Populated via JS with 30 approved banks -->
+            <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1.5">Partner Bank / NBFC *</label>
+            <select id="inp-bank-name" required class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors bg-white">
+              <!-- Populated dynamically via JS -->
             </select>
           </div>
         </div>
 
-        <!-- The 7 Document Checkpoints -->
-        <div class="border border-gray-200 rounded p-3 bg-gray-50">
-          <label class="block text-xs font-semibold text-gray-800 mb-2">Documents Collected (7 Required)</label>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+        <!-- 7 Required Document Checkpoints -->
+        <div>
+          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-2">Required Documents Collected (7 Checkpoints)</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-zinc-50 p-3 rounded-lg border border-zinc-200 text-xs">
             
-            <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
-              <input type="checkbox" id="check-doc-aadhaar-pan" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">1. Aadhaar Card & PAN Card (Applicant & Co-Applicant)</span>
+            <label class="flex items-center space-x-2 text-zinc-800 cursor-pointer">
+              <input type="checkbox" id="chk-aadhaar-pan" class="rounded border-zinc-300 text-zinc-900 focus:ring-0">
+              <span>Aadhaar & PAN (Applicant & Co)</span>
             </label>
 
-            <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
-              <input type="checkbox" id="check-doc-bank-stmt" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">2. Bank Statement of 1 year</span>
+            <label class="flex items-center space-x-2 text-zinc-800 cursor-pointer">
+              <input type="checkbox" id="chk-bank-stmt" class="rounded border-zinc-300 text-zinc-900 focus:ring-0">
+              <span>Bank Statement (1 Year)</span>
             </label>
 
-            <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
-              <input type="checkbox" id="check-doc-business" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">3. Business Proof</span>
+            <label class="flex items-center space-x-2 text-zinc-800 cursor-pointer">
+              <input type="checkbox" id="chk-business-proof" class="rounded border-zinc-300 text-zinc-900 focus:ring-0">
+              <span>Business Proof</span>
             </label>
 
-            <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
-              <input type="checkbox" id="check-doc-salary" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">4. 3 Month Salary Slip</span>
+            <label class="flex items-center space-x-2 text-zinc-800 cursor-pointer">
+              <input type="checkbox" id="chk-salary-slip" class="rounded border-zinc-300 text-zinc-900 focus:ring-0">
+              <span>3-Month Salary Slip</span>
             </label>
 
-            <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
-              <input type="checkbox" id="check-doc-tax" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">5. Revenue Tax Slip</span>
+            <label class="flex items-center space-x-2 text-zinc-800 cursor-pointer">
+              <input type="checkbox" id="chk-revenue-slip" class="rounded border-zinc-300 text-zinc-900 focus:ring-0">
+              <span>Revenue Tax Slip</span>
             </label>
 
-            <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
-              <input type="checkbox" id="check-doc-deed" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">6. Sale Deed</span>
+            <label class="flex items-center space-x-2 text-zinc-800 cursor-pointer">
+              <input type="checkbox" id="chk-sale-deed" class="rounded border-zinc-300 text-zinc-900 focus:ring-0">
+              <span>Sale Deed</span>
             </label>
 
-            <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors sm:col-span-2">
-              <input type="checkbox" id="check-doc-udyam" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">7. Udyam Aadhaar</span>
+            <label class="flex items-center space-x-2 text-zinc-800 cursor-pointer sm:col-span-2">
+              <input type="checkbox" id="chk-udyam" class="rounded border-zinc-300 text-zinc-900 focus:ring-0">
+              <span>Udyam Aadhaar</span>
             </label>
-
           </div>
         </div>
 
         <!-- Address -->
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Customer Address <span class="text-red-500">*</span></label>
-          <textarea id="input-address" required rows="2" placeholder="Complete residential/business address with city and pin code..." class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white resize-none"></textarea>
+          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1.5">Borrower Address</label>
+          <textarea id="inp-address" rows="2" placeholder="Full residential / business address" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors"></textarea>
         </div>
 
-        <!-- Approver Name -->
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Approver Name <span class="text-red-500">*</span></label>
-          <input type="text" id="input-approver-name" required placeholder="Approver name" class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
-          <span id="hint-approver-name" class="text-[11px] text-gray-500 mt-1 block">Locked to Kailash Chandra Bishoyi during Admin session.</span>
-        </div>
-
-        <!-- Modal Actions -->
-        <div class="pt-3 border-t border-gray-200 flex items-center justify-end space-x-2">
-          <button type="button" id="btn-cancel-customer" class="px-4 py-2 text-xs font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded bg-white">
-            Cancel
-          </button>
-          <button type="submit" id="btn-submit-customer" class="px-5 py-2 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 rounded transition-colors">
-            Save Record
+        <!-- Actions -->
+        <div class="pt-3 border-t border-zinc-200 flex items-center justify-end space-x-2">
+          <button type="button" class="btn-close-modal px-4 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-lg text-xs sm:text-sm font-medium transition-colors">Cancel</button>
+          <button type="submit" id="btn-save-record" class="px-5 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center space-x-1.5">
+            <span>Save Record</span>
           </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 3. SELF-SERVICE PASSWORD CHANGE MODAL -->
-  <div id="modal-password" class="modal-overlay hidden">
-    <div class="modal-box max-w-sm">
-      <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+  <!-- ================= MODAL: AUTHENTICATION / SIGN IN ================= -->
+  <div id="modal-login" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white border border-zinc-200 rounded-2xl w-full max-w-sm shadow-2xl p-6">
+      <div class="flex items-center justify-between mb-4">
         <div>
-          <h3 class="text-sm font-bold text-gray-900">Change Password</h3>
-          <span class="text-[11px] text-gray-500" id="pwd-modal-user-target">Update your account password</span>
+          <h3 class="text-base font-bold text-zinc-900">Sign In</h3>
+          <p class="text-xs text-zinc-500">Enter your assigned username and password</p>
         </div>
-        <button id="btn-close-password" class="text-gray-400 hover:text-gray-700 p-1">
+        <button type="button" class="btn-close-login p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
-      <form id="form-password" class="p-4 space-y-3.5">
+      <form id="login-form" class="space-y-3.5">
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Current Password</label>
-          <input type="password" id="input-curr-password" required placeholder="Enter current password" class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
+          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1">Username</label>
+          <input type="text" id="login-user" required autocomplete="username" placeholder="Username (e.g. kailash / staff id)" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1">Password</label>
+          <input type="password" id="login-pass" required autocomplete="current-password" placeholder="••••••••" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none">
         </div>
 
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">New Password</label>
-          <input type="password" id="input-new-password" required placeholder="Enter new password (min 6 chars)" class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
-        </div>
+        <div id="login-error-msg" class="hidden text-xs text-rose-600 bg-rose-50 border border-rose-200 p-2.5 rounded-lg font-medium"></div>
 
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Confirm New Password</label>
-          <input type="password" id="input-confirm-password" required placeholder="Repeat new password" class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
-        </div>
-
-        <button type="submit" id="btn-submit-password" class="w-full py-2 px-4 text-xs font-semibold text-white bg-gray-900 hover:bg-black rounded transition-colors">
-          Update Password
+        <button type="submit" id="btn-submit-login" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5 mt-2">
+          <span>Authorize Access</span>
         </button>
       </form>
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
-  <div id="toast-box" class="fixed bottom-4 right-4 z-50 transform translate-y-20 opacity-0 transition-all duration-300 max-w-sm w-full pointer-events-none">
-    <div class="bg-gray-900 text-white p-3 rounded shadow-lg flex items-center space-x-2.5 text-xs pointer-events-auto border border-gray-700">
-      <i data-lucide="info" id="toast-icon" class="w-4 h-4 text-blue-400 shrink-0"></i>
-      <span id="toast-message" class="font-medium">Notification</span>
+  <!-- ================= MODAL: SELF-SERVICE PASSWORD CHANGE ================= -->
+  <div id="modal-password" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white border border-zinc-200 rounded-2xl w-full max-w-sm shadow-2xl p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="text-base font-bold text-zinc-900">Change Password</h3>
+          <p class="text-xs text-zinc-500">Update your account security key</p>
+        </div>
+        <button type="button" class="btn-close-password p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="password-form" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1">Current Password</label>
+          <input type="password" id="pass-current" required placeholder="••••••••" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1">New Password</label>
+          <input type="password" id="pass-new" required minlength="6" placeholder="Minimum 6 characters" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none">
+        </div>
+
+        <div id="pass-feedback-msg" class="hidden text-xs p-2.5 rounded-lg font-medium"></div>
+
+        <button type="submit" id="btn-submit-password" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5 mt-2">
+          <span>Update Password</span>
+        </button>
+      </form>
     </div>
   </div>
 
-  <!-- ======================== PRINTABLE PDF REPORT CONTAINER ======================== -->
-  <div id="pdf-printable-area" class="p-8 bg-white text-gray-900 font-sans">
-    
-    <!-- PDF Header -->
-    <div style="border-bottom: 2px solid #111827; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end;">
-      <div>
-        <h1 style="font-size: 20px; font-weight: bold; margin: 0; color: #111827;">RASHMI ASSOCIATES</h1>
-        <p style="font-size: 11px; color: #4b5563; margin: 2px 0 0 0;">Customer Loan Records & Disbursal Performance Summary</p>
-      </div>
-      <div style="text-align: right; font-size: 10px; color: #4b5563;">
-        <div>Scope: <strong id="pdf-scope-label">Company Total</strong></div>
-        <div>Date Generated: <strong id="pdf-generated-date"></strong></div>
-      </div>
-    </div>
-
-    <!-- Summary Box Strip -->
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px;">
-      <div style="border: 1px solid #d1d5db; padding: 8px; border-radius: 4px; background: #f9fafb;">
-        <span style="font-size: 9px; color: #6b7280; display: block; font-weight: bold;">TOTAL LOAN VALUE</span>
-        <span id="pdf-total-val" style="font-size: 13px; font-weight: bold; color: #111827;">₹0</span>
-      </div>
-      <div style="border: 1px solid #d1d5db; padding: 8px; border-radius: 4px; background: #f9fafb;">
-        <span style="font-size: 9px; color: #6b7280; display: block; font-weight: bold;">TOTAL FILES</span>
-        <span id="pdf-total-files" style="font-size: 13px; font-weight: bold; color: #111827;">0</span>
-      </div>
-      <div style="border: 1px solid #d1d5db; padding: 8px; border-radius: 4px; background: #f9fafb;">
-        <span style="font-size: 9px; color: #6b7280; display: block; font-weight: bold;">TOP BANK</span>
-        <span id="pdf-top-bank" style="font-size: 11px; font-weight: bold; color: #111827;">—</span>
-      </div>
-      <div style="border: 1px solid #d1d5db; padding: 8px; border-radius: 4px; background: #f9fafb;">
-        <span style="font-size: 9px; color: #6b7280; display: block; font-weight: bold;">TOP LOAN TYPE</span>
-        <span id="pdf-top-type" style="font-size: 11px; font-weight: bold; color: #111827;">—</span>
-      </div>
-    </div>
-
-    <!-- Two-column Bank and Loan Type Breakdown -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px;">
-      
-      <!-- Bank breakdown table -->
-      <div style="border: 1px solid #e5e7eb; padding: 10px; border-radius: 4px;">
-        <h4 style="font-size: 10px; font-weight: bold; margin: 0 0 6px 0; border-bottom: 1px solid #e5e7eb; padding-bottom: 4px;">Top Banks & NBFCs by Volume</h4>
-        <div id="pdf-banks-breakdown" style="font-size: 9px;"></div>
-      </div>
-
-      <!-- Loan type breakdown table -->
-      <div style="border: 1px solid #e5e7eb; padding: 10px; border-radius: 4px;">
-        <h4 style="font-size: 10px; font-weight: bold; margin: 0 0 6px 0; border-bottom: 1px solid #e5e7eb; padding-bottom: 4px;">Top Loan Types by Files</h4>
-        <div id="pdf-types-breakdown" style="font-size: 9px;"></div>
-      </div>
-    </div>
-
-    <!-- Customer Records Summary Table -->
-    <div>
-      <h4 style="font-size: 10px; font-weight: bold; margin: 0 0 6px 0;">Customer Records Ledger</h4>
-      <table style="width: 100%; border-collapse: collapse; font-size: 8.5px; text-align: left;">
-        <thead>
-          <tr style="background: #f3f4f6; border-top: 1px solid #d1d5db; border-bottom: 1px solid #d1d5db;">
-            <th style="padding: 4px;">Customer Name</th>
-            <th style="padding: 4px;">Age</th>
-            <th style="padding: 4px;">Loan Amount</th>
-            <th style="padding: 4px;">Loan Type</th>
-            <th style="padding: 4px;">Bank / NBFC</th>
-            <th style="padding: 4px;">Docs Verified</th>
-            <th style="padding: 4px;">Approver</th>
-          </tr>
-        </thead>
-        <tbody id="pdf-records-table-body">
-          <!-- Populated during PDF generation -->
-        </tbody>
-      </table>
-    </div>
+  <!-- Hidden Container for Printable PDF Report -->
+  <div id="pdf-report-template" class="hidden bg-white p-8 text-zinc-900 font-sans">
+    <!-- Built dynamically prior to export -->
   </div>
 
-  <!-- ======================== APPLICATION LOGIC ======================== -->
+  <!-- ================= LOGIC & INTEGRATION LAYER ================= -->
   <script>
-    (function () {
-      // 1. SUPABASE CLIENT
-      const SUPABASE_PROJECT_URL = "https://aghrnlpkycuormsdweki.supabase.co";
-      const SUPABASE_PUB_KEY = "sb_publishable_UEMVzmxLLtRRitiv1IpaTg_ZaUYcAUk";
-      
-      let db = null;
-      try {
-        if (window.supabase && window.supabase.createClient) {
-          db = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_PUB_KEY);
-        }
-      } catch (err) {
-        console.error("Supabase client init failed:", err);
+    // --- 1. System Config & Exact Domain Entities ---
+    const SUPABASE_URL = 'https://aghrnlpkycuormsdweki.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnaHJubHBreWN1b3Jtc2R3ZWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2Nzk2NzIsImV4cCI6MjA2MjI1NTY3Mn0.oJ69B4g0Vp5Cq92v8164bdf64bd829bf';
+
+    const APPROVED_BANKS = [
+      'ICICI Bank', 'HDFC Bank', 'Axis Bank', 'IDFC FIRST Bank', 'DCB Bank',
+      'IndusInd Bank', 'Kotak Mahindra Bank', 'Bandhan Bank', 'HDB Financial Services', 'Yes Bank',
+      'State Bank of India (SBI)', 'Punjab National Bank (PNB)', 'Bank of India (BOI)', 'Indian Bank', 'Bank of Baroda (BOB)',
+      'IDBI Bank', 'Union Bank of India', 'Tata Capital Housing Finance (TCHFCL)', 'Piramal Capital & Housing Finance (PCHFCL)', 'Aditya Birla Housing Finance (ABHFCL)',
+      'Aavas Financiers', 'Cholamandalam Investment and Finance', 'LIC Housing Finance (LICHFL)', 'Veritas Finance', 'Vistaar Finance',
+      'Arka Fincap', 'Bajaj Housing Finance Ltd (Bajaj HFL)', 'Arthan Finance', 'Aptus Value Housing Finance', 'Manappuram Finance'
+    ];
+
+    const APPROVED_LOAN_TYPES = [
+      'Home Loan', 'Personal Loan', 'Business Loan', 'Loan Against Property (LAP)',
+      'Auto Loan', 'Car Loan', 'Two-Wheeler Loan', 'Gold Loan', 'Agriculture Loan',
+      'Education Loan', 'Consumer Durable Loan', 'Loan Against Fixed Deposit'
+    ];
+
+    // Supabase Client Safe Boot
+    let supabase = null;
+    try {
+      if (window.supabase) {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       }
+    } catch (e) {
+      console.error('Supabase Client Init Error:', e);
+    }
 
-      // 2. THE 30 APPROVED INSTITUTIONS (STRICTLY ENFORCED)
-      const APPROVED_BANKS = [
-        "ICICI Bank",
-        "HDFC Bank",
-        "Axis Bank",
-        "IDFC FIRST Bank",
-        "DCB Bank",
-        "IndusInd Bank",
-        "Kotak Mahindra Bank",
-        "Bandhan Bank",
-        "HDB Financial Services",
-        "Yes Bank",
-        "State Bank of India (SBI)",
-        "Punjab National Bank (PNB)",
-        "Bank of India (BOI)",
-        "Indian Bank",
-        "Bank of Baroda (BOB)",
-        "IDBI Bank",
-        "Union Bank of India",
-        "Tata Capital Housing Finance (TCHFCL)",
-        "Piramal Capital & Housing Finance (PCHFCL)",
-        "Aditya Birla Housing Finance (ABHFCL)",
-        "Aavas Financiers",
-        "Cholamandalam Investment and Finance",
-        "LIC Housing Finance (LICHFL)",
-        "Veritas Finance",
-        "Vistaar Finance",
-        "Arka Fincap",
-        "Bajaj Housing Finance Ltd (Bajaj HFL)",
-        "Arthan Finance",
-        "Aptus Value Housing Finance",
-        "Manappuram Finance"
-      ];
+    // App State
+    let currentSession = null;
+    let recordsData = [];
+    let currentPeriod = 'all';
+    let videoIdleTimer = null;
 
-      // 3. THE 12 APPROVED LOAN TYPES
-      const APPROVED_LOAN_TYPES = [
-        "Home Loan",
-        "Personal Loan",
-        "Business Loan",
-        "Loan Against Property (LAP)",
-        "Auto Loan",
-        "Car Loan",
-        "Two-Wheeler Loan",
-        "Gold Loan",
-        "Agriculture Loan",
-        "Education Loan",
-        "Consumer Durable Loan",
-        "Loan Against Fixed Deposit"
-      ];
+    // --- 2. Helper Utilities ---
+    function formatIndianCurrency(num) {
+      if (!num || isNaN(num)) return '₹0';
+      const n = parseFloat(num);
+      return '₹' + n.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+    }
 
-      // 4. APPLICATION STATE
-      let currentSession = null; // { username, role }
-      let customerRecords = [];
-      let currentStatsPeriod = 'all'; // 'weekly' | 'monthly' | 'yearly' | 'all'
-      let activeTab = 'records';
+    function getShorthandCurrency(num) {
+      if (!num || isNaN(num) || num <= 0) return '';
+      const val = parseFloat(num);
+      if (val >= 10000000) {
+        return (val / 10000000).toFixed(2).replace(/\.00$/, '') + ' Cr';
+      } else if (val >= 100000) {
+        return (val / 100000).toFixed(2).replace(/\.00$/, '') + ' Lakh (10L)';
+      } else if (val >= 1000) {
+        return (val / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+      }
+      return val.toString();
+    }
 
-      // 5. APPLICATION STARTUP
-      document.addEventListener("DOMContentLoaded", () => {
-        initializeIcons();
-        populateSelectOptions();
-        restoreUserSession();
-        bindEvents();
-        fetchCustomerData();
+    function calculateAge(dobStr) {
+      if (!dobStr) return null;
+      const dob = new Date(dobStr);
+      const diffMs = Date.now() - dob.getTime();
+      const ageDate = new Date(diffMs);
+      const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+      return isNaN(age) ? null : age;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // --- 3. DOM Elements ---
+    const preloginSection = document.getElementById('prelogin-section');
+    const appWorkspace = document.getElementById('app-workspace');
+    const btnHeaderLogin = document.getElementById('btn-header-login');
+    const btnHeroLogin = document.getElementById('btn-hero-login');
+    const authControls = document.getElementById('auth-controls');
+    const sessionUsername = document.getElementById('session-username');
+    const sessionRole = document.getElementById('session-role');
+    const btnLogout = document.getElementById('btn-logout');
+    const btnOpenPassword = document.getElementById('btn-open-password');
+
+    const revealVideo = document.getElementById('reveal-video');
+    const videoReplayBadge = document.getElementById('video-replay-badge');
+
+    const modalLogin = document.getElementById('modal-login');
+    const loginForm = document.getElementById('login-form');
+    const loginUser = document.getElementById('login-user');
+    const loginPass = document.getElementById('login-pass');
+    const loginErrorMsg = document.getElementById('login-error-msg');
+
+    const modalPassword = document.getElementById('modal-password');
+    const passwordForm = document.getElementById('password-form');
+    const passCurrent = document.getElementById('pass-current');
+    const passNew = document.getElementById('pass-new');
+    const passFeedbackMsg = document.getElementById('pass-feedback-msg');
+
+    const modalRecord = document.getElementById('modal-record');
+    const recordForm = document.getElementById('record-form');
+    const modalRecordTitle = document.getElementById('modal-record-title');
+    const inpRecordId = document.getElementById('inp-record-id');
+    const inpName = document.getElementById('inp-name');
+    const inpDob = document.getElementById('inp-dob');
+    const dobAgeDisplay = document.getElementById('dob-age-display');
+    const inpAmount = document.getElementById('inp-amount');
+    const amountBadgePreview = document.getElementById('amount-badge-preview');
+    const inpLoanType = document.getElementById('inp-loan-type');
+    const inpBankName = document.getElementById('inp-bank-name');
+    const inpAddress = document.getElementById('inp-address');
+
+    // Checkboxes
+    const chkAadhaarPan = document.getElementById('chk-aadhaar-pan');
+    const chkBankStmt = document.getElementById('chk-bank-stmt');
+    const chkBusinessProof = document.getElementById('chk-business-proof');
+    const chkSalarySlip = document.getElementById('chk-salary-slip');
+    const chkRevenueSlip = document.getElementById('chk-revenue-slip');
+    const chkSaleDeed = document.getElementById('chk-sale-deed');
+    const chkUdyam = document.getElementById('chk-udyam');
+
+    const tabBtnRecords = document.getElementById('tab-btn-records');
+    const tabBtnStats = document.getElementById('tab-btn-stats');
+    const viewRecords = document.getElementById('view-records');
+    const viewStats = document.getElementById('view-stats');
+    const btnOpenCreate = document.getElementById('btn-open-create');
+
+    const filterSearch = document.getElementById('filter-search');
+    const filterBank = document.getElementById('filter-bank');
+    const filterType = document.getElementById('filter-type');
+    const recordsTableBody = document.getElementById('records-table-body');
+    const recordsMobileCards = document.getElementById('records-mobile-cards');
+    const emptyRecordsState = document.getElementById('empty-records-state');
+
+    const btnReportMenu = document.getElementById('btn-report-menu');
+    const reportDropdown = document.getElementById('report-dropdown');
+    const btnExportPdf = document.getElementById('btn-export-pdf');
+    const btnExportCsv = document.getElementById('btn-export-csv');
+
+    // --- 4. Video Reveal & Idle Loop Logic ---
+    function initVideoReveal() {
+      if (!revealVideo) return;
+
+      // Start playing
+      revealVideo.play().catch(e => {
+        console.log('Video autoplay prevented by browser policy:', e);
       });
 
-      function initializeIcons() {
-        if (window.lucide && window.lucide.createIcons) {
-          window.lucide.createIcons();
-        }
-      }
+      // When video ends, pause on last frame and start 10-second idle countdown
+      revealVideo.addEventListener('ended', () => {
+        revealVideo.pause();
+        if (videoReplayBadge) videoReplayBadge.classList.remove('hidden');
 
-      // Populate Select Dropdowns for Banks & Loan Types
-      function populateSelectOptions() {
-        const bankSelect = document.getElementById("select-bank");
-        const filterBank = document.getElementById("filter-bank");
-        const typeSelect = document.getElementById("select-loan-type");
-        const filterType = document.getElementById("filter-type");
-
-        bankSelect.innerHTML = "";
-        APPROVED_BANKS.forEach(b => {
-          const opt1 = document.createElement("option");
-          opt1.value = b;
-          opt1.textContent = b;
-          bankSelect.appendChild(opt1);
-
-          const opt2 = document.createElement("option");
-          opt2.value = b;
-          opt2.textContent = b;
-          filterBank.appendChild(opt2);
-        });
-
-        typeSelect.innerHTML = "";
-        APPROVED_LOAN_TYPES.forEach(t => {
-          const opt1 = document.createElement("option");
-          opt1.value = t;
-          opt1.textContent = t;
-          typeSelect.appendChild(opt1);
-
-          const opt2 = document.createElement("option");
-          opt2.value = t;
-          opt2.textContent = t;
-          filterType.appendChild(opt2);
-        });
-      }
-
-      // 6. USER SESSION HANDLING
-      function restoreUserSession() {
-        const stored = localStorage.getItem("rashmi_user_session");
-        if (stored) {
-          try {
-            currentSession = JSON.parse(stored);
-          } catch (e) {
-            currentSession = null;
-            localStorage.removeItem("rashmi_user_session");
+        clearTimeout(videoIdleTimer);
+        videoIdleTimer = setTimeout(() => {
+          // If user still hasn't logged in, replay from start
+          if (!currentSession) {
+            revealVideo.currentTime = 0;
+            if (videoReplayBadge) videoReplayBadge.classList.add('hidden');
+            revealVideo.play().catch(() => {});
           }
-        }
-        updateAuthHeader();
-      }
+        }, 10000); // 10 seconds idle loop
+      });
+    }
 
-      function updateAuthHeader() {
-        const loggedOutEl = document.getElementById("auth-logged-out");
-        const loggedInEl = document.getElementById("auth-logged-in");
-        const nameEl = document.getElementById("user-display-name");
-        const roleEl = document.getElementById("user-role-badge");
-        const kpiLabelVolume = document.getElementById("kpi-label-volume");
-        const kpiLabelFiles = document.getElementById("kpi-label-files");
-        const kpiScopeHint = document.getElementById("kpi-scope-hint");
-        const statsScopeBadge = document.getElementById("stats-scope-badge");
-        const statsScopeDesc = document.getElementById("stats-scope-desc");
+    // --- 5. Populating Static Approved Dropdowns ---
+    function populateDropdowns() {
+      // Form Dropdowns
+      inpBankName.innerHTML = '<option value="" disabled selected>Select Approved Bank / NBFC</option>' +
+        APPROVED_BANKS.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
 
-        if (currentSession) {
-          loggedOutEl.classList.add("hidden");
-          loggedInEl.classList.remove("hidden");
-          nameEl.textContent = currentSession.username;
+      inpLoanType.innerHTML = '<option value="" disabled selected>Select Loan Product</option>' +
+        APPROVED_LOAN_TYPES.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
 
-          const isAdmin = currentSession.role === 'admin' || currentSession.username === 'kailash';
-          roleEl.textContent = isAdmin ? '(Admin)' : '(Staff)';
+      // Filter Dropdowns
+      filterBank.innerHTML = '<option value="">All Partner Banks</option>' +
+        APPROVED_BANKS.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
 
-          if (isAdmin) {
-            kpiLabelVolume.textContent = "Total Company Loan Volume";
-            kpiLabelFiles.textContent = "All Customer Files";
-            kpiScopeHint.textContent = "All 6 staff + admin combined";
-            statsScopeBadge.textContent = "Company-Wide Overview";
-            statsScopeBadge.className = "px-2 py-0.5 text-[10px] font-semibold bg-gray-900 text-white rounded";
-            statsScopeDesc.textContent = "Aggregating performance across all 6 staff members and admin.";
-          } else {
-            kpiLabelVolume.textContent = "My Total Loan Volume";
-            kpiLabelFiles.textContent = "My Customer Files";
-            kpiScopeHint.textContent = "Your logged records only";
-            statsScopeBadge.textContent = "My Personal Performance";
-            statsScopeBadge.className = "px-2 py-0.5 text-[10px] font-semibold bg-blue-50 text-blue-800 rounded border border-blue-200";
-            statsScopeDesc.textContent = `Showing only records logged by ${currentSession.username}.`;
-          }
-        } else {
-          loggedOutEl.classList.remove("hidden");
-          loggedInEl.classList.add("hidden");
-          kpiLabelVolume.textContent = "Total Loan Volume";
-          kpiLabelFiles.textContent = "Customer Files";
-          kpiScopeHint.textContent = "Sign in to view";
-        }
-        initializeIcons();
-      }
+      filterType.innerHTML = '<option value="">All Loan Types</option>' +
+        APPROVED_LOAN_TYPES.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
+    }
 
-      // 7. EVENT LISTENERS
-      function bindEvents() {
-        // Tab Navigation (Desktop)
-        document.getElementById("tab-btn-records").addEventListener("click", () => switchWorkspaceTab('records'));
-        document.getElementById("tab-btn-stats").addEventListener("click", () => switchWorkspaceTab('stats'));
-
-        // Tab Navigation (Mobile)
-        document.getElementById("mob-btn-records").addEventListener("click", () => switchWorkspaceTab('records'));
-        document.getElementById("mob-btn-stats").addEventListener("click", () => switchWorkspaceTab('stats'));
-
-        // Auth
-        document.getElementById("btn-open-login").addEventListener("click", openLoginDialog);
-        document.getElementById("btn-close-login").addEventListener("click", closeLoginDialog);
-        document.getElementById("btn-logout").addEventListener("click", executeLogout);
-        document.getElementById("form-login").addEventListener("submit", executeLogin);
-
-        // Customer Modal
-        document.getElementById("btn-open-new-customer").addEventListener("click", () => openCustomerModal());
-        document.getElementById("btn-close-customer").addEventListener("click", closeCustomerModal);
-        document.getElementById("btn-cancel-customer").addEventListener("click", closeCustomerModal);
-        document.getElementById("form-customer").addEventListener("submit", saveCustomerRecord);
-
-        // Password Modal (Self-service for both Kailash and Staff)
-        document.getElementById("btn-open-password").addEventListener("click", openPasswordDialog);
-        document.getElementById("btn-close-password").addEventListener("click", closePasswordDialog);
-        document.getElementById("form-password").addEventListener("submit", executePasswordChange);
-
-        // Realtime Calculations
-        document.getElementById("input-customer-dob").addEventListener("input", handleDobInput);
-        document.getElementById("input-customer-dob").addEventListener("change", handleDobInput);
-        document.getElementById("input-loan-amount").addEventListener("input", handleLoanAmountInput);
-
-        // Search & Filters
-        document.getElementById("records-search").addEventListener("input", renderCustomerRecordsTable);
-        document.getElementById("filter-bank").addEventListener("change", renderCustomerRecordsTable);
-        document.getElementById("filter-type").addEventListener("change", renderCustomerRecordsTable);
-        document.getElementById("btn-refresh-data").addEventListener("click", fetchCustomerData);
-
-        // Stats Period Filter
-        document.getElementById("btn-period-weekly").addEventListener("click", () => setStatsPeriod('weekly'));
-        document.getElementById("btn-period-monthly").addEventListener("click", () => setStatsPeriod('monthly'));
-        document.getElementById("btn-period-yearly").addEventListener("click", () => setStatsPeriod('yearly'));
-        document.getElementById("btn-period-all").addEventListener("click", () => setStatsPeriod('all'));
-
-        // Report Exports
-        document.getElementById("btn-export-pdf").addEventListener("click", generateClientSidePdf);
-        document.getElementById("btn-export-csv").addEventListener("click", exportCsvSheet);
-
-        // Modal backdrop dismissal
-        document.querySelectorAll(".modal-overlay").forEach(overlay => {
-          overlay.addEventListener("click", (e) => {
-            if (e.target === overlay) {
-              closeLoginDialog();
-              closeCustomerModal();
-              closePasswordDialog();
-            }
-          });
-        });
-      }
-
-      // 8. WORKSPACE TAB SWITCHER
-      function switchWorkspaceTab(tab) {
-        activeTab = tab;
-        const viewRecords = document.getElementById("view-records");
-        const viewStats = document.getElementById("view-stats");
-
-        const tabBtnRecords = document.getElementById("tab-btn-records");
-        const tabBtnStats = document.getElementById("tab-btn-stats");
-        const mobBtnRecords = document.getElementById("mob-btn-records");
-        const mobBtnStats = document.getElementById("mob-btn-stats");
-
-        if (tab === 'records') {
-          viewRecords.classList.remove("hidden");
-          viewStats.classList.add("hidden");
-
-          tabBtnRecords.className = "px-4 py-1.5 rounded text-gray-900 bg-white shadow-sm border border-gray-200";
-          tabBtnStats.className = "px-4 py-1.5 rounded text-gray-600 hover:text-gray-900";
-
-          mobBtnRecords.className = "flex-1 py-2 text-center rounded bg-gray-100 text-gray-900 font-semibold border border-gray-300";
-          mobBtnStats.className = "flex-1 py-2 text-center rounded text-gray-600 border border-transparent";
-
-          renderCustomerRecordsTable();
-        } else {
-          viewRecords.classList.add("hidden");
-          viewStats.classList.remove("hidden");
-
-          tabBtnStats.className = "px-4 py-1.5 rounded text-gray-900 bg-white shadow-sm border border-gray-200";
-          tabBtnRecords.className = "px-4 py-1.5 rounded text-gray-600 hover:text-gray-900";
-
-          mobBtnStats.className = "flex-1 py-2 text-center rounded bg-gray-100 text-gray-900 font-semibold border border-gray-300";
-          mobBtnRecords.className = "flex-1 py-2 text-center rounded text-gray-600 border border-transparent";
-
-          updateStatsView();
-        }
-      }
-
-      // 9. SUPABASE DATA SYNCHRONIZATION WITH STRICT MULTI-TENANCY
-      async function fetchCustomerData() {
-        if (!db) {
-          showToast("Supabase client not loaded.", true);
-          return;
-        }
-
+    // --- 6. Auth & Session Management ---
+    function restoreSession() {
+      const saved = sessionStorage.getItem('ra_session');
+      if (saved) {
         try {
-          let query = db.from("customer_records").select("*").order("created_at", { ascending: false });
-
-          // STRICT DATA ISOLATION:
-          // Admin (kailash) sees all records. Staff only sees their own (created_by = currentSession.username)
-          if (currentSession && currentSession.role !== 'admin' && currentSession.username !== 'kailash') {
-            query = query.eq("created_by", currentSession.username);
-          }
-
-          const { data, error } = await query;
-          if (error) throw error;
-
-          customerRecords = data || [];
-          updateKpis();
-          renderCustomerRecordsTable();
-          updateStatsView();
-        } catch (err) {
-          console.error("Fetch records error:", err);
-          showToast("Data sync: " + (err.message || "Failed to load records"), true);
+          currentSession = JSON.parse(saved);
+          applySessionUI();
+          loadRecords();
+        } catch (e) {
+          sessionStorage.removeItem('ra_session');
         }
       }
+    }
 
-      // 10. REALTIME INDIAN CURRENCY PREVIEWS
-      function handleLoanAmountInput() {
-        const val = parseFloat(document.getElementById("input-loan-amount").value);
-        const badge = document.getElementById("badge-loan-amount-words");
+    function applySessionUI() {
+      if (currentSession) {
+        preloginSection.classList.add('hidden');
+        btnHeaderLogin.classList.add('hidden');
+        appWorkspace.classList.remove('hidden');
+        authControls.classList.remove('hidden');
+        authControls.classList.add('flex');
 
-        if (isNaN(val) || val <= 0) {
-          badge.textContent = "₹0 (0 Lakh)";
-          return;
+        sessionUsername.textContent = currentSession.username;
+        sessionRole.textContent = currentSession.role === 'admin' ? 'Administrator' : 'Staff Account';
+
+        // Pause video reveal loops completely once logged in
+        if (revealVideo) {
+          clearTimeout(videoIdleTimer);
+          revealVideo.pause();
+        }
+      } else {
+        preloginSection.classList.remove('hidden');
+        btnHeaderLogin.classList.remove('hidden');
+        appWorkspace.classList.add('hidden');
+        authControls.classList.add('hidden');
+        authControls.classList.remove('flex');
+        recordsData = [];
+        initVideoReveal();
+      }
+      lucide.createIcons();
+    }
+
+    // Modal Control Helpers
+    function openModal(el) { el.classList.remove('hidden'); }
+    function closeModal(el) { el.classList.add('hidden'); }
+
+    // --- 7. Data Operations (Isolated per Staff / Global for Kailash) ---
+    async function loadRecords() {
+      if (!currentSession || !supabase) return;
+
+      try {
+        let query = supabase
+          .from('customer_records')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        // Multi-Tenant Isolation: Staff sees only their own; Admin sees all
+        if (currentSession.role !== 'admin') {
+          query = query.eq('created_by', currentSession.username);
         }
 
-        badge.textContent = formatIndianCurrencyBadge(val);
+        const { data, error } = await query;
+        if (error) throw error;
+
+        recordsData = data || [];
+        renderRecords();
+        renderStats();
+      } catch (err) {
+        console.error('Error fetching customer records:', err);
+      }
+    }
+
+    // --- 8. Table & Mobile Records Rendering ---
+    function renderRecords() {
+      const searchTerm = filterSearch.value.trim().toLowerCase();
+      const selectedBank = filterBank.value;
+      const selectedType = filterType.value;
+
+      const filtered = recordsData.filter(rec => {
+        const matchesSearch = !searchTerm ||
+          (rec.customer_name && rec.customer_name.toLowerCase().includes(searchTerm)) ||
+          (rec.address && rec.address.toLowerCase().includes(searchTerm)) ||
+          (rec.bank_name && rec.bank_name.toLowerCase().includes(searchTerm));
+
+        const matchesBank = !selectedBank || rec.bank_name === selectedBank;
+        const matchesType = !selectedType || rec.loan_type === selectedType;
+
+        return matchesSearch && matchesBank && matchesType;
+      });
+
+      if (filtered.length === 0) {
+        recordsTableBody.innerHTML = '';
+        recordsMobileCards.innerHTML = '';
+        emptyRecordsState.classList.remove('hidden');
+        return;
       }
 
-      function formatIndianCurrencyBadge(amount) {
-        if (amount >= 10000000) {
-          const cr = (amount / 10000000).toFixed(2);
-          return `₹${amount.toLocaleString('en-IN')} (${cr} Cr)`;
-        } else if (amount >= 100000) {
-          const l = (amount / 100000).toFixed(2);
-          return `₹${amount.toLocaleString('en-IN')} (${l} Lakh / ${parseFloat(l)}L)`;
-        } else if (amount >= 1000) {
-          const k = (amount / 1000).toFixed(1);
-          return `₹${amount.toLocaleString('en-IN')} (${k}K)`;
-        } else {
-          return `₹${amount.toLocaleString('en-IN')}`;
-        }
-      }
+      emptyRecordsState.classList.add('hidden');
 
-      function formatIndianDisplay(amount) {
-        const num = parseFloat(amount) || 0;
-        if (num >= 10000000) {
-          return `₹${(num / 10000000).toFixed(2)} Cr`;
-        } else if (num >= 100000) {
-          return `₹${(num / 100000).toFixed(2)} L`;
-        } else {
-          return `₹${num.toLocaleString('en-IN')}`;
-        }
-      }
+      // Desktop Rows
+      recordsTableBody.innerHTML = filtered.map(rec => {
+        const age = calculateAge(rec.dob);
+        const shorthand = getShorthandCurrency(rec.loan_amount);
 
-      // 11. REALTIME AGE CALCULATION
-      function handleDobInput() {
-        const val = document.getElementById("input-customer-dob").value;
-        const badge = document.getElementById("badge-calculated-age");
+        // Document Badges
+        const docCount = [
+          rec.doc_aadhaar_pan, rec.doc_bank_statement_1yr, rec.doc_business_proof,
+          rec.doc_salary_slip_3m, rec.doc_revenue_tax_slip, rec.doc_sale_deed, rec.doc_udyam_aadhaar
+        ].filter(Boolean).length;
 
-        if (!val) {
-          badge.textContent = "Age: —";
-          return;
-        }
+        const isComplete = docCount === 7;
 
-        const age = calculateAge(val);
-        if (age < 0 || isNaN(age)) {
-          badge.textContent = "Age: Invalid";
-        } else {
-          badge.textContent = `Age: ${age} Years`;
-        }
-      }
-
-      function calculateAge(dobString) {
-        if (!dobString) return "—";
-        const dob = new Date(dobString);
-        const now = new Date();
-        let age = now.getFullYear() - dob.getFullYear();
-        const m = now.getMonth() - dob.getMonth();
-        if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) {
-          age--;
-        }
-        return age >= 0 ? age : "—";
-      }
-
-      // 12. LOGIN & LOGOUT ACTIONS
-      function openLoginDialog() {
-        document.getElementById("modal-login").classList.remove("hidden");
-        document.getElementById("login-error-box").classList.add("hidden");
-        document.getElementById("login-username").focus();
-      }
-
-      function closeLoginDialog() {
-        document.getElementById("modal-login").classList.add("hidden");
-      }
-
-      async function executeLogin(e) {
-        e.preventDefault();
-        const username = document.getElementById("login-username").value.trim().toLowerCase();
-        const pass = document.getElementById("login-password").value;
-        const errBox = document.getElementById("login-error-box");
-        const submitBtn = document.getElementById("btn-submit-login");
-
-        errBox.classList.add("hidden");
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Verifying...";
-
-        try {
-          if (!db) throw new Error("Database client not available.");
-
-          const { data, error } = await db.rpc("app_login", {
-            p_username: username,
-            p_password: pass
-          });
-
-          if (error) throw error;
-
-          if (data && data.length > 0 && data[0].auth_success) {
-            currentSession = {
-              username: data[0].username,
-              role: data[0].role
-            };
-            localStorage.setItem("rashmi_user_session", JSON.stringify(currentSession));
-            updateAuthHeader();
-            closeLoginDialog();
-            showToast(`Signed in as ${currentSession.username}`);
-            await fetchCustomerData();
-          } else {
-            errBox.textContent = "Invalid username or password.";
-            errBox.classList.remove("hidden");
-          }
-        } catch (err) {
-          console.error("Login Error:", err);
-          errBox.textContent = err.message || "Failed to authenticate.";
-          errBox.classList.remove("hidden");
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Sign In";
-        }
-      }
-
-      function executeLogout() {
-        currentSession = null;
-        localStorage.removeItem("rashmi_user_session");
-        updateAuthHeader();
-        fetchCustomerData();
-        showToast("Signed out.");
-      }
-
-      // 13. CUSTOMER ENTRY MODAL
-      function openCustomerModal(existing = null) {
-        if (!currentSession) {
-          openLoginDialog();
-          return;
-        }
-
-        const modal = document.getElementById("modal-customer");
-        const heading = document.getElementById("modal-customer-heading");
-        const editId = document.getElementById("edit-record-id");
-        const approverInput = document.getElementById("input-approver-name");
-        const approverHint = document.getElementById("hint-approver-name");
-
-        document.getElementById("form-customer").reset();
-        document.getElementById("badge-calculated-age").textContent = "Age: —";
-        document.getElementById("badge-loan-amount-words").textContent = "₹0 (0 Lakh)";
-
-        if (existing) {
-          heading.textContent = "Edit Customer Details";
-          editId.value = existing.id;
-          document.getElementById("input-customer-name").value = existing.customer_name;
-          document.getElementById("input-customer-dob").value = existing.date_of_birth;
-          document.getElementById("input-loan-amount").value = existing.loan_amount;
-          document.getElementById("input-address").value = existing.address;
-          document.getElementById("select-loan-type").value = existing.loan_type;
-          document.getElementById("select-bank").value = existing.bank_name;
-
-          // The 7 document checkpoints
-          document.getElementById("check-doc-aadhaar-pan").checked = !!existing.doc_aadhaar_pan;
-          document.getElementById("check-doc-bank-stmt").checked = !!existing.doc_bank_statement_1yr;
-          document.getElementById("check-doc-business").checked = !!existing.doc_business_proof;
-          document.getElementById("check-doc-salary").checked = !!existing.doc_salary_slip_3m;
-          document.getElementById("check-doc-tax").checked = !!existing.doc_revenue_tax_slip;
-          document.getElementById("check-doc-deed").checked = !!existing.doc_sale_deed;
-          document.getElementById("check-doc-udyam").checked = !!existing.doc_udyam_aadhaar;
-
-          approverInput.value = existing.approver_name;
-          handleDobInput();
-          handleLoanAmountInput();
-        } else {
-          heading.textContent = "New Customer Entry";
-          editId.value = "";
-          // Defaults
-          document.getElementById("select-loan-type").selectedIndex = 0;
-          document.getElementById("select-bank").selectedIndex = 0;
-        }
-
-        // Approver field behavior: Locked for Kailash, open for staff
-        if (currentSession.username === 'kailash' || currentSession.role === 'admin') {
-          approverInput.value = "Kailash Chandra Bishoyi";
-          approverInput.readOnly = true;
-          approverInput.classList.add("bg-gray-100", "text-gray-700", "cursor-not-allowed");
-          approverHint.textContent = "Locked to Kailash Chandra Bishoyi during Admin session.";
-        } else {
-          approverInput.readOnly = false;
-          approverInput.classList.remove("bg-gray-100", "text-gray-700", "cursor-not-allowed");
-          approverHint.textContent = "Enter assigned approver name for this file.";
-        }
-
-        modal.classList.remove("hidden");
-      }
-
-      function closeCustomerModal() {
-        document.getElementById("modal-customer").classList.add("hidden");
-      }
-
-      async function saveCustomerRecord(e) {
-        e.preventDefault();
-        if (!currentSession) {
-          openLoginDialog();
-          return;
-        }
-
-        const id = document.getElementById("edit-record-id").value;
-        const name = document.getElementById("input-customer-name").value.trim();
-        const dob = document.getElementById("input-customer-dob").value;
-        const amount = parseFloat(document.getElementById("input-loan-amount").value);
-        const loanType = document.getElementById("select-loan-type").value;
-        const bankName = document.getElementById("select-bank").value;
-        const address = document.getElementById("input-address").value.trim();
-
-        // 7 document checkboxes
-        const docAadhaarPan = document.getElementById("check-doc-aadhaar-pan").checked;
-        const docBankStmt = document.getElementById("check-doc-bank-stmt").checked;
-        const docBusiness = document.getElementById("check-doc-business").checked;
-        const docSalary = document.getElementById("check-doc-salary").checked;
-        const docTax = document.getElementById("check-doc-tax").checked;
-        const docDeed = document.getElementById("check-doc-deed").checked;
-        const docUdyam = document.getElementById("check-doc-udyam").checked;
-
-        const approver = (currentSession.username === 'kailash')
-          ? "Kailash Chandra Bishoyi"
-          : document.getElementById("input-approver-name").value.trim();
-
-        const submitBtn = document.getElementById("btn-submit-customer");
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Saving...";
-
-        const payload = {
-          customer_name: name,
-          date_of_birth: dob,
-          loan_amount: amount,
-          loan_type: loanType,
-          bank_name: bankName,
-          doc_aadhaar_pan: docAadhaarPan,
-          doc_bank_statement_1yr: docBankStmt,
-          doc_business_proof: docBusiness,
-          doc_salary_slip_3m: docSalary,
-          doc_revenue_tax_slip: docTax,
-          doc_sale_deed: docDeed,
-          doc_udyam_aadhaar: docUdyam,
-          address: address,
-          approver_name: approver,
-          created_by: currentSession.username
-        };
-
-        try {
-          if (id) {
-            const { error } = await db
-              .from("customer_records")
-              .update(payload)
-              .eq("id", id);
-            if (error) throw error;
-            showToast(`Updated record for ${name}`);
-          } else {
-            const { error } = await db
-              .from("customer_records")
-              .insert([payload]);
-            if (error) throw error;
-            showToast(`New file logged for ${name}`);
-          }
-
-          closeCustomerModal();
-          await fetchCustomerData();
-        } catch (err) {
-          console.error("Save error:", err);
-          showToast("Failed to save: " + (err.message || "Database write error"), true);
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Save Record";
-        }
-      }
-
-      // 14. DELETE RECORD (KAILASH ONLY)
-      async function deleteCustomerRecord(recordId, name) {
-        if (!currentSession || (currentSession.role !== 'admin' && currentSession.username !== 'kailash')) {
-          showToast("Permission denied: Only Administrator can delete records.", true);
-          return;
-        }
-
-        const confirmed = window.confirm(`Permanently delete the record for "${name}"?`);
-        if (!confirmed) return;
-
-        try {
-          const { error } = await db
-            .from("customer_records")
-            .delete()
-            .eq("id", recordId);
-
-          if (error) throw error;
-
-          showToast(`Deleted record for ${name}`);
-          await fetchCustomerData();
-        } catch (err) {
-          console.error("Delete error:", err);
-          showToast("Failed to delete: " + (err.message || "Database error"), true);
-        }
-      }
-
-      // 15. SELF-SERVICE PASSWORD CHANGE MODAL
-      function openPasswordDialog() {
-        if (!currentSession) {
-          openLoginDialog();
-          return;
-        }
-        document.getElementById("pwd-modal-user-target").textContent = `Logged in as: ${currentSession.username}`;
-        document.getElementById("form-password").reset();
-        document.getElementById("modal-password").classList.remove("hidden");
-      }
-
-      function closePasswordDialog() {
-        document.getElementById("modal-password").classList.add("hidden");
-      }
-
-      async function executePasswordChange(e) {
-        e.preventDefault();
-        if (!currentSession) return;
-
-        const currPass = document.getElementById("input-curr-password").value;
-        const newPass = document.getElementById("input-new-password").value;
-        const confirmPass = document.getElementById("input-confirm-password").value;
-        const submitBtn = document.getElementById("btn-submit-password");
-
-        if (newPass !== confirmPass) {
-          showToast("New passwords do not match.", true);
-          return;
-        }
-
-        if (newPass.length < 6) {
-          showToast("Password must be at least 6 characters.", true);
-          return;
-        }
-
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Updating...";
-
-        try {
-          const { data, error } = await db.rpc("change_own_password", {
-            p_username: currentSession.username,
-            p_current_password: currPass,
-            p_new_password: newPass
-          });
-
-          if (error) throw error;
-
-          showToast("Password updated successfully.");
-          closePasswordDialog();
-        } catch (err) {
-          console.error("Password update error:", err);
-          showToast("Error: " + (err.message || "Invalid current password"), true);
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Update Password";
-        }
-      }
-
-      // 16. RENDERING: CUSTOMER RECORDS TABLE
-      function renderCustomerRecordsTable() {
-        const tbody = document.getElementById("records-tbody");
-        const emptyBox = document.getElementById("records-empty");
-        const search = document.getElementById("records-search").value.toLowerCase().trim();
-        const bankFilter = document.getElementById("filter-bank").value;
-        const typeFilter = document.getElementById("filter-type").value;
-
-        const filtered = customerRecords.filter(r => {
-          const matchesSearch = !search ||
-            (r.customer_name && r.customer_name.toLowerCase().includes(search)) ||
-            (r.approver_name && r.approver_name.toLowerCase().includes(search)) ||
-            (r.address && r.address.toLowerCase().includes(search));
-
-          const matchesBank = !bankFilter || r.bank_name === bankFilter;
-          const matchesType = !typeFilter || r.loan_type === typeFilter;
-
-          return matchesSearch && matchesBank && matchesType;
-        });
-
-        if (filtered.length === 0) {
-          tbody.innerHTML = "";
-          emptyBox.classList.remove("hidden");
-          return;
-        }
-
-        emptyBox.classList.add("hidden");
-        tbody.innerHTML = "";
-
-        filtered.forEach(r => {
-          const age = calculateAge(r.date_of_birth);
-          const tr = document.createElement("tr");
-          tr.className = "hover:bg-gray-50 transition-colors";
-
-          // Document Badges for 7 checkpoints
-          const docPills = [];
-          if (r.doc_aadhaar_pan) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-blue-50 text-blue-800 border border-blue-200 font-medium">Aadhaar/PAN</span>`);
-          if (r.doc_bank_statement_1yr) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-gray-100 text-gray-800 border border-gray-300 font-medium">Bank Stmt</span>`);
-          if (r.doc_business_proof) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-amber-50 text-amber-800 border border-amber-200 font-medium">Biz Proof</span>`);
-          if (r.doc_salary_slip_3m) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-purple-50 text-purple-800 border border-purple-200 font-medium">Salary</span>`);
-          if (r.doc_revenue_tax_slip) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-rose-50 text-rose-800 border border-rose-200 font-medium">Tax Slip</span>`);
-          if (r.doc_sale_deed) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium">Sale Deed</span>`);
-          if (r.doc_udyam_aadhaar) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-teal-50 text-teal-800 border border-teal-200 font-medium">Udyam</span>`);
-
-          const isAdmin = currentSession && (currentSession.role === 'admin' || currentSession.username === 'kailash');
-
-          tr.innerHTML = `
-            <td class="py-2.5 px-3">
-              <div class="font-bold text-gray-900">${escapeHtml(r.customer_name)}</div>
-              <div class="text-[10px] text-gray-500">Logged by: <span class="font-medium text-gray-700">${escapeHtml(r.created_by || '—')}</span></div>
+        return `
+          <tr class="hover:bg-zinc-50/80 transition-colors">
+            <td class="py-3 px-4 font-semibold text-zinc-900">${escapeHtml(rec.customer_name)}</td>
+            <td class="py-3 px-4 text-zinc-600">${age !== null ? age + ' yrs' : '-'} <span class="text-[10px] text-zinc-400 block">${rec.dob || ''}</span></td>
+            <td class="py-3 px-4 font-semibold text-zinc-900">
+              ${formatIndianCurrency(rec.loan_amount)}
+              ${shorthand ? `<span class="block text-[10px] text-emerald-700 font-medium">(${shorthand})</span>` : ''}
             </td>
-            <td class="py-2.5 px-3">
-              <span class="font-medium text-gray-900">${age} yrs</span>
-              <div class="text-[10px] text-gray-500">${r.date_of_birth || '—'}</div>
-            </td>
-            <td class="py-2.5 px-3">
-              <div class="font-bold text-gray-900">${formatIndianDisplay(r.loan_amount)}</div>
-              <div class="text-[10px] text-gray-500">₹${(parseFloat(r.loan_amount) || 0).toLocaleString('en-IN')}</div>
-            </td>
-            <td class="py-2.5 px-3">
-              <span class="inline-block px-2 py-0.5 rounded bg-gray-100 text-gray-800 text-[11px] font-medium border border-gray-200">
-                ${escapeHtml(r.loan_type)}
+            <td class="py-3 px-4 text-zinc-700">${escapeHtml(rec.loan_type)}</td>
+            <td class="py-3 px-4 text-zinc-700">${escapeHtml(rec.bank_name)}</td>
+            <td class="py-3 px-4">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium ${isComplete ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-zinc-100 text-zinc-600 border border-zinc-200'}">
+                ${docCount} / 7 Verified
               </span>
             </td>
-            <td class="py-2.5 px-3 font-medium text-gray-900">
-              ${escapeHtml(r.bank_name)}
+            <td class="py-3 px-4 text-zinc-600 max-w-[160px] truncate" title="${escapeHtml(rec.address || '')}">${escapeHtml(rec.address || '-')}</td>
+            <td class="py-3 px-4 text-right space-x-1.5 whitespace-nowrap">
+              <button onclick="editRecord('${rec.id}')" class="p-1 text-zinc-600 hover:text-zinc-900 transition-colors" title="Edit">
+                <i data-lucide="pencil" class="w-4 h-4"></i>
+              </button>
+              ${currentSession.role === 'admin' ? `
+                <button onclick="deleteRecord('${rec.id}')" class="p-1 text-rose-600 hover:text-rose-800 transition-colors" title="Delete">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              ` : ''}
             </td>
-            <td class="py-2.5 px-3 max-w-[200px]">
-              <div class="flex flex-wrap gap-1">
-                ${docPills.length > 0 ? docPills.join('') : '<span class="text-gray-400 text-[11px]">0 / 7</span>'}
-              </div>
-            </td>
-            <td class="py-2.5 px-3 text-gray-600 max-w-[160px] truncate" title="${escapeHtml(r.address)}">
-              ${escapeHtml(r.address)}
-            </td>
-            <td class="py-2.5 px-3 font-medium text-gray-900">
-              ${escapeHtml(r.approver_name)}
-            </td>
-            <td class="py-2.5 px-3 text-right space-x-1" id="row-actions-${r.id}"></td>
-          `;
+          </tr>
+        `;
+      }).join('');
 
-          const actionsCell = tr.querySelector(`#row-actions-${r.id}`);
+      // Mobile Cards
+      recordsMobileCards.innerHTML = filtered.map(rec => {
+        const age = calculateAge(rec.dob);
+        const shorthand = getShorthandCurrency(rec.loan_amount);
+        const docCount = [
+          rec.doc_aadhaar_pan, rec.doc_bank_statement_1yr, rec.doc_business_proof,
+          rec.doc_salary_slip_3m, rec.doc_revenue_tax_slip, rec.doc_sale_deed, rec.doc_udyam_aadhaar
+        ].filter(Boolean).length;
 
-          if (currentSession) {
-            // Edit Button (Staff & Kailash)
-            const editBtn = document.createElement("button");
-            editBtn.title = "Edit Record";
-            editBtn.className = "p-1 rounded text-gray-600 hover:text-black hover:bg-gray-100";
-            editBtn.innerHTML = `<i data-lucide="edit" class="w-3.5 h-3.5"></i>`;
-            editBtn.addEventListener("click", () => openCustomerModal(r));
-            actionsCell.appendChild(editBtn);
-
-            // Delete Button (ONLY Kailash)
-            if (isAdmin) {
-              const delBtn = document.createElement("button");
-              delBtn.title = "Delete Record";
-              delBtn.className = "p-1 rounded text-gray-400 hover:text-red-600 hover:bg-red-50";
-              delBtn.innerHTML = `<i data-lucide="trash-2" class="w-3.5 h-3.5"></i>`;
-              delBtn.addEventListener("click", () => deleteCustomerRecord(r.id, r.customer_name));
-              actionsCell.appendChild(delBtn);
-            }
-          }
-
-          tbody.appendChild(tr);
-        });
-
-        initializeIcons();
-      }
-
-      // 17. KPIS & STATISTICAL INTELLIGENCE
-      function updateKpis() {
-        const total = customerRecords.reduce((sum, r) => sum + (parseFloat(r.loan_amount) || 0), 0);
-        const count = customerRecords.length;
-
-        document.getElementById("kpi-total-volume").textContent = formatIndianDisplay(total);
-        document.getElementById("kpi-total-files").textContent = count.toLocaleString('en-IN');
-
-        if (total >= 10000000) {
-          document.getElementById("kpi-total-volume-sub").textContent = `${(total / 10000000).toFixed(2)} Crores`;
-        } else if (total >= 100000) {
-          document.getElementById("kpi-total-volume-sub").textContent = `${(total / 100000).toFixed(2)} Lakhs`;
-        } else {
-          document.getElementById("kpi-total-volume-sub").textContent = `₹${total.toLocaleString('en-IN')}`;
-        }
-
-        const bankMap = {};
-        const typeMap = {};
-        customerRecords.forEach(r => {
-          const amt = parseFloat(r.loan_amount) || 0;
-          bankMap[r.bank_name] = (bankMap[r.bank_name] || 0) + amt;
-          typeMap[r.loan_type] = (typeMap[r.loan_type] || 0) + 1;
-        });
-
-        const sortedBanks = Object.entries(bankMap).sort((a, b) => b[1] - a[1]);
-        if (sortedBanks.length > 0) {
-          document.getElementById("kpi-top-bank").textContent = sortedBanks[0][0];
-          document.getElementById("kpi-top-bank-sub").textContent = formatIndianDisplay(sortedBanks[0][1]);
-        } else {
-          document.getElementById("kpi-top-bank").textContent = "—";
-          document.getElementById("kpi-top-bank-sub").textContent = "Highest loan volume";
-        }
-
-        const sortedTypes = Object.entries(typeMap).sort((a, b) => b[1] - a[1]);
-        if (sortedTypes.length > 0) {
-          document.getElementById("kpi-top-loan").textContent = sortedTypes[0][0];
-          document.getElementById("kpi-top-loan-sub").textContent = `${sortedTypes[0][1]} applications`;
-        } else {
-          document.getElementById("kpi-top-loan").textContent = "—";
-          document.getElementById("kpi-top-loan-sub").textContent = "Most frequent";
-        }
-      }
-
-      function setStatsPeriod(period) {
-        currentStatsPeriod = period;
-        ['weekly', 'monthly', 'yearly', 'all'].forEach(p => {
-          const btn = document.getElementById(`btn-period-${p}`);
-          if (p === period) {
-            btn.className = "px-2.5 py-1 rounded bg-white text-gray-900 shadow-sm border border-gray-200 font-bold";
-          } else {
-            btn.className = "px-2.5 py-1 rounded text-gray-600 hover:text-gray-900 font-semibold";
-          }
-        });
-        updateStatsView();
-      }
-
-      function getFilteredRecordsForStats() {
-        if (currentStatsPeriod === 'all') return customerRecords;
-
-        const now = new Date();
-        return customerRecords.filter(r => {
-          const created = new Date(r.created_at);
-          const diffDays = (now - created) / (1000 * 60 * 60 * 24);
-
-          if (currentStatsPeriod === 'weekly') return diffDays <= 7;
-          if (currentStatsPeriod === 'monthly') return diffDays <= 30;
-          if (currentStatsPeriod === 'yearly') return diffDays <= 365;
-          return true;
-        });
-      }
-
-      function updateStatsView() {
-        const records = getFilteredRecordsForStats();
-        const totalCount = records.length;
-
-        const bankStats = {};
-        const typeStats = {};
-
-        // 7 Document Counters
-        let aadhaarPanCnt = 0;
-        let bankStmtCnt = 0;
-        let bizProofCnt = 0;
-        let salaryCnt = 0;
-        let taxSlipCnt = 0;
-        let saleDeedCnt = 0;
-        let udyamCnt = 0;
-
-        records.forEach(r => {
-          const amt = parseFloat(r.loan_amount) || 0;
-          const bank = r.bank_name || "Unspecified";
-          const type = r.loan_type || "Unspecified";
-
-          if (!bankStats[bank]) bankStats[bank] = { volume: 0, count: 0 };
-          bankStats[bank].volume += amt;
-          bankStats[bank].count += 1;
-
-          if (!typeStats[type]) typeStats[type] = { volume: 0, count: 0 };
-          typeStats[type].volume += amt;
-          typeStats[type].count += 1;
-
-          if (r.doc_aadhaar_pan) aadhaarPanCnt++;
-          if (r.doc_bank_statement_1yr) bankStmtCnt++;
-          if (r.doc_business_proof) bizProofCnt++;
-          if (r.doc_salary_slip_3m) salaryCnt++;
-          if (r.doc_revenue_tax_slip) taxSlipCnt++;
-          if (r.doc_sale_deed) saleDeedCnt++;
-          if (r.doc_udyam_aadhaar) udyamCnt++;
-        });
-
-        // 1. Bank Disbursal Leaderboard
-        const bankContainer = document.getElementById("stat-banks-list");
-        const sortedBanks = Object.entries(bankStats).sort((a, b) => b[1].volume - a[1].volume);
-
-        if (sortedBanks.length === 0) {
-          bankContainer.innerHTML = `<div class="text-gray-400 py-6 text-center">No records in this time period.</div>`;
-        } else {
-          const maxVol = sortedBanks[0][1].volume || 1;
-          bankContainer.innerHTML = sortedBanks.map(([bank, data], idx) => {
-            const barWidth = ((data.volume / maxVol) * 100).toFixed(0);
-            return `
+        return `
+          <div class="bg-white border border-zinc-200 rounded-xl p-4 space-y-2.5 shadow-sm">
+            <div class="flex items-start justify-between">
               <div>
-                <div class="flex items-center justify-between font-medium mb-1">
-                  <span class="truncate max-w-[210px] text-gray-800">
-                    <span class="text-gray-400 mr-1">${idx + 1}.</span>${escapeHtml(bank)}
-                  </span>
-                  <div class="text-right">
-                    <span class="font-bold text-gray-900">${formatIndianDisplay(data.volume)}</span>
-                    <span class="text-gray-500 text-[11px] ml-1">(${data.count} files)</span>
-                  </div>
-                </div>
-                <div class="w-full h-1.5 rounded bg-gray-100 overflow-hidden">
-                  <div class="h-full bg-blue-700 rounded transition-all duration-300" style="width: ${barWidth}%"></div>
-                </div>
+                <h4 class="text-sm font-bold text-zinc-900">${escapeHtml(rec.customer_name)}</h4>
+                <p class="text-xs text-zinc-500">${escapeHtml(rec.loan_type)} • ${escapeHtml(rec.bank_name)}</p>
               </div>
-            `;
-          }).join("");
-        }
-
-        // 2. Loan Type Breakdown
-        const typeContainer = document.getElementById("stat-types-list");
-        const sortedTypes = Object.entries(typeStats).sort((a, b) => b[1].count - a[1].count);
-
-        if (sortedTypes.length === 0) {
-          typeContainer.innerHTML = `<div class="text-gray-400 py-6 text-center">No records in this time period.</div>`;
-        } else {
-          const maxCount = sortedTypes[0][1].count || 1;
-          typeContainer.innerHTML = sortedTypes.map(([type, data], idx) => {
-            const barWidth = ((data.count / maxCount) * 100).toFixed(0);
-            return `
-              <div>
-                <div class="flex items-center justify-between font-medium mb-1">
-                  <span class="truncate max-w-[210px] text-gray-800">
-                    <span class="text-gray-400 mr-1">${idx + 1}.</span>${escapeHtml(type)}
-                  </span>
-                  <div class="text-right">
-                    <span class="font-bold text-gray-900">${data.count} Files</span>
-                    <span class="text-gray-500 text-[11px] ml-1">(${formatIndianDisplay(data.volume)})</span>
-                  </div>
-                </div>
-                <div class="w-full h-1.5 rounded bg-gray-100 overflow-hidden">
-                  <div class="h-full bg-gray-900 rounded transition-all duration-300" style="width: ${barWidth}%"></div>
-                </div>
+              <div class="text-right">
+                <p class="text-sm font-bold text-zinc-900">${formatIndianCurrency(rec.loan_amount)}</p>
+                ${shorthand ? `<p class="text-[10px] text-emerald-700 font-medium">(${shorthand})</p>` : ''}
               </div>
-            `;
-          }).join("");
-        }
+            </div>
 
-        // 3. 7 Document Compliance Ratios
-        const pct = (c) => totalCount > 0 ? `${((c / totalCount) * 100).toFixed(0)}%` : "0%";
-        document.getElementById("doc-stat-aadhaar-pan").textContent = pct(aadhaarPanCnt);
-        document.getElementById("doc-sub-aadhaar-pan").textContent = `${aadhaarPanCnt} of ${totalCount}`;
+            <div class="flex items-center justify-between text-xs text-zinc-600 pt-2 border-t border-zinc-100">
+              <span>Age: <strong>${age !== null ? age + ' yrs' : '-'}</strong></span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-medium ${docCount === 7 ? 'bg-emerald-50 text-emerald-700' : 'bg-zinc-100 text-zinc-600'}">
+                ${docCount}/7 Docs Verified
+              </span>
+            </div>
 
-        document.getElementById("doc-stat-bank-stmt").textContent = pct(bankStmtCnt);
-        document.getElementById("doc-sub-bank-stmt").textContent = `${bankStmtCnt} of ${totalCount}`;
+            <div class="flex items-center justify-between pt-2 border-t border-zinc-100 text-xs">
+              <span class="text-zinc-500 truncate max-w-[200px]">${escapeHtml(rec.address || 'No address logged')}</span>
+              <div class="flex items-center space-x-2">
+                <button onclick="editRecord('${rec.id}')" class="px-2.5 py-1 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 rounded text-xs font-medium">Edit</button>
+                ${currentSession.role === 'admin' ? `
+                  <button onclick="deleteRecord('${rec.id}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded text-xs font-medium">Delete</button>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
 
-        document.getElementById("doc-stat-business").textContent = pct(bizProofCnt);
-        document.getElementById("doc-sub-business").textContent = `${bizProofCnt} of ${totalCount}`;
+      lucide.createIcons();
+    }
 
-        document.getElementById("doc-stat-salary").textContent = pct(salaryCnt);
-        document.getElementById("doc-sub-salary").textContent = `${salaryCnt} of ${totalCount}`;
+    // --- 9. Analytics & Intelligence Engine ---
+    function renderStats() {
+      const now = new Date();
+      let filtered = [...recordsData];
 
-        document.getElementById("doc-stat-tax").textContent = pct(taxSlipCnt);
-        document.getElementById("doc-sub-tax").textContent = `${taxSlipCnt} of ${totalCount}`;
-
-        document.getElementById("doc-stat-deed").textContent = pct(saleDeedCnt);
-        document.getElementById("doc-sub-deed").textContent = `${saleDeedCnt} of ${totalCount}`;
-
-        document.getElementById("doc-stat-udyam").textContent = pct(udyamCnt);
-        document.getElementById("doc-sub-udyam").textContent = `${udyamCnt} of ${totalCount}`;
+      if (currentPeriod === 'week') {
+        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        filtered = filtered.filter(r => new Date(r.created_at) >= weekAgo);
+      } else if (currentPeriod === 'month') {
+        const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        filtered = filtered.filter(r => new Date(r.created_at) >= monthAgo);
+      } else if (currentPeriod === 'year') {
+        const yearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+        filtered = filtered.filter(r => new Date(r.created_at) >= yearAgo);
       }
 
-      // 18. CLIENT-SIDE PDF GENERATOR
-      function generateClientSidePdf() {
-        if (!customerRecords || customerRecords.length === 0) {
-          showToast("No customer records to generate PDF report.", true);
-          return;
-        }
+      // Summary KPIs
+      const totalCount = filtered.length;
+      const totalAmount = filtered.reduce((acc, r) => acc + (parseFloat(r.loan_amount) || 0), 0);
+      
+      document.getElementById('stat-total-count').textContent = totalCount;
+      document.getElementById('stat-total-amount').textContent = formatIndianCurrency(totalAmount);
 
-        showToast("Generating PDF report...");
+      // Aggregations
+      const bankMap = {};
+      const productMap = {};
+      let docCounters = {
+        aadhaar_pan: 0, bank_stmt: 0, business: 0, salary: 0, revenue: 0, deed: 0, udyam: 0
+      };
 
-        const printable = document.getElementById("pdf-printable-area");
-        const isAdmin = currentSession && (currentSession.role === 'admin' || currentSession.username === 'kailash');
+      filtered.forEach(r => {
+        // Banks
+        const b = r.bank_name || 'Unspecified';
+        bankMap[b] = (bankMap[b] || 0) + (parseFloat(r.loan_amount) || 0);
 
-        document.getElementById("pdf-scope-label").textContent = isAdmin 
-          ? "Company-Wide Master Report" 
-          : `Individual Staff Report (${currentSession.username})`;
+        // Products
+        const p = r.loan_type || 'Unspecified';
+        productMap[p] = (productMap[p] || 0) + (parseFloat(r.loan_amount) || 0);
 
-        document.getElementById("pdf-generated-date").textContent = new Date().toLocaleDateString("en-IN", {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric'
-        });
+        // Docs
+        if (r.doc_aadhaar_pan) docCounters.aadhaar_pan++;
+        if (r.doc_bank_statement_1yr) docCounters.bank_stmt++;
+        if (r.doc_business_proof) docCounters.business++;
+        if (r.doc_salary_slip_3m) docCounters.salary++;
+        if (r.doc_revenue_tax_slip) docCounters.revenue++;
+        if (r.doc_sale_deed) docCounters.deed++;
+        if (r.doc_udyam_aadhaar) docCounters.udyam++;
+      });
 
-        const total = customerRecords.reduce((sum, r) => sum + (parseFloat(r.loan_amount) || 0), 0);
-        document.getElementById("pdf-total-val").textContent = formatIndianDisplay(total);
-        document.getElementById("pdf-total-files").textContent = customerRecords.length.toString();
+      // Top Highlights
+      const topBank = Object.entries(bankMap).sort((a,b) => b[1] - a[1])[0];
+      const topProduct = Object.entries(productMap).sort((a,b) => b[1] - a[1])[0];
+      
+      document.getElementById('stat-top-bank').textContent = topBank ? topBank[0] : '-';
+      document.getElementById('stat-top-product').textContent = topProduct ? topProduct[0] : '-';
 
-        const bankStats = {};
-        const typeStats = {};
-        customerRecords.forEach(r => {
-          const amt = parseFloat(r.loan_amount) || 0;
-          bankStats[r.bank_name] = (bankStats[r.bank_name] || 0) + amt;
-          typeStats[r.loan_type] = (typeStats[r.loan_type] || 0) + 1;
-        });
-
-        const sortedBanks = Object.entries(bankStats).sort((a, b) => b[1] - a[1]);
-        const sortedTypes = Object.entries(typeStats).sort((a, b) => b[1] - a[1]);
-
-        document.getElementById("pdf-top-bank").textContent = sortedBanks.length > 0 ? sortedBanks[0][0] : "—";
-        document.getElementById("pdf-top-type").textContent = sortedTypes.length > 0 ? sortedTypes[0][0] : "—";
-
-        document.getElementById("pdf-banks-breakdown").innerHTML = sortedBanks.slice(0, 5).map(([b, vol]) => `
-          <div style="display: flex; justify-content: space-between; padding: 2px 0;">
-            <span>${escapeHtml(b)}</span>
-            <strong>${formatIndianDisplay(vol)}</strong>
-          </div>
-        `).join("");
-
-        document.getElementById("pdf-types-breakdown").innerHTML = sortedTypes.slice(0, 5).map(([t, cnt]) => `
-          <div style="display: flex; justify-content: space-between; padding: 2px 0;">
-            <span>${escapeHtml(t)}</span>
-            <strong>${cnt} files</strong>
-          </div>
-        `).join("");
-
-        const tbody = document.getElementById("pdf-records-table-body");
-        tbody.innerHTML = customerRecords.map(r => {
-          const age = calculateAge(r.date_of_birth);
-          let docsCount = 0;
-          if (r.doc_aadhaar_pan) docsCount++;
-          if (r.doc_bank_statement_1yr) docsCount++;
-          if (r.doc_business_proof) docsCount++;
-          if (r.doc_salary_slip_3m) docsCount++;
-          if (r.doc_revenue_tax_slip) docsCount++;
-          if (r.doc_sale_deed) docsCount++;
-          if (r.doc_udyam_aadhaar) docsCount++;
-
+      // Render Bank Breakdown Bars
+      const sortedBanks = Object.entries(bankMap).sort((a,b) => b[1] - a[1]);
+      const maxBankVal = sortedBanks.length > 0 ? sortedBanks[0][1] : 1;
+      
+      const chartBankEl = document.getElementById('chart-bank-breakdown');
+      if (sortedBanks.length === 0) {
+        chartBankEl.innerHTML = '<p class="text-zinc-400">No data available for this timeframe</p>';
+      } else {
+        chartBankEl.innerHTML = sortedBanks.map(([bName, val]) => {
+          const pct = Math.round((val / (totalAmount || 1)) * 100);
+          const barPct = Math.round((val / maxBankVal) * 100);
           return `
-            <tr style="border-bottom: 1px solid #e5e7eb;">
-              <td style="padding: 4px; font-weight: bold;">${escapeHtml(r.customer_name)}</td>
-              <td style="padding: 4px;">${age} yrs</td>
-              <td style="padding: 4px; font-weight: bold;">${formatIndianDisplay(r.loan_amount)}</td>
-              <td style="padding: 4px;">${escapeHtml(r.loan_type)}</td>
-              <td style="padding: 4px;">${escapeHtml(r.bank_name)}</td>
-              <td style="padding: 4px;">${docsCount} / 7 verified</td>
-              <td style="padding: 4px;">${escapeHtml(r.approver_name)}</td>
-            </tr>
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="font-medium text-zinc-800">${escapeHtml(bName)}</span>
+                <span class="font-semibold text-zinc-900">${formatIndianCurrency(val)} <span class="text-zinc-400">(${pct}%)</span></span>
+              </div>
+              <div class="w-full bg-zinc-100 rounded-full h-2 overflow-hidden">
+                <div class="bg-zinc-800 h-2 rounded-full" style="width: ${barPct}%"></div>
+              </div>
+            </div>
           `;
-        }).join("");
+        }).join('');
+      }
 
-        printable.style.display = "block";
+      // Render Product Breakdown Bars
+      const sortedProducts = Object.entries(productMap).sort((a,b) => b[1] - a[1]);
+      const maxProductVal = sortedProducts.length > 0 ? sortedProducts[0][1] : 1;
 
-        const filename = `Rashmi_Associates_Report_${currentSession ? currentSession.username : 'public'}_${new Date().toISOString().split("T")[0]}.pdf`;
+      const chartProductEl = document.getElementById('chart-product-breakdown');
+      if (sortedProducts.length === 0) {
+        chartProductEl.innerHTML = '<p class="text-zinc-400">No data available for this timeframe</p>';
+      } else {
+        chartProductEl.innerHTML = sortedProducts.map(([pName, val]) => {
+          const pct = Math.round((val / (totalAmount || 1)) * 100);
+          const barPct = Math.round((val / maxProductVal) * 100);
+          return `
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="font-medium text-zinc-800">${escapeHtml(pName)}</span>
+                <span class="font-semibold text-zinc-900">${formatIndianCurrency(val)} <span class="text-zinc-400">(${pct}%)</span></span>
+              </div>
+              <div class="w-full bg-zinc-100 rounded-full h-2 overflow-hidden">
+                <div class="bg-zinc-800 h-2 rounded-full" style="width: ${barPct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
 
-        const opt = {
-          margin: 10,
-          filename: filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      // Render Document Compliance Grid
+      const docLabels = [
+        { label: 'Aadhaar & PAN', count: docCounters.aadhaar_pan },
+        { label: '1Yr Bank Stmt', count: docCounters.bank_stmt },
+        { label: 'Business Proof', count: docCounters.business },
+        { label: '3M Salary Slip', count: docCounters.salary },
+        { label: 'Revenue Slip', count: docCounters.revenue },
+        { label: 'Sale Deed', count: docCounters.deed },
+        { label: 'Udyam Aadhaar', count: docCounters.udyam }
+      ];
+
+      document.getElementById('doc-compliance-grid').innerHTML = docLabels.map(item => {
+        const pct = totalCount > 0 ? Math.round((item.count / totalCount) * 100) : 0;
+        return `
+          <div class="bg-zinc-50 border border-zinc-200 rounded-lg p-3">
+            <p class="text-[11px] font-semibold text-zinc-500 truncate" title="${item.label}">${item.label}</p>
+            <p class="text-lg font-bold text-zinc-900 mt-0.5">${pct}%</p>
+            <p class="text-[10px] text-zinc-400">${item.count} / ${totalCount}</p>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // --- 10. Record Form Handlers & Live Calculations ---
+    function setupFormListeners() {
+      // Age calculation on DOB change
+      inpDob.addEventListener('input', () => {
+        const age = calculateAge(inpDob.value);
+        if (age !== null) {
+          dobAgeDisplay.textContent = `${age} years old`;
+          dobAgeDisplay.classList.add('text-zinc-900', 'font-semibold');
+          dobAgeDisplay.classList.remove('text-zinc-600');
+        } else {
+          dobAgeDisplay.textContent = 'Select DOB';
+          dobAgeDisplay.classList.remove('text-zinc-900', 'font-semibold');
+          dobAgeDisplay.classList.add('text-zinc-600');
+        }
+      });
+
+      // Shorthand currency badge preview
+      inpAmount.addEventListener('input', () => {
+        const val = inpAmount.value;
+        const shorthand = getShorthandCurrency(val);
+        if (shorthand) {
+          amountBadgePreview.textContent = `${formatIndianCurrency(val)} (${shorthand})`;
+          amountBadgePreview.classList.remove('hidden');
+        } else {
+          amountBadgePreview.classList.add('hidden');
+        }
+      });
+
+      // New Record Trigger
+      btnOpenCreate.addEventListener('click', () => {
+        inpRecordId.value = '';
+        recordForm.reset();
+        modalRecordTitle.textContent = 'New Customer Entry';
+        dobAgeDisplay.textContent = 'Select DOB';
+        amountBadgePreview.classList.add('hidden');
+        openModal(modalRecord);
+      });
+
+      // Submit Form (Save / Update)
+      recordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!currentSession || !supabase) return;
+
+        const recordId = inpRecordId.value;
+        const payload = {
+          customer_name: inpName.value.trim(),
+          dob: inpDob.value,
+          loan_amount: parseFloat(inpAmount.value),
+          loan_type: inpLoanType.value,
+          bank_name: inpBankName.value,
+          address: inpAddress.value.trim(),
+          doc_aadhaar_pan: chkAadhaarPan.checked,
+          doc_bank_statement_1yr: chkBankStmt.checked,
+          doc_business_proof: chkBusinessProof.checked,
+          doc_salary_slip_3m: chkSalarySlip.checked,
+          doc_revenue_tax_slip: chkRevenueSlip.checked,
+          doc_sale_deed: chkSaleDeed.checked,
+          doc_udyam_aadhaar: chkUdyam.checked
         };
 
-        html2pdf().set(opt).from(printable).save().then(() => {
-          printable.style.display = "none";
-          showToast("PDF report downloaded.");
-        }).catch(err => {
-          printable.style.display = "none";
-          console.error("PDF generation failure:", err);
-          showToast("Failed to compile PDF.", true);
-        });
+        try {
+          if (recordId) {
+            // Update
+            const { error } = await supabase
+              .from('customer_records')
+              .update(payload)
+              .eq('id', recordId);
+            if (error) throw error;
+          } else {
+            // Insert
+            payload.created_by = currentSession.username;
+            const { error } = await supabase
+              .from('customer_records')
+              .insert([payload]);
+            if (error) throw error;
+          }
+
+          closeModal(modalRecord);
+          loadRecords();
+        } catch (err) {
+          alert('Failed to save record: ' + (err.message || err));
+        }
+      });
+    }
+
+    // Global Functions for Row Actions
+    window.editRecord = function(id) {
+      const rec = recordsData.find(r => r.id === id);
+      if (!rec) return;
+
+      inpRecordId.value = rec.id;
+      inpName.value = rec.customer_name || '';
+      inpDob.value = rec.dob || '';
+      inpAmount.value = rec.loan_amount || '';
+      inpLoanType.value = rec.loan_type || '';
+      inpBankName.value = rec.bank_name || '';
+      inpAddress.value = rec.address || '';
+
+      chkAadhaarPan.checked = !!rec.doc_aadhaar_pan;
+      chkBankStmt.checked = !!rec.doc_bank_statement_1yr;
+      chkBusinessProof.checked = !!rec.doc_business_proof;
+      chkSalarySlip.checked = !!rec.doc_salary_slip_3m;
+      chkRevenueSlip.checked = !!rec.doc_revenue_tax_slip;
+      chkSaleDeed.checked = !!rec.doc_sale_deed;
+      chkUdyam.checked = !!rec.doc_udyam_aadhaar;
+
+      const age = calculateAge(rec.dob);
+      dobAgeDisplay.textContent = age !== null ? `${age} years old` : 'Select DOB';
+
+      const shorthand = getShorthandCurrency(rec.loan_amount);
+      if (shorthand) {
+        amountBadgePreview.textContent = `${formatIndianCurrency(rec.loan_amount)} (${shorthand})`;
+        amountBadgePreview.classList.remove('hidden');
+      } else {
+        amountBadgePreview.classList.add('hidden');
       }
 
-      // 19. EXPORT CSV SHEET
-      function exportCsvSheet() {
-        if (!customerRecords || customerRecords.length === 0) {
-          showToast("No records available to export.", true);
+      modalRecordTitle.textContent = 'Edit Customer Record';
+      openModal(modalRecord);
+    };
+
+    window.deleteRecord = async function(id) {
+      if (currentSession.role !== 'admin') {
+        alert('Permission denied. Only administrator Kailash can delete files.');
+        return;
+      }
+      if (!confirm('Are you sure you want to permanently remove this customer file?')) return;
+
+      try {
+        const { error } = await supabase.from('customer_records').delete().eq('id', id);
+        if (error) throw error;
+        loadRecords();
+      } catch (err) {
+        alert('Delete failed: ' + (err.message || err));
+      }
+    };
+
+    // --- 11. Reports & Exports (CSV & PDF) ---
+    function setupExportHandlers() {
+      // Toggle Menu
+      btnReportMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+        reportDropdown.classList.toggle('hidden');
+      });
+
+      document.addEventListener('click', () => {
+        reportDropdown.classList.add('hidden');
+      });
+
+      // CSV Export
+      btnExportCsv.addEventListener('click', () => {
+        if (recordsData.length === 0) {
+          alert('No records available to export.');
           return;
         }
 
         const headers = [
-          "Customer Name",
-          "DOB",
-          "Age",
-          "Loan Amount (INR)",
-          "Loan Type",
-          "Bank / NBFC",
-          "Aadhaar & PAN",
-          "1Yr Bank Stmt",
-          "Business Proof",
-          "3M Salary Slip",
-          "Revenue Tax Slip",
-          "Sale Deed",
-          "Udyam Aadhaar",
-          "Address",
-          "Approver Name",
-          "Created By",
-          "Created At"
+          'Customer Name', 'DOB', 'Calculated Age', 'Loan Amount', 'Loan Type', 
+          'Partner Bank', 'Aadhaar & PAN', '1Yr Bank Stmt', 'Business Proof',
+          '3M Salary Slip', 'Revenue Slip', 'Sale Deed', 'Udyam Aadhaar', 'Address', 'Created Date'
         ];
 
-        const rows = customerRecords.map(r => [
+        const rows = recordsData.map(r => [
           `"${(r.customer_name || '').replace(/"/g, '""')}"`,
-          `"${r.date_of_birth || ''}"`,
-          `"${calculateAge(r.date_of_birth)}"`,
+          r.dob || '',
+          calculateAge(r.dob) || '',
           r.loan_amount || 0,
           `"${(r.loan_type || '').replace(/"/g, '""')}"`,
           `"${(r.bank_name || '').replace(/"/g, '""')}"`,
-          r.doc_aadhaar_pan ? "Yes" : "No",
-          r.doc_bank_statement_1yr ? "Yes" : "No",
-          r.doc_business_proof ? "Yes" : "No",
-          r.doc_salary_slip_3m ? "Yes" : "No",
-          r.doc_revenue_tax_slip ? "Yes" : "No",
-          r.doc_sale_deed ? "Yes" : "No",
-          r.doc_udyam_aadhaar ? "Yes" : "No",
+          r.doc_aadhaar_pan ? 'Yes' : 'No',
+          r.doc_bank_statement_1yr ? 'Yes' : 'No',
+          r.doc_business_proof ? 'Yes' : 'No',
+          r.doc_salary_slip_3m ? 'Yes' : 'No',
+          r.doc_revenue_tax_slip ? 'Yes' : 'No',
+          r.doc_sale_deed ? 'Yes' : 'No',
+          r.doc_udyam_aadhaar ? 'Yes' : 'No',
           `"${(r.address || '').replace(/"/g, '""')}"`,
-          `"${(r.approver_name || '').replace(/"/g, '""')}"`,
-          `"${(r.created_by || '').replace(/"/g, '""')}"`,
-          `"${r.created_at || ''}"`
+          r.created_at || ''
         ]);
 
-        const csvContent = [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", `Rashmi_Associates_Records_${new Date().toISOString().split("T")[0]}.csv`);
+        const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', `Rashmi_Associates_Records_${new Date().toISOString().slice(0,10)}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        showToast("CSV export downloaded.");
-      }
+      });
 
-      // 20. NOTIFICATION TOAST
-      function showToast(msg, isError = false) {
-        const box = document.getElementById("toast-box");
-        const msgEl = document.getElementById("toast-message");
-        const icon = document.getElementById("toast-icon");
-
-        msgEl.textContent = msg;
-
-        if (isError) {
-          icon.setAttribute("data-lucide", "alert-circle");
-          icon.className = "w-4 h-4 text-red-400 shrink-0";
-        } else {
-          icon.setAttribute("data-lucide", "check-circle");
-          icon.className = "w-4 h-4 text-emerald-400 shrink-0";
+      // PDF Export via html2pdf
+      btnExportPdf.addEventListener('click', () => {
+        if (recordsData.length === 0) {
+          alert('No records available to export.');
+          return;
         }
-        initializeIcons();
 
-        box.classList.remove("translate-y-20", "opacity-0");
-        box.classList.add("translate-y-0", "opacity-100");
+        const totalAmount = recordsData.reduce((acc, r) => acc + (parseFloat(r.loan_amount) || 0), 0);
+        const template = document.getElementById('pdf-report-template');
+        template.classList.remove('hidden');
 
-        setTimeout(() => {
-          box.classList.remove("translate-y-0", "opacity-100");
-          box.classList.add("translate-y-20", "opacity-0");
-        }, 3200);
+        template.innerHTML = `
+          <div style="font-family: sans-serif; color: #18181b; padding: 20px;">
+            <div style="border-bottom: 2px solid #18181b; padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
+              <div>
+                <h1 style="font-size: 22px; font-weight: bold; margin: 0;">Rashmi Associates</h1>
+                <p style="font-size: 11px; color: #71717a; margin-top: 2px;">Official Loan Portfolio Statement • Generated on ${new Date().toLocaleDateString('en-IN')}</p>
+              </div>
+              <div style="text-align: right;">
+                <p style="font-size: 11px; margin: 0;">Account: <strong>${escapeHtml(currentSession.username)}</strong></p>
+                <p style="font-size: 11px; color: #71717a; margin: 0;">Active Records: <strong>${recordsData.length}</strong></p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 15px; margin-bottom: 25px;">
+              <div style="flex: 1; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px;">
+                <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0;">Total Records Logged</p>
+                <p style="font-size: 18px; font-weight: bold; margin: 5px 0 0 0;">${recordsData.length}</p>
+              </div>
+              <div style="flex: 1; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px;">
+                <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0;">Total Portfolio Value</p>
+                <p style="font-size: 18px; font-weight: bold; margin: 5px 0 0 0;">${formatIndianCurrency(totalAmount)}</p>
+              </div>
+            </div>
+
+            <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px;">Customer Ledger Breakdown</h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 10px; text-align: left;">
+              <thead>
+                <tr style="background: #f4f4f5; border-bottom: 1px solid #d4d4d8;">
+                  <th style="padding: 6px;">Customer Name</th>
+                  <th style="padding: 6px;">Age</th>
+                  <th style="padding: 6px;">Loan Amount</th>
+                  <th style="padding: 6px;">Loan Type</th>
+                  <th style="padding: 6px;">Bank</th>
+                  <th style="padding: 6px;">Docs (7)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${recordsData.map(r => {
+                  const docCount = [
+                    r.doc_aadhaar_pan, r.doc_bank_statement_1yr, r.doc_business_proof,
+                    r.doc_salary_slip_3m, r.doc_revenue_tax_slip, r.doc_sale_deed, r.doc_udyam_aadhaar
+                  ].filter(Boolean).length;
+                  return `
+                    <tr style="border-bottom: 1px solid #e4e4e7;">
+                      <td style="padding: 6px; font-weight: 600;">${escapeHtml(r.customer_name)}</td>
+                      <td style="padding: 6px;">${calculateAge(r.dob) || '-'} yrs</td>
+                      <td style="padding: 6px; font-weight: 600;">${formatIndianCurrency(r.loan_amount)}</td>
+                      <td style="padding: 6px;">${escapeHtml(r.loan_type)}</td>
+                      <td style="padding: 6px;">${escapeHtml(r.bank_name)}</td>
+                      <td style="padding: 6px;">${docCount}/7</td>
+                    </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        const opt = {
+          margin: 10,
+          filename: `Rashmi_Associates_Report_${new Date().toISOString().slice(0,10)}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(template).save().then(() => {
+          template.classList.add('hidden');
+          template.innerHTML = '';
+        });
+      });
+    }
+
+    // --- 12. Security & Password Modal Handlers ---
+    function setupAuthHandlers() {
+      // Login Trigger Buttons
+      btnHeaderLogin.addEventListener('click', () => openModal(modalLogin));
+      btnHeroLogin.addEventListener('click', () => openModal(modalLogin));
+
+      // Close Buttons
+      document.querySelectorAll('.btn-close-login').forEach(b => b.addEventListener('click', () => closeModal(modalLogin)));
+      document.querySelectorAll('.btn-close-modal').forEach(b => b.addEventListener('click', () => closeModal(modalRecord)));
+      document.querySelectorAll('.btn-close-password').forEach(b => b.addEventListener('click', () => closeModal(modalPassword)));
+
+      // Authenticate Form Submit
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        loginErrorMsg.classList.add('hidden');
+
+        const u = loginUser.value.trim().toLowerCase();
+        const p = loginPass.value;
+
+        try {
+          const { data, error } = await supabase.rpc('app_login', {
+            p_username: u,
+            p_password: p
+          });
+
+          if (error) throw error;
+          if (!data || !data.success) {
+            loginErrorMsg.textContent = 'Invalid username or password.';
+            loginErrorMsg.classList.remove('hidden');
+            return;
+          }
+
+          // Session Created
+          currentSession = {
+            username: data.username,
+            role: data.role
+          };
+          sessionStorage.setItem('ra_session', JSON.stringify(currentSession));
+
+          closeModal(modalLogin);
+          loginForm.reset();
+          applySessionUI();
+          loadRecords();
+        } catch (err) {
+          loginErrorMsg.textContent = err.message || 'Authentication failed.';
+          loginErrorMsg.classList.remove('hidden');
+        }
+      });
+
+      // Logout
+      btnLogout.addEventListener('click', () => {
+        sessionStorage.removeItem('ra_session');
+        currentSession = null;
+        applySessionUI();
+      });
+
+      // Open Password Modal
+      btnOpenPassword.addEventListener('click', () => {
+        passwordForm.reset();
+        passFeedbackMsg.classList.add('hidden');
+        openModal(modalPassword);
+      });
+
+      // Change Own Password
+      passwordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        passFeedbackMsg.classList.add('hidden');
+
+        const curr = passCurrent.value;
+        const nxt = passNew.value;
+
+        try {
+          const { data, error } = await supabase.rpc('change_own_password', {
+            p_username: currentSession.username,
+            p_current_password: curr,
+            p_new_password: nxt
+          });
+
+          if (error) throw error;
+
+          passFeedbackMsg.textContent = 'Password updated successfully!';
+          passFeedbackMsg.className = 'text-xs p-2.5 rounded-lg font-medium bg-emerald-50 text-emerald-700 border border-emerald-200';
+          passFeedbackMsg.classList.remove('hidden');
+
+          setTimeout(() => {
+            closeModal(modalPassword);
+          }, 1200);
+        } catch (err) {
+          passFeedbackMsg.textContent = err.message || 'Unable to update password. Verify current password.';
+          passFeedbackMsg.className = 'text-xs p-2.5 rounded-lg font-medium bg-rose-50 text-rose-700 border border-rose-200';
+          passFeedbackMsg.classList.remove('hidden');
+        }
+      });
+
+      // Filter Inputs
+      filterSearch.addEventListener('input', renderRecords);
+      filterBank.addEventListener('change', renderRecords);
+      filterType.addEventListener('change', renderRecords);
+
+      // Period Tabs
+      document.querySelectorAll('.btn-period').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.btn-period').forEach(b => {
+            b.classList.remove('font-semibold', 'bg-white', 'text-zinc-900', 'shadow-sm');
+            b.classList.add('text-zinc-600');
+          });
+          btn.classList.add('font-semibold', 'bg-white', 'text-zinc-900', 'shadow-sm');
+          btn.classList.remove('text-zinc-600');
+          currentPeriod = btn.dataset.period;
+          renderStats();
+        });
+      });
+
+      // Navigation Tabs
+      tabBtnRecords.addEventListener('click', () => {
+        tabBtnRecords.classList.add('bg-white', 'text-zinc-900', 'shadow-sm');
+        tabBtnRecords.classList.remove('text-zinc-600');
+        tabBtnStats.classList.remove('bg-white', 'text-zinc-900', 'shadow-sm');
+        tabBtnStats.classList.add('text-zinc-600');
+
+        viewRecords.classList.remove('hidden');
+        viewStats.classList.add('hidden');
+      });
+
+      tabBtnStats.addEventListener('click', () => {
+        tabBtnStats.classList.add('bg-white', 'text-zinc-900', 'shadow-sm');
+        tabBtnStats.classList.remove('text-zinc-600');
+        tabBtnRecords.classList.remove('bg-white', 'text-zinc-900', 'shadow-sm');
+        tabBtnRecords.classList.add('text-zinc-600');
+
+        viewStats.classList.remove('hidden');
+        viewRecords.classList.add('hidden');
+        renderStats();
+      });
+    }
+
+    // --- 13. System Bootstrap ---
+    document.addEventListener('DOMContentLoaded', () => {
+      populateDropdowns();
+      setupFormListeners();
+      setupAuthHandlers();
+      setupExportHandlers();
+      restoreSession();
+      if (!currentSession) {
+        initVideoReveal();
       }
-
-      // 21. UTILITY: ESCAPE HTML
-      function escapeHtml(str) {
-        if (!str) return '';
-        return String(str)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      }
-    })();
+      lucide.createIcons();
+    });
   </script>
 </body>
 </html>
