@@ -22,7 +22,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Mobile scroll lock prevention */
+    /* Mobile scroll lock prevention & dynamic viewport handling */
     .modal-container {
       max-height: 90dvh;
       overscroll-behavior: contain;
@@ -39,9 +39,9 @@
 <body class="bg-[#f4f5f7] text-zinc-900 min-h-screen flex flex-col antialiased selection:bg-zinc-800 selection:text-white">
 
   <!-- ================= TOP NAVIGATION ================= -->
-  <header class="bg-white border-b border-zinc-200 sticky top-0 z-30 px-4 sm:px-6 py-3.5 flex items-center justify-between">
+  <header class="bg-white border-b border-zinc-200 sticky top-0 z-30 px-4 sm:px-6 py-3.5 flex items-center justify-between shadow-xs">
     <div class="flex items-center space-x-3">
-      <div class="w-8 h-8 rounded bg-zinc-900 flex items-center justify-center text-white font-bold text-sm tracking-wider">RA</div>
+      <div class="w-8 h-8 rounded bg-zinc-900 flex items-center justify-center text-white font-bold text-sm tracking-wider shadow-inner">RA</div>
       <div>
         <h1 class="text-sm sm:text-base font-bold tracking-tight text-zinc-900 leading-tight">Rashmi Associates</h1>
         <p class="text-[11px] text-zinc-500 font-medium leading-none">Loan Portfolio & Operations</p>
@@ -51,20 +51,25 @@
     <!-- Right Controls -->
     <div class="flex items-center space-x-2 sm:space-x-3">
       <!-- Unauthenticated Button -->
-      <button id="btn-header-login" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1.5">
+      <button id="btn-header-login" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1.5 shadow-sm">
         <i data-lucide="log-in" class="w-4 h-4"></i>
         <span>Access Portal</span>
       </button>
 
-      <!-- Authenticated Session Badge & Actions -->
+      <!-- Authenticated Session Controls -->
       <div id="auth-controls" class="hidden flex items-center space-x-2 sm:space-x-3">
         <div class="hidden sm:flex flex-col text-right">
           <span id="session-username" class="text-xs font-semibold text-zinc-900 capitalize leading-tight">User</span>
           <span id="session-role" class="text-[10px] text-zinc-500 font-medium capitalize leading-tight">Role</span>
         </div>
 
-        <!-- Password Change Trigger -->
-        <button id="btn-open-password" title="Change Password" class="p-2 text-zinc-600 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 rounded-lg transition-colors">
+        <!-- Kailash Exclusive Admin Security Reset Tool -->
+        <button id="btn-open-admin-security" title="Admin Staff Security Panel" class="hidden p-2 text-amber-700 hover:text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Self-Service Password Change Trigger (For all accounts) -->
+        <button id="btn-open-password" title="Change Own Password" class="p-2 text-zinc-600 hover:text-zinc-900 bg-zinc-100 hover:bg-zinc-200 rounded-lg transition-colors">
           <i data-lucide="key" class="w-4 h-4"></i>
         </button>
 
@@ -80,7 +85,7 @@
   <main id="prelogin-section" class="flex-1 flex flex-col items-center justify-center p-4 sm:p-8">
     <div class="w-full max-w-2xl bg-white border border-zinc-200 rounded-2xl shadow-sm p-6 sm:p-10 flex flex-col items-center text-center">
       
-      <!-- Video Container -->
+      <!-- Video Container with Inactivity Detection Loop -->
       <div class="w-full max-w-md aspect-video bg-zinc-950 rounded-xl overflow-hidden shadow-inner relative flex items-center justify-center mb-6">
         <video 
           id="reveal-video" 
@@ -91,14 +96,14 @@
           preload="auto">
           Your browser does not support HTML5 video.
         </video>
-        <div id="video-replay-badge" class="hidden absolute bottom-2 right-2 px-2 py-0.5 bg-black/70 backdrop-blur text-[10px] text-zinc-400 rounded">
-          Idling...
+        <div id="video-replay-badge" class="hidden absolute bottom-2 right-2 px-2.5 py-1 bg-black/80 backdrop-blur-sm text-[10px] text-zinc-300 font-medium rounded border border-zinc-700">
+          Standby Loop Active
         </div>
       </div>
 
-      <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 mb-2">Loan Origination & Performance System</h2>
+      <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 mb-2">Loan Origination & Operations Management</h2>
       <p class="text-xs sm:text-sm text-zinc-600 max-w-md mb-6 leading-relaxed">
-        Authorized administrative and operations portal for Rashmi Associates. Sign in with your assigned staff credentials to manage customer files.
+        Authorized portal for Rashmi Associates. Sign in with your assigned staff credentials to manage borrower files and analyze performance metrics.
       </p>
 
       <button id="btn-hero-login" class="w-full max-w-xs py-3 px-4 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-sm rounded-lg transition-colors flex items-center justify-center space-x-2 shadow-sm">
@@ -126,23 +131,35 @@
           <span>New Customer Entry</span>
         </button>
 
-        <!-- Download Reports Dropdown Trigger -->
+        <!-- Multi-Option Export Dropdown -->
         <div class="relative">
-          <button id="btn-report-menu" class="px-3.5 py-2 bg-white border border-zinc-300 hover:bg-zinc-50 text-zinc-800 rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1.5">
+          <button id="btn-report-menu" class="px-3.5 py-2 bg-white border border-zinc-300 hover:bg-zinc-50 text-zinc-800 rounded-lg text-xs sm:text-sm font-medium transition-colors flex items-center space-x-1.5 shadow-xs">
             <i data-lucide="download" class="w-4 h-4"></i>
-            <span class="hidden sm:inline">Export</span>
+            <span class="hidden sm:inline">Export Report</span>
             <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-zinc-500"></i>
           </button>
           
-          <div id="report-dropdown" class="hidden absolute right-0 mt-1 w-52 bg-white border border-zinc-200 rounded-lg shadow-lg py-1 z-20 text-xs">
-            <button id="btn-export-pdf" class="w-full text-left px-3 py-2 hover:bg-zinc-100 flex items-center space-x-2 text-zinc-700">
-              <i data-lucide="file-text" class="w-4 h-4 text-rose-600"></i>
-              <span>Download PDF Report</span>
-            </button>
-            <button id="btn-export-csv" class="w-full text-left px-3 py-2 hover:bg-zinc-100 flex items-center space-x-2 text-zinc-700">
-              <i data-lucide="sheet" class="w-4 h-4 text-emerald-600"></i>
-              <span>Download CSV Sheet</span>
-            </button>
+          <div id="report-dropdown" class="hidden absolute right-0 mt-1 w-60 bg-white border border-zinc-200 rounded-xl shadow-xl py-1.5 z-20 text-xs divide-y divide-zinc-100">
+            <div class="py-1">
+              <button id="btn-export-pdf" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-800">
+                <i data-lucide="file-text" class="w-4 h-4 text-rose-600"></i>
+                <span class="font-medium">Download PDF Report (Printable)</span>
+              </button>
+            </div>
+            <div class="py-1">
+              <button id="btn-export-csv-week" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-700">
+                <i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i>
+                <span>Weekly CSV Ledger</span>
+              </button>
+              <button id="btn-export-csv-month" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-700">
+                <i data-lucide="calendar-days" class="w-4 h-4 text-indigo-600"></i>
+                <span>Monthly CSV Ledger</span>
+              </button>
+              <button id="btn-export-csv-all" class="w-full text-left px-3.5 py-2 hover:bg-zinc-50 flex items-center space-x-2 text-zinc-700">
+                <i data-lucide="database" class="w-4 h-4 text-emerald-600"></i>
+                <span>Full Master Sheet (CSV)</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -150,90 +167,100 @@
 
     <!-- ================= VIEW 1: CUSTOMER RECORDS ================= -->
     <div id="view-records" class="space-y-4">
-      <!-- Search & Filters -->
+      <!-- Search & Filters Toolbar -->
       <div class="flex flex-col sm:flex-row gap-3">
         <div class="relative flex-1">
           <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3 text-zinc-400"></i>
           <input type="text" id="filter-search" placeholder="Search by customer name, address or bank..." class="w-full pl-9 pr-4 py-2 bg-white border border-zinc-300 rounded-lg text-xs sm:text-sm focus:outline-none focus:border-zinc-800 transition-colors">
         </div>
         <select id="filter-bank" class="bg-white border border-zinc-300 rounded-lg px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-zinc-800">
-          <option value="">All Partner Banks</option>
+          <option value="">All Partner Banks (30)</option>
         </select>
         <select id="filter-type" class="bg-white border border-zinc-300 rounded-lg px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-zinc-800">
-          <option value="">All Loan Types</option>
+          <option value="">All Loan Products (12)</option>
+        </select>
+        <select id="filter-sort" class="bg-white border border-zinc-300 rounded-lg px-3 py-2 text-xs sm:text-sm focus:outline-none focus:border-zinc-800">
+          <option value="newest">Sort: Newest First</option>
+          <option value="oldest">Sort: Oldest First</option>
+          <option value="amount-high">Sort: Amount (High to Low)</option>
+          <option value="amount-low">Sort: Amount (Low to High)</option>
+          <option value="name-asc">Sort: Name (A to Z)</option>
         </select>
       </div>
 
-      <!-- Desktop Records Table -->
+      <!-- Desktop Customer Records Table -->
       <div class="hidden md:block bg-white border border-zinc-200 rounded-xl overflow-hidden shadow-sm">
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
               <tr class="bg-zinc-50 border-b border-zinc-200 text-zinc-600 font-semibold uppercase tracking-wider">
-                <th class="py-3 px-4">Customer Name</th>
+                <th class="py-3 px-4">Borrower Name</th>
                 <th class="py-3 px-4">Age / DOB</th>
                 <th class="py-3 px-4">Loan Amount</th>
                 <th class="py-3 px-4">Loan Product</th>
                 <th class="py-3 px-4">Partner Bank</th>
-                <th class="py-3 px-4">Documents (7)</th>
+                <th class="py-3 px-4">Document Checkpoints (7)</th>
                 <th class="py-3 px-4">Address</th>
                 <th class="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody id="records-table-body" class="divide-y divide-zinc-200">
-              <!-- Rendered via JS -->
+              <!-- Dynamically populated via JS -->
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Mobile Records Cards -->
+      <!-- Mobile Customer Records Cards -->
       <div id="records-mobile-cards" class="md:hidden space-y-3">
-        <!-- Rendered via JS -->
+        <!-- Dynamically populated via JS -->
       </div>
 
-      <!-- Empty State -->
+      <!-- Empty State Indicator -->
       <div id="empty-records-state" class="hidden bg-white border border-zinc-200 rounded-xl p-8 text-center">
         <div class="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center mx-auto mb-2 text-zinc-400">
           <i data-lucide="folder-open" class="w-5 h-5"></i>
         </div>
-        <p class="text-sm font-semibold text-zinc-800">No customer files located</p>
-        <p class="text-xs text-zinc-500 mt-0.5">Add a new file or adjust your search filter criteria.</p>
+        <p class="text-sm font-semibold text-zinc-800">No matching customer records found</p>
+        <p class="text-xs text-zinc-500 mt-0.5">Add a new file or adjust your filter query.</p>
       </div>
     </div>
 
     <!-- ================= VIEW 2: REPORTS & STATS ================= -->
     <div id="view-stats" class="hidden space-y-6">
       
-      <!-- Key Metric Strip -->
+      <!-- Key KPI Strip -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div class="bg-white border border-zinc-200 rounded-xl p-4">
+        <div class="bg-white border border-zinc-200 rounded-xl p-4 shadow-xs">
           <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Total Files Logged</p>
           <p id="stat-total-count" class="text-xl sm:text-2xl font-bold text-zinc-900 mt-1">0</p>
         </div>
-        <div class="bg-white border border-zinc-200 rounded-xl p-4">
+        <div class="bg-white border border-zinc-200 rounded-xl p-4 shadow-xs">
           <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Total Value Requested</p>
           <p id="stat-total-amount" class="text-xl sm:text-2xl font-bold text-zinc-900 mt-1">₹0</p>
         </div>
-        <div class="bg-white border border-zinc-200 rounded-xl p-4">
-          <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Top Institution</p>
+        <div class="bg-white border border-zinc-200 rounded-xl p-4 shadow-xs">
+          <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Top Performing Bank</p>
           <p id="stat-top-bank" class="text-sm sm:text-base font-bold text-zinc-900 mt-1 truncate">-</p>
         </div>
-        <div class="bg-white border border-zinc-200 rounded-xl p-4">
+        <div class="bg-white border border-zinc-200 rounded-xl p-4 shadow-xs">
           <p class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">Top Loan Product</p>
           <p id="stat-top-product" class="text-sm sm:text-base font-bold text-zinc-900 mt-1 truncate">-</p>
         </div>
       </div>
 
-      <!-- Time Interval Filter -->
-      <div class="flex items-center space-x-2">
-        <span class="text-xs font-semibold text-zinc-600">Aggregation Period:</span>
-        <div class="flex items-center space-x-1 bg-zinc-200/80 p-0.5 rounded-lg text-xs">
-          <button data-period="all" class="btn-period px-3 py-1 font-semibold bg-white text-zinc-900 rounded-md shadow-sm">All Time</button>
-          <button data-period="year" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Year</button>
-          <button data-period="month" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Month</button>
-          <button data-period="week" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Week</button>
+      <!-- Time Interval Selection -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white p-3.5 rounded-xl border border-zinc-200">
+        <div class="flex items-center space-x-2">
+          <span class="text-xs font-semibold text-zinc-700">Analytics Timeframe:</span>
+          <div class="flex items-center space-x-1 bg-zinc-100 p-0.5 rounded-lg text-xs">
+            <button data-period="all" class="btn-period px-3 py-1 font-semibold bg-white text-zinc-900 rounded-md shadow-xs">All Time</button>
+            <button data-period="year" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Year</button>
+            <button data-period="month" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Month</button>
+            <button data-period="week" class="btn-period px-3 py-1 text-zinc-600 hover:text-zinc-900 rounded-md">This Week</button>
+          </div>
         </div>
+        <p id="scope-indicator-text" class="text-xs text-zinc-500 font-medium">Aggregating records for your account</p>
       </div>
 
       <!-- Statistical Breakdowns Grid -->
@@ -241,29 +268,57 @@
         
         <!-- Disbursal by Partner Bank -->
         <div class="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm">
-          <h3 class="text-sm font-bold text-zinc-900 mb-1">Volume by Banking Partner</h3>
-          <p class="text-xs text-zinc-500 mb-4">Ranked breakdown of requested amounts across institutions</p>
-          <div id="chart-bank-breakdown" class="space-y-3 text-xs">
+          <div class="flex items-center justify-between mb-1">
+            <h3 class="text-sm font-bold text-zinc-900">Volume by Banking Partner</h3>
+            <span class="text-[11px] text-zinc-400 font-medium">30 Strict Institutions</span>
+          </div>
+          <p class="text-xs text-zinc-500 mb-4">Ranked breakdown of requested volume and distribution percentages</p>
+          <div id="chart-bank-breakdown" class="space-y-3 text-xs max-h-96 overflow-y-auto pr-1">
             <!-- Dynamic Bars -->
           </div>
         </div>
 
         <!-- Volume by Loan Category -->
         <div class="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm">
-          <h3 class="text-sm font-bold text-zinc-900 mb-1">Volume by Loan Product</h3>
-          <p class="text-xs text-zinc-500 mb-4">Distribution across categories and product lines</p>
-          <div id="chart-product-breakdown" class="space-y-3 text-xs">
+          <div class="flex items-center justify-between mb-1">
+            <h3 class="text-sm font-bold text-zinc-900">Volume by Loan Product</h3>
+            <span class="text-[11px] text-zinc-400 font-medium">12 Product Classes</span>
+          </div>
+          <p class="text-xs text-zinc-500 mb-4">Distribution across home, personal, commercial, and agricultural lines</p>
+          <div id="chart-product-breakdown" class="space-y-3 text-xs max-h-96 overflow-y-auto pr-1">
             <!-- Dynamic Bars -->
           </div>
+        </div>
+      </div>
+
+      <!-- Restored Cross-Matrix Routing Analysis Grid -->
+      <div class="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm">
+        <h3 class="text-sm font-bold text-zinc-900 mb-1">Cross-Matrix Routing Analysis (Bank × Loan Product)</h3>
+        <p class="text-xs text-zinc-500 mb-4">Identifies which specific loan products are being assigned to which institutions</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-zinc-50 border-b border-zinc-200 text-zinc-600 font-semibold uppercase tracking-wider">
+                <th class="py-2.5 px-3">Partner Bank</th>
+                <th class="py-2.5 px-3">Loan Product</th>
+                <th class="py-2.5 px-3">Total Applications</th>
+                <th class="py-2.5 px-3">Total Requested Volume</th>
+                <th class="py-2.5 px-3 text-right">Avg Ticket Size</th>
+              </tr>
+            </thead>
+            <tbody id="cross-matrix-tbody" class="divide-y divide-zinc-200">
+              <!-- Dynamically populated via JS -->
+            </tbody>
+          </table>
         </div>
       </div>
 
       <!-- Document Compliance Summary Strip -->
       <div class="bg-white border border-zinc-200 rounded-xl p-5 shadow-sm">
         <h3 class="text-sm font-bold text-zinc-900 mb-1">Document Compliance Checkpoints (7 Proofs)</h3>
-        <p class="text-xs text-zinc-500 mb-4">Verification rates across all active logged customer records</p>
+        <p class="text-xs text-zinc-500 mb-4">Verification and completion ratios across all active logged customer files</p>
         <div id="doc-compliance-grid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-center">
-          <!-- Rendered via JS -->
+          <!-- Dynamically populated via JS -->
         </div>
       </div>
     </div>
@@ -312,7 +367,7 @@
         <div>
           <div class="flex items-center justify-between mb-1.5">
             <label class="text-xs font-semibold text-zinc-700 uppercase tracking-wider">Loan Amount (₹) *</label>
-            <span id="amount-badge-preview" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 hidden">₹0</span>
+            <span id="amount-badge-preview" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200 hidden">₹0</span>
           </div>
           <input type="number" id="inp-amount" min="1" step="any" required placeholder="e.g. 2500000" class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors">
         </div>
@@ -322,13 +377,13 @@
           <div>
             <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1.5">Loan Product *</label>
             <select id="inp-loan-type" required class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors bg-white">
-              <!-- Populated dynamically via JS -->
+              <!-- Populated via JS -->
             </select>
           </div>
           <div>
             <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1.5">Partner Bank / NBFC *</label>
             <select id="inp-bank-name" required class="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors bg-white">
-              <!-- Populated dynamically via JS -->
+              <!-- Populated via JS -->
             </select>
           </div>
         </div>
@@ -375,7 +430,7 @@
           </div>
         </div>
 
-        <!-- Address -->
+        <!-- Borrower Address -->
         <div>
           <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1.5">Borrower Address</label>
           <textarea id="inp-address" rows="2" placeholder="Full residential / business address" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none transition-colors"></textarea>
@@ -408,7 +463,7 @@
       <form id="login-form" class="space-y-3.5">
         <div>
           <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1">Username</label>
-          <input type="text" id="login-user" required autocomplete="username" placeholder="Username (e.g. kailash / staff id)" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none">
+          <input type="text" id="login-user" required autocomplete="username" placeholder="Username (kailash or staff ID)" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none">
         </div>
         <div>
           <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1">Password</label>
@@ -417,14 +472,14 @@
 
         <div id="login-error-msg" class="hidden text-xs text-rose-600 bg-rose-50 border border-rose-200 p-2.5 rounded-lg font-medium"></div>
 
-        <button type="submit" id="btn-submit-login" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5 mt-2">
+        <button type="submit" id="btn-submit-login" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5 mt-2 shadow-xs">
           <span>Authorize Access</span>
         </button>
       </form>
     </div>
   </div>
 
-  <!-- ================= MODAL: SELF-SERVICE PASSWORD CHANGE ================= -->
+  <!-- ================= MODAL: SELF-SERVICE PASSWORD CHANGE (FOR ALL USERS) ================= -->
   <div id="modal-password" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
     <div class="bg-white border border-zinc-200 rounded-2xl w-full max-w-sm shadow-2xl p-6">
       <div class="flex items-center justify-between mb-4">
@@ -456,14 +511,57 @@
     </div>
   </div>
 
-  <!-- Hidden Container for Printable PDF Report -->
-  <div id="pdf-report-template" class="hidden bg-white p-8 text-zinc-900 font-sans">
-    <!-- Built dynamically prior to export -->
+  <!-- ================= MODAL: KAILASH EXCLUSIVE ADMIN STAFF PASSWORD RESET ================= -->
+  <div id="modal-admin-security" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white border border-zinc-200 rounded-2xl w-full max-w-sm shadow-2xl p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="text-base font-bold text-zinc-900">Admin Staff Password Reset</h3>
+          <p class="text-xs text-zinc-500">Overwrite credentials for any staff user</p>
+        </div>
+        <button type="button" class="btn-close-admin-security p-1.5 text-zinc-400 hover:text-zinc-700 rounded-lg">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <form id="admin-security-form" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1">Select Staff Account</label>
+          <select id="admin-target-user" required class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none bg-white">
+            <option value="achyutananda">achyutananda</option>
+            <option value="ritu">ritu</option>
+            <option value="radha">radha</option>
+            <option value="pinki">pinki</option>
+            <option value="swagatika">swagatika</option>
+            <option value="minakshi">minakshi</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1">New Password</label>
+          <input type="password" id="admin-new-pass" required minlength="6" placeholder="Assign new password" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-zinc-700 uppercase tracking-wider mb-1">Admin Authorization (Your Kailash Password)</label>
+          <input type="password" id="admin-verify-pass" required placeholder="Enter Kailash password" class="w-full text-xs sm:text-sm px-3.5 py-2 rounded-lg border border-zinc-300 focus:border-zinc-900 focus:outline-none">
+        </div>
+
+        <div id="admin-security-feedback" class="hidden text-xs p-2.5 rounded-lg font-medium"></div>
+
+        <button type="submit" id="btn-submit-admin-security" class="w-full py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs sm:text-sm font-semibold transition-colors flex items-center justify-center space-x-1.5 mt-2">
+          <span>Apply Override</span>
+        </button>
+      </form>
+    </div>
   </div>
 
-  <!-- ================= LOGIC & INTEGRATION LAYER ================= -->
+  <!-- Hidden Container for Printable Letterhead PDF Report -->
+  <div id="pdf-report-template" class="hidden bg-white p-8 text-zinc-900 font-sans">
+    <!-- Populated dynamically via JS prior to PDF render -->
+  </div>
+
+  <!-- ================= LOGIC & BACKEND INTEGRATION LAYER ================= -->
   <script>
-    // --- 1. System Config & Exact Domain Entities ---
+    // --- 1. System Config & Domain Entities ---
     const SUPABASE_URL = 'https://aghrnlpkycuormsdweki.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnaHJubHBreWN1b3Jtc2R3ZWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2Nzk2NzIsImV4cCI6MjA2MjI1NTY3Mn0.oJ69B4g0Vp5Cq92v8164bdf64bd829bf';
 
@@ -482,7 +580,7 @@
       'Education Loan', 'Consumer Durable Loan', 'Loan Against Fixed Deposit'
     ];
 
-    // Supabase Client Safe Boot
+    // Supabase Client Safe Initialization
     let supabase = null;
     try {
       if (window.supabase) {
@@ -547,6 +645,7 @@
     const sessionRole = document.getElementById('session-role');
     const btnLogout = document.getElementById('btn-logout');
     const btnOpenPassword = document.getElementById('btn-open-password');
+    const btnOpenAdminSecurity = document.getElementById('btn-open-admin-security');
 
     const revealVideo = document.getElementById('reveal-video');
     const videoReplayBadge = document.getElementById('video-replay-badge');
@@ -563,6 +662,13 @@
     const passNew = document.getElementById('pass-new');
     const passFeedbackMsg = document.getElementById('pass-feedback-msg');
 
+    const modalAdminSecurity = document.getElementById('modal-admin-security');
+    const adminSecurityForm = document.getElementById('admin-security-form');
+    const adminTargetUser = document.getElementById('admin-target-user');
+    const adminNewPass = document.getElementById('admin-new-pass');
+    const adminVerifyPass = document.getElementById('admin-verify-pass');
+    const adminSecurityFeedback = document.getElementById('admin-security-feedback');
+
     const modalRecord = document.getElementById('modal-record');
     const recordForm = document.getElementById('record-form');
     const modalRecordTitle = document.getElementById('modal-record-title');
@@ -576,7 +682,7 @@
     const inpBankName = document.getElementById('inp-bank-name');
     const inpAddress = document.getElementById('inp-address');
 
-    // Checkboxes
+    // 7 Document Checkboxes
     const chkAadhaarPan = document.getElementById('chk-aadhaar-pan');
     const chkBankStmt = document.getElementById('chk-bank-stmt');
     const chkBusinessProof = document.getElementById('chk-business-proof');
@@ -594,32 +700,34 @@
     const filterSearch = document.getElementById('filter-search');
     const filterBank = document.getElementById('filter-bank');
     const filterType = document.getElementById('filter-type');
+    const filterSort = document.getElementById('filter-sort');
     const recordsTableBody = document.getElementById('records-table-body');
     const recordsMobileCards = document.getElementById('records-mobile-cards');
     const emptyRecordsState = document.getElementById('empty-records-state');
+    const crossMatrixTbody = document.getElementById('cross-matrix-tbody');
+    const scopeIndicatorText = document.getElementById('scope-indicator-text');
 
     const btnReportMenu = document.getElementById('btn-report-menu');
     const reportDropdown = document.getElementById('report-dropdown');
     const btnExportPdf = document.getElementById('btn-export-pdf');
-    const btnExportCsv = document.getElementById('btn-export-csv');
+    const btnExportCsvWeek = document.getElementById('btn-export-csv-week');
+    const btnExportCsvMonth = document.getElementById('btn-export-csv-month');
+    const btnExportCsvAll = document.getElementById('btn-export-csv-all');
 
     // --- 4. Video Reveal & Idle Loop Logic ---
     function initVideoReveal() {
       if (!revealVideo) return;
 
-      // Start playing
       revealVideo.play().catch(e => {
-        console.log('Video autoplay prevented by browser policy:', e);
+        console.log('Autoplay prevented by browser:', e);
       });
 
-      // When video ends, pause on last frame and start 10-second idle countdown
       revealVideo.addEventListener('ended', () => {
         revealVideo.pause();
         if (videoReplayBadge) videoReplayBadge.classList.remove('hidden');
 
         clearTimeout(videoIdleTimer);
         videoIdleTimer = setTimeout(() => {
-          // If user still hasn't logged in, replay from start
           if (!currentSession) {
             revealVideo.currentTime = 0;
             if (videoReplayBadge) videoReplayBadge.classList.add('hidden');
@@ -629,20 +737,18 @@
       });
     }
 
-    // --- 5. Populating Static Approved Dropdowns ---
+    // --- 5. Populating Dropdowns ---
     function populateDropdowns() {
-      // Form Dropdowns
       inpBankName.innerHTML = '<option value="" disabled selected>Select Approved Bank / NBFC</option>' +
         APPROVED_BANKS.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
 
       inpLoanType.innerHTML = '<option value="" disabled selected>Select Loan Product</option>' +
         APPROVED_LOAN_TYPES.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
 
-      // Filter Dropdowns
-      filterBank.innerHTML = '<option value="">All Partner Banks</option>' +
+      filterBank.innerHTML = '<option value="">All Partner Banks (30)</option>' +
         APPROVED_BANKS.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
 
-      filterType.innerHTML = '<option value="">All Loan Types</option>' +
+      filterType.innerHTML = '<option value="">All Loan Products (12)</option>' +
         APPROVED_LOAN_TYPES.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
     }
 
@@ -671,7 +777,14 @@
         sessionUsername.textContent = currentSession.username;
         sessionRole.textContent = currentSession.role === 'admin' ? 'Administrator' : 'Staff Account';
 
-        // Pause video reveal loops completely once logged in
+        if (currentSession.role === 'admin') {
+          btnOpenAdminSecurity.classList.remove('hidden');
+          scopeIndicatorText.textContent = 'Aggregating records company-wide across all staff';
+        } else {
+          btnOpenAdminSecurity.classList.add('hidden');
+          scopeIndicatorText.textContent = `Aggregating records for your account (${currentSession.username})`;
+        }
+
         if (revealVideo) {
           clearTimeout(videoIdleTimer);
           revealVideo.pause();
@@ -682,17 +795,17 @@
         appWorkspace.classList.add('hidden');
         authControls.classList.add('hidden');
         authControls.classList.remove('flex');
+        btnOpenAdminSecurity.classList.add('hidden');
         recordsData = [];
         initVideoReveal();
       }
       lucide.createIcons();
     }
 
-    // Modal Control Helpers
     function openModal(el) { el.classList.remove('hidden'); }
     function closeModal(el) { el.classList.add('hidden'); }
 
-    // --- 7. Data Operations (Isolated per Staff / Global for Kailash) ---
+    // --- 7. Data Operations (Isolated per Staff / Universal for Kailash) ---
     async function loadRecords() {
       if (!currentSession || !supabase) return;
 
@@ -702,7 +815,7 @@
           .select('*')
           .order('created_at', { ascending: false });
 
-        // Multi-Tenant Isolation: Staff sees only their own; Admin sees all
+        // Multi-Tenant Isolation
         if (currentSession.role !== 'admin') {
           query = query.eq('created_by', currentSession.username);
         }
@@ -714,17 +827,18 @@
         renderRecords();
         renderStats();
       } catch (err) {
-        console.error('Error fetching customer records:', err);
+        console.error('Error fetching records:', err);
       }
     }
 
-    // --- 8. Table & Mobile Records Rendering ---
+    // --- 8. Table & Mobile Cards Rendering with Sorting ---
     function renderRecords() {
       const searchTerm = filterSearch.value.trim().toLowerCase();
       const selectedBank = filterBank.value;
       const selectedType = filterType.value;
+      const sortOption = filterSort.value;
 
-      const filtered = recordsData.filter(rec => {
+      let filtered = recordsData.filter(rec => {
         const matchesSearch = !searchTerm ||
           (rec.customer_name && rec.customer_name.toLowerCase().includes(searchTerm)) ||
           (rec.address && rec.address.toLowerCase().includes(searchTerm)) ||
@@ -734,6 +848,16 @@
         const matchesType = !selectedType || rec.loan_type === selectedType;
 
         return matchesSearch && matchesBank && matchesType;
+      });
+
+      // Sorting Logic
+      filtered.sort((a, b) => {
+        if (sortOption === 'newest') return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+        if (sortOption === 'oldest') return new Date(a.created_at || 0) - new Date(b.created_at || 0);
+        if (sortOption === 'amount-high') return (b.loan_amount || 0) - (a.loan_amount || 0);
+        if (sortOption === 'amount-low') return (a.loan_amount || 0) - (b.loan_amount || 0);
+        if (sortOption === 'name-asc') return (a.customer_name || '').localeCompare(b.customer_name || '');
+        return 0;
       });
 
       if (filtered.length === 0) {
@@ -750,7 +874,6 @@
         const age = calculateAge(rec.dob);
         const shorthand = getShorthandCurrency(rec.loan_amount);
 
-        // Document Badges
         const docCount = [
           rec.doc_aadhaar_pan, rec.doc_bank_statement_1yr, rec.doc_business_proof,
           rec.doc_salary_slip_3m, rec.doc_revenue_tax_slip, rec.doc_sale_deed, rec.doc_udyam_aadhaar
@@ -760,7 +883,10 @@
 
         return `
           <tr class="hover:bg-zinc-50/80 transition-colors">
-            <td class="py-3 px-4 font-semibold text-zinc-900">${escapeHtml(rec.customer_name)}</td>
+            <td class="py-3 px-4 font-semibold text-zinc-900">
+              ${escapeHtml(rec.customer_name)}
+              ${currentSession.role === 'admin' ? `<span class="block text-[10px] text-zinc-400 font-normal">Logged by: ${escapeHtml(rec.created_by || 'system')}</span>` : ''}
+            </td>
             <td class="py-3 px-4 text-zinc-600">${age !== null ? age + ' yrs' : '-'} <span class="text-[10px] text-zinc-400 block">${rec.dob || ''}</span></td>
             <td class="py-3 px-4 font-semibold text-zinc-900">
               ${formatIndianCurrency(rec.loan_amount)}
@@ -803,6 +929,7 @@
               <div>
                 <h4 class="text-sm font-bold text-zinc-900">${escapeHtml(rec.customer_name)}</h4>
                 <p class="text-xs text-zinc-500">${escapeHtml(rec.loan_type)} • ${escapeHtml(rec.bank_name)}</p>
+                ${currentSession.role === 'admin' ? `<p class="text-[10px] text-zinc-400">By: ${escapeHtml(rec.created_by || 'staff')}</p>` : ''}
               </div>
               <div class="text-right">
                 <p class="text-sm font-bold text-zinc-900">${formatIndianCurrency(rec.loan_amount)}</p>
@@ -833,7 +960,7 @@
       lucide.createIcons();
     }
 
-    // --- 9. Analytics & Intelligence Engine ---
+    // --- 9. Analytics & Restored Cross-Matrix Engine ---
     function renderStats() {
       const now = new Date();
       let filtered = [...recordsData];
@@ -859,20 +986,28 @@
       // Aggregations
       const bankMap = {};
       const productMap = {};
+      const matrixMap = {};
       let docCounters = {
         aadhaar_pan: 0, bank_stmt: 0, business: 0, salary: 0, revenue: 0, deed: 0, udyam: 0
       };
 
       filtered.forEach(r => {
-        // Banks
         const b = r.bank_name || 'Unspecified';
-        bankMap[b] = (bankMap[b] || 0) + (parseFloat(r.loan_amount) || 0);
-
-        // Products
         const p = r.loan_type || 'Unspecified';
-        productMap[p] = (productMap[p] || 0) + (parseFloat(r.loan_amount) || 0);
+        const amt = parseFloat(r.loan_amount) || 0;
 
-        // Docs
+        bankMap[b] = (bankMap[b] || 0) + amt;
+        productMap[p] = (productMap[p] || 0) + amt;
+
+        // Cross Matrix Mapping
+        const key = `${b}___${p}`;
+        if (!matrixMap[key]) {
+          matrixMap[key] = { bank: b, product: p, count: 0, amount: 0 };
+        }
+        matrixMap[key].count += 1;
+        matrixMap[key].amount += amt;
+
+        // Documents
         if (r.doc_aadhaar_pan) docCounters.aadhaar_pan++;
         if (r.doc_bank_statement_1yr) docCounters.bank_stmt++;
         if (r.doc_business_proof) docCounters.business++;
@@ -889,13 +1024,13 @@
       document.getElementById('stat-top-bank').textContent = topBank ? topBank[0] : '-';
       document.getElementById('stat-top-product').textContent = topProduct ? topProduct[0] : '-';
 
-      // Render Bank Breakdown Bars
+      // Bank Breakdown Bars
       const sortedBanks = Object.entries(bankMap).sort((a,b) => b[1] - a[1]);
       const maxBankVal = sortedBanks.length > 0 ? sortedBanks[0][1] : 1;
       
       const chartBankEl = document.getElementById('chart-bank-breakdown');
       if (sortedBanks.length === 0) {
-        chartBankEl.innerHTML = '<p class="text-zinc-400">No data available for this timeframe</p>';
+        chartBankEl.innerHTML = '<p class="text-zinc-400">No records in selected timeframe</p>';
       } else {
         chartBankEl.innerHTML = sortedBanks.map(([bName, val]) => {
           const pct = Math.round((val / (totalAmount || 1)) * 100);
@@ -914,13 +1049,13 @@
         }).join('');
       }
 
-      // Render Product Breakdown Bars
+      // Product Breakdown Bars
       const sortedProducts = Object.entries(productMap).sort((a,b) => b[1] - a[1]);
       const maxProductVal = sortedProducts.length > 0 ? sortedProducts[0][1] : 1;
 
       const chartProductEl = document.getElementById('chart-product-breakdown');
       if (sortedProducts.length === 0) {
-        chartProductEl.innerHTML = '<p class="text-zinc-400">No data available for this timeframe</p>';
+        chartProductEl.innerHTML = '<p class="text-zinc-400">No records in selected timeframe</p>';
       } else {
         chartProductEl.innerHTML = sortedProducts.map(([pName, val]) => {
           const pct = Math.round((val / (totalAmount || 1)) * 100);
@@ -935,6 +1070,25 @@
                 <div class="bg-zinc-800 h-2 rounded-full" style="width: ${barPct}%"></div>
               </div>
             </div>
+          `;
+        }).join('');
+      }
+
+      // Render Cross Matrix Table
+      const sortedMatrix = Object.values(matrixMap).sort((a,b) => b.amount - a.amount);
+      if (sortedMatrix.length === 0) {
+        crossMatrixTbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-zinc-400">No routed data available</td></tr>`;
+      } else {
+        crossMatrixTbody.innerHTML = sortedMatrix.map(m => {
+          const avg = m.count > 0 ? (m.amount / m.count) : 0;
+          return `
+            <tr class="hover:bg-zinc-50/80 transition-colors">
+              <td class="py-2 px-3 font-semibold text-zinc-900">${escapeHtml(m.bank)}</td>
+              <td class="py-2 px-3 text-zinc-700">${escapeHtml(m.product)}</td>
+              <td class="py-2 px-3 font-medium text-zinc-800">${m.count} files</td>
+              <td class="py-2 px-3 font-semibold text-zinc-900">${formatIndianCurrency(m.amount)}</td>
+              <td class="py-2 px-3 text-right text-zinc-600">${formatIndianCurrency(avg)}</td>
+            </tr>
           `;
         }).join('');
       }
@@ -962,9 +1116,9 @@
       }).join('');
     }
 
-    // --- 10. Record Form Handlers & Live Calculations ---
+    // --- 10. Record Form Handlers & Calculations ---
     function setupFormListeners() {
-      // Age calculation on DOB change
+      // Live age calculation
       inpDob.addEventListener('input', () => {
         const age = calculateAge(inpDob.value);
         if (age !== null) {
@@ -978,7 +1132,7 @@
         }
       });
 
-      // Shorthand currency badge preview
+      // Shorthand Indian currency preview badge
       inpAmount.addEventListener('input', () => {
         const val = inpAmount.value;
         const shorthand = getShorthandCurrency(val);
@@ -990,7 +1144,7 @@
         }
       });
 
-      // New Record Trigger
+      // Trigger New Modal
       btnOpenCreate.addEventListener('click', () => {
         inpRecordId.value = '';
         recordForm.reset();
@@ -1000,7 +1154,7 @@
         openModal(modalRecord);
       });
 
-      // Submit Form (Save / Update)
+      // Save / Update Form Submission
       recordForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!currentSession || !supabase) return;
@@ -1024,14 +1178,12 @@
 
         try {
           if (recordId) {
-            // Update
             const { error } = await supabase
               .from('customer_records')
               .update(payload)
               .eq('id', recordId);
             if (error) throw error;
           } else {
-            // Insert
             payload.created_by = currentSession.username;
             const { error } = await supabase
               .from('customer_records')
@@ -1047,7 +1199,7 @@
       });
     }
 
-    // Global Functions for Row Actions
+    // Global Functions for Edit & Delete
     window.editRecord = function(id) {
       const rec = recordsData.find(r => r.id === id);
       if (!rec) return;
@@ -1099,9 +1251,8 @@
       }
     };
 
-    // --- 11. Reports & Exports (CSV & PDF) ---
+    // --- 11. Multi-Format Exports (Weekly/Monthly CSV & Branded PDF) ---
     function setupExportHandlers() {
-      // Toggle Menu
       btnReportMenu.addEventListener('click', (e) => {
         e.stopPropagation();
         reportDropdown.classList.toggle('hidden');
@@ -1111,20 +1262,20 @@
         reportDropdown.classList.add('hidden');
       });
 
-      // CSV Export
-      btnExportCsv.addEventListener('click', () => {
-        if (recordsData.length === 0) {
-          alert('No records available to export.');
+      // CSV Export Generator Utility
+      function triggerCSVDownload(records, filename) {
+        if (!records || records.length === 0) {
+          alert('No records found for this timeframe.');
           return;
         }
 
         const headers = [
           'Customer Name', 'DOB', 'Calculated Age', 'Loan Amount', 'Loan Type', 
           'Partner Bank', 'Aadhaar & PAN', '1Yr Bank Stmt', 'Business Proof',
-          '3M Salary Slip', 'Revenue Slip', 'Sale Deed', 'Udyam Aadhaar', 'Address', 'Created Date'
+          '3M Salary Slip', 'Revenue Slip', 'Sale Deed', 'Udyam Aadhaar', 'Address', 'Logged By', 'Date Added'
         ];
 
-        const rows = recordsData.map(r => [
+        const rows = records.map(r => [
           `"${(r.customer_name || '').replace(/"/g, '""')}"`,
           r.dob || '',
           calculateAge(r.dob) || '',
@@ -1139,6 +1290,7 @@
           r.doc_sale_deed ? 'Yes' : 'No',
           r.doc_udyam_aadhaar ? 'Yes' : 'No',
           `"${(r.address || '').replace(/"/g, '""')}"`,
+          r.created_by || 'system',
           r.created_at || ''
         ]);
 
@@ -1146,13 +1298,32 @@
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement('a');
         link.setAttribute('href', encodedUri);
-        link.setAttribute('download', `Rashmi_Associates_Records_${new Date().toISOString().slice(0,10)}.csv`);
+        link.setAttribute('download', filename);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+      }
+
+      // Weekly CSV Export
+      btnExportCsvWeek.addEventListener('click', () => {
+        const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        const weeklyRecords = recordsData.filter(r => new Date(r.created_at) >= weekAgo);
+        triggerCSVDownload(weeklyRecords, `Rashmi_Associates_Weekly_Report_${new Date().toISOString().slice(0,10)}.csv`);
       });
 
-      // PDF Export via html2pdf
+      // Monthly CSV Export
+      btnExportCsvMonth.addEventListener('click', () => {
+        const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+        const monthlyRecords = recordsData.filter(r => new Date(r.created_at) >= monthAgo);
+        triggerCSVDownload(monthlyRecords, `Rashmi_Associates_Monthly_Report_${new Date().toISOString().slice(0,10)}.csv`);
+      });
+
+      // Master CSV Export
+      btnExportCsvAll.addEventListener('click', () => {
+        triggerCSVDownload(recordsData, `Rashmi_Associates_Master_Ledger_${new Date().toISOString().slice(0,10)}.csv`);
+      });
+
+      // Branded PDF Generator via html2pdf
       btnExportPdf.addEventListener('click', () => {
         if (recordsData.length === 0) {
           alert('No records available to export.');
@@ -1164,39 +1335,47 @@
         template.classList.remove('hidden');
 
         template.innerHTML = `
-          <div style="font-family: sans-serif; color: #18181b; padding: 20px;">
-            <div style="border-bottom: 2px solid #18181b; padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #18181b; padding: 24px; max-width: 800px; margin: 0 auto;">
+            
+            <!-- Letterhead Header -->
+            <div style="border-bottom: 2px solid #18181b; padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
               <div>
-                <h1 style="font-size: 22px; font-weight: bold; margin: 0;">Rashmi Associates</h1>
-                <p style="font-size: 11px; color: #71717a; margin-top: 2px;">Official Loan Portfolio Statement • Generated on ${new Date().toLocaleDateString('en-IN')}</p>
+                <h1 style="font-size: 24px; font-weight: 800; margin: 0; color: #09090b; letter-spacing: -0.5px;">RASHMI ASSOCIATES</h1>
+                <p style="font-size: 11px; color: #71717a; margin: 4px 0 0 0; text-transform: uppercase; tracking: 1px;">Loan Portfolio & Underwriting Performance Summary</p>
               </div>
               <div style="text-align: right;">
-                <p style="font-size: 11px; margin: 0;">Account: <strong>${escapeHtml(currentSession.username)}</strong></p>
-                <p style="font-size: 11px; color: #71717a; margin: 0;">Active Records: <strong>${recordsData.length}</strong></p>
+                <p style="font-size: 11px; margin: 0; font-weight: 600;">Account: <span style="font-weight: 400; text-transform: capitalize;">${escapeHtml(currentSession.username)} (${currentSession.role})</span></p>
+                <p style="font-size: 11px; color: #71717a; margin: 2px 0 0 0;">Statement Date: ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
               </div>
             </div>
 
-            <div style="display: flex; gap: 15px; margin-bottom: 25px;">
-              <div style="flex: 1; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px;">
-                <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0;">Total Records Logged</p>
-                <p style="font-size: 18px; font-weight: bold; margin: 5px 0 0 0;">${recordsData.length}</p>
+            <!-- Key Metric Highlights -->
+            <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+              <div style="flex: 1; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px; background: #fafafa;">
+                <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0; font-weight: 600;">Total Active Files</p>
+                <p style="font-size: 18px; font-weight: 700; margin: 4px 0 0 0; color: #09090b;">${recordsData.length}</p>
               </div>
-              <div style="flex: 1; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px;">
-                <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0;">Total Portfolio Value</p>
-                <p style="font-size: 18px; font-weight: bold; margin: 5px 0 0 0;">${formatIndianCurrency(totalAmount)}</p>
+              <div style="flex: 1.5; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px; background: #fafafa;">
+                <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0; font-weight: 600;">Total Volume Requested</p>
+                <p style="font-size: 18px; font-weight: 700; margin: 4px 0 0 0; color: #09090b;">${formatIndianCurrency(totalAmount)}</p>
+              </div>
+              <div style="flex: 1; border: 1px solid #e4e4e7; border-radius: 8px; padding: 12px; background: #fafafa;">
+                <p style="font-size: 10px; color: #71717a; text-transform: uppercase; margin: 0; font-weight: 600;">Compliance Checks</p>
+                <p style="font-size: 18px; font-weight: 700; margin: 4px 0 0 0; color: #09090b;">7 Points</p>
               </div>
             </div>
 
-            <h3 style="font-size: 13px; font-weight: bold; margin-bottom: 8px;">Customer Ledger Breakdown</h3>
+            <!-- Customer Records Table -->
+            <h3 style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; color: #27272a;">Customer Ledger Details</h3>
             <table style="width: 100%; border-collapse: collapse; font-size: 10px; text-align: left;">
               <thead>
                 <tr style="background: #f4f4f5; border-bottom: 1px solid #d4d4d8;">
-                  <th style="padding: 6px;">Customer Name</th>
-                  <th style="padding: 6px;">Age</th>
-                  <th style="padding: 6px;">Loan Amount</th>
-                  <th style="padding: 6px;">Loan Type</th>
-                  <th style="padding: 6px;">Bank</th>
-                  <th style="padding: 6px;">Docs (7)</th>
+                  <th style="padding: 7px 8px; font-weight: 600;">Borrower Name</th>
+                  <th style="padding: 7px 8px; font-weight: 600;">Age</th>
+                  <th style="padding: 7px 8px; font-weight: 600;">Loan Amount</th>
+                  <th style="padding: 7px 8px; font-weight: 600;">Product</th>
+                  <th style="padding: 7px 8px; font-weight: 600;">Partner Bank</th>
+                  <th style="padding: 7px 8px; font-weight: 600;">Docs (7)</th>
                 </tr>
               </thead>
               <tbody>
@@ -1207,22 +1386,27 @@
                   ].filter(Boolean).length;
                   return `
                     <tr style="border-bottom: 1px solid #e4e4e7;">
-                      <td style="padding: 6px; font-weight: 600;">${escapeHtml(r.customer_name)}</td>
-                      <td style="padding: 6px;">${calculateAge(r.dob) || '-'} yrs</td>
-                      <td style="padding: 6px; font-weight: 600;">${formatIndianCurrency(r.loan_amount)}</td>
-                      <td style="padding: 6px;">${escapeHtml(r.loan_type)}</td>
-                      <td style="padding: 6px;">${escapeHtml(r.bank_name)}</td>
-                      <td style="padding: 6px;">${docCount}/7</td>
+                      <td style="padding: 7px 8px; font-weight: 600;">${escapeHtml(r.customer_name)}</td>
+                      <td style="padding: 7px 8px;">${calculateAge(r.dob) || '-'} yrs</td>
+                      <td style="padding: 7px 8px; font-weight: 600;">${formatIndianCurrency(r.loan_amount)}</td>
+                      <td style="padding: 7px 8px;">${escapeHtml(r.loan_type)}</td>
+                      <td style="padding: 7px 8px;">${escapeHtml(r.bank_name)}</td>
+                      <td style="padding: 7px 8px;">${docCount}/7 Verified</td>
                     </tr>
                   `;
                 }).join('')}
               </tbody>
             </table>
+
+            <div style="margin-top: 30px; border-top: 1px solid #e4e4e7; padding-top: 12px; display: flex; justify-content: space-between; font-size: 9px; color: #a1a1aa;">
+              <span>Rashmi Associates Internal Records System</span>
+              <span>Confidential • Authorized Use Only</span>
+            </div>
           </div>
         `;
 
         const opt = {
-          margin: 10,
+          margin: 8,
           filename: `Rashmi_Associates_Report_${new Date().toISOString().slice(0,10)}.pdf`,
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 2 },
@@ -1236,18 +1420,17 @@
       });
     }
 
-    // --- 12. Security & Password Modal Handlers ---
+    // --- 12. Security Modals (Self-Service & Admin Password Overwrite) ---
     function setupAuthHandlers() {
-      // Login Trigger Buttons
       btnHeaderLogin.addEventListener('click', () => openModal(modalLogin));
       btnHeroLogin.addEventListener('click', () => openModal(modalLogin));
 
-      // Close Buttons
       document.querySelectorAll('.btn-close-login').forEach(b => b.addEventListener('click', () => closeModal(modalLogin)));
       document.querySelectorAll('.btn-close-modal').forEach(b => b.addEventListener('click', () => closeModal(modalRecord)));
       document.querySelectorAll('.btn-close-password').forEach(b => b.addEventListener('click', () => closeModal(modalPassword)));
+      document.querySelectorAll('.btn-close-admin-security').forEach(b => b.addEventListener('click', () => closeModal(modalAdminSecurity)));
 
-      // Authenticate Form Submit
+      // Sign In Handler
       loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         loginErrorMsg.classList.add('hidden');
@@ -1268,11 +1451,7 @@
             return;
           }
 
-          // Session Created
-          currentSession = {
-            username: data.username,
-            role: data.role
-          };
+          currentSession = { username: data.username, role: data.role };
           sessionStorage.setItem('ra_session', JSON.stringify(currentSession));
 
           closeModal(modalLogin);
@@ -1285,33 +1464,29 @@
         }
       });
 
-      // Logout
+      // Logout Handler
       btnLogout.addEventListener('click', () => {
         sessionStorage.removeItem('ra_session');
         currentSession = null;
         applySessionUI();
       });
 
-      // Open Password Modal
+      // Self-Service Password Modal Handler
       btnOpenPassword.addEventListener('click', () => {
         passwordForm.reset();
         passFeedbackMsg.classList.add('hidden');
         openModal(modalPassword);
       });
 
-      // Change Own Password
       passwordForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         passFeedbackMsg.classList.add('hidden');
 
-        const curr = passCurrent.value;
-        const nxt = passNew.value;
-
         try {
           const { data, error } = await supabase.rpc('change_own_password', {
             p_username: currentSession.username,
-            p_current_password: curr,
-            p_new_password: nxt
+            p_current_password: passCurrent.value,
+            p_new_password: passNew.value
           });
 
           if (error) throw error;
@@ -1320,36 +1495,73 @@
           passFeedbackMsg.className = 'text-xs p-2.5 rounded-lg font-medium bg-emerald-50 text-emerald-700 border border-emerald-200';
           passFeedbackMsg.classList.remove('hidden');
 
-          setTimeout(() => {
-            closeModal(modalPassword);
-          }, 1200);
+          setTimeout(() => closeModal(modalPassword), 1200);
         } catch (err) {
-          passFeedbackMsg.textContent = err.message || 'Unable to update password. Verify current password.';
+          passFeedbackMsg.textContent = err.message || 'Verification failed. Check current password.';
           passFeedbackMsg.className = 'text-xs p-2.5 rounded-lg font-medium bg-rose-50 text-rose-700 border border-rose-200';
           passFeedbackMsg.classList.remove('hidden');
         }
       });
 
-      // Filter Inputs
+      // Kailash Admin Password Reset Modal Handler
+      btnOpenAdminSecurity.addEventListener('click', () => {
+        adminSecurityForm.reset();
+        adminSecurityFeedback.classList.add('hidden');
+        openModal(modalAdminSecurity);
+      });
+
+      adminSecurityForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        adminSecurityFeedback.classList.add('hidden');
+
+        if (currentSession.username !== 'kailash') {
+          alert('Unauthorized action.');
+          return;
+        }
+
+        try {
+          const { data, error } = await supabase.rpc('update_app_password', {
+            p_admin_username: 'kailash',
+            p_admin_password: adminVerifyPass.value,
+            p_target_username: adminTargetUser.value,
+            p_new_password: adminNewPass.value
+          });
+
+          if (error) throw error;
+
+          adminSecurityFeedback.textContent = `Password for ${adminTargetUser.value} has been successfully reset!`;
+          adminSecurityFeedback.className = 'text-xs p-2.5 rounded-lg font-medium bg-emerald-50 text-emerald-700 border border-emerald-200';
+          adminSecurityFeedback.classList.remove('hidden');
+
+          setTimeout(() => closeModal(modalAdminSecurity), 1400);
+        } catch (err) {
+          adminSecurityFeedback.textContent = err.message || 'Reset failed. Check Kailash password.';
+          adminSecurityFeedback.className = 'text-xs p-2.5 rounded-lg font-medium bg-rose-50 text-rose-700 border border-rose-200';
+          adminSecurityFeedback.classList.remove('hidden');
+        }
+      });
+
+      // Filter Inputs & Sorting
       filterSearch.addEventListener('input', renderRecords);
       filterBank.addEventListener('change', renderRecords);
       filterType.addEventListener('change', renderRecords);
+      filterSort.addEventListener('change', renderRecords);
 
-      // Period Tabs
+      // Period Filter Tabs
       document.querySelectorAll('.btn-period').forEach(btn => {
         btn.addEventListener('click', () => {
           document.querySelectorAll('.btn-period').forEach(b => {
-            b.classList.remove('font-semibold', 'bg-white', 'text-zinc-900', 'shadow-sm');
+            b.classList.remove('font-semibold', 'bg-white', 'text-zinc-900', 'shadow-xs');
             b.classList.add('text-zinc-600');
           });
-          btn.classList.add('font-semibold', 'bg-white', 'text-zinc-900', 'shadow-sm');
+          btn.classList.add('font-semibold', 'bg-white', 'text-zinc-900', 'shadow-xs');
           btn.classList.remove('text-zinc-600');
           currentPeriod = btn.dataset.period;
           renderStats();
         });
       });
 
-      // Navigation Tabs
+      // Main Navigation Tabs
       tabBtnRecords.addEventListener('click', () => {
         tabBtnRecords.classList.add('bg-white', 'text-zinc-900', 'shadow-sm');
         tabBtnRecords.classList.remove('text-zinc-600');
@@ -1372,7 +1584,7 @@
       });
     }
 
-    // --- 13. System Bootstrap ---
+    // --- 13. System Initialization ---
     document.addEventListener('DOMContentLoaded', () => {
       populateDropdowns();
       setupFormListeners();
