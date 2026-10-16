@@ -35,7 +35,6 @@
   </script>
 
   <style>
-    /* Grounded Minimalist Base */
     html, body {
       font-family: 'Inter', sans-serif;
       background-color: #f4f5f7;
@@ -44,7 +43,6 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Resilient Mobile Modal: Dynamic Viewport Units and Scroll Isolation */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -65,7 +63,7 @@
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-direction: column;
-      max-height: 90dvh; /* dvh prevents keyboard clipping on Android/iOS */
+      max-height: 90dvh;
       overflow: hidden;
     }
 
@@ -75,14 +73,12 @@
       overscroll-behavior: contain;
     }
 
-    /* Form Inputs Focus */
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: #1e3a8a;
       box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.15);
     }
 
-    /* Print/PDF Container Hidden from Regular View */
     #pdf-printable-area {
       display: none;
     }
@@ -139,7 +135,7 @@
             <span class="sm:hidden">New Entry</span>
           </button>
 
-          <!-- Password Settings Button (Self-service for all users) -->
+          <!-- Password Settings Button -->
           <button id="btn-open-password" title="Change Password" class="p-1.5 text-gray-600 hover:text-gray-900 border border-gray-200 rounded hover:bg-gray-50">
             <i data-lucide="key" class="w-4 h-4"></i>
           </button>
@@ -168,7 +164,6 @@
 
     <!-- KPI STRIP -->
     <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-      
       <div class="bg-white p-4 rounded border border-gray-200 shadow-sm">
         <span class="text-xs font-medium text-gray-500 block" id="kpi-label-volume">Total Loan Volume</span>
         <div class="mt-1.5 text-lg sm:text-xl font-bold text-gray-900" id="kpi-total-volume">₹0</div>
@@ -204,12 +199,11 @@
           <!-- Search box -->
           <div class="relative flex-1 max-w-sm">
             <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
-            <input type="text" id="records-search" placeholder="Search customer, approver, or address..." class="w-full pl-9 pr-3 py-1.5 text-xs rounded border border-gray-300 bg-white text-gray-900">
+            <input type="text" id="records-search" placeholder="Search customer, phone, or address..." class="w-full pl-9 pr-3 py-1.5 text-xs rounded border border-gray-300 bg-white text-gray-900">
           </div>
 
           <!-- Filters & Action Buttons -->
           <div class="flex flex-wrap items-center gap-2">
-            
             <select id="filter-bank" class="px-2.5 py-1.5 text-xs rounded border border-gray-300 bg-white text-gray-900 font-medium">
               <option value="">All Banks & NBFCs</option>
             </select>
@@ -218,13 +212,11 @@
               <option value="">All Loan Types</option>
             </select>
 
-            <!-- Download Report Button (PDF) -->
             <button id="btn-export-pdf" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors shadow-sm">
               <i data-lucide="file-text" class="w-3.5 h-3.5 mr-1.5 text-red-600"></i>
               <span>Download PDF</span>
             </button>
 
-            <!-- Export CSV -->
             <button id="btn-export-csv" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors shadow-sm">
               <i data-lucide="download" class="w-3.5 h-3.5 mr-1.5 text-emerald-600"></i>
               <span>Export CSV</span>
@@ -238,17 +230,17 @@
 
         <!-- Responsive Records Table -->
         <div class="overflow-x-auto -mx-4 sm:mx-0 mt-3">
-          <table class="w-full text-left text-xs min-w-[950px]">
+          <table class="w-full text-left text-xs min-w-[1050px]">
             <thead>
               <tr class="bg-gray-50 text-gray-600 border-b border-gray-200 font-semibold uppercase tracking-wider text-[11px]">
                 <th class="py-2.5 px-3">Customer Name</th>
+                <th class="py-2.5 px-3">Contact</th>
                 <th class="py-2.5 px-3">Age / DOB</th>
                 <th class="py-2.5 px-3">Loan Amount</th>
                 <th class="py-2.5 px-3">Loan Type</th>
                 <th class="py-2.5 px-3">Bank / NBFC</th>
-                <th class="py-2.5 px-3">Documents Collected (7)</th>
+                <th class="py-2.5 px-3">Documents (7)</th>
                 <th class="py-2.5 px-3">Address</th>
-                <th class="py-2.5 px-3">Approver</th>
                 <th class="py-2.5 px-3 text-right">Actions</th>
               </tr>
             </thead>
@@ -267,8 +259,6 @@
 
     <!-- SECTION 2: REPORTS & STATS -->
     <section id="view-stats" class="hidden space-y-5">
-      
-      <!-- Time Period Switcher & Scope Notice -->
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white p-3.5 rounded border border-gray-200 shadow-sm gap-3">
         <div>
           <div class="flex items-center space-x-2">
@@ -287,29 +277,21 @@
         </div>
       </div>
 
-      <!-- Two Column Layout: Bank Breakdown & Loan Type Breakdown -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        
-        <!-- Which bank disbursed the most loan? -->
         <div class="bg-white p-4 sm:p-5 rounded border border-gray-200 shadow-sm">
           <div class="border-b border-gray-200 pb-2 mb-4">
             <h3 class="text-sm font-bold text-gray-900">Which Bank / NBFC disbursed the most loan?</h3>
             <span class="text-xs text-gray-500">Ranked by total loan amount</span>
           </div>
-          <div id="stat-banks-list" class="space-y-3 text-xs max-h-[380px] overflow-y-auto pr-1">
-            <!-- Dynamically populated -->
-          </div>
+          <div id="stat-banks-list" class="space-y-3 text-xs max-h-[380px] overflow-y-auto pr-1"></div>
         </div>
 
-        <!-- Which type of loan is most taken? -->
         <div class="bg-white p-4 sm:p-5 rounded border border-gray-200 shadow-sm">
           <div class="border-b border-gray-200 pb-2 mb-4">
             <h3 class="text-sm font-bold text-gray-900">Which type of loan is most taken?</h3>
             <span class="text-xs text-gray-500">Ranked by number of customer files</span>
           </div>
-          <div id="stat-types-list" class="space-y-3 text-xs max-h-[380px] overflow-y-auto pr-1">
-            <!-- Dynamically populated -->
-          </div>
+          <div id="stat-types-list" class="space-y-3 text-xs max-h-[380px] overflow-y-auto pr-1"></div>
         </div>
       </div>
 
@@ -320,49 +302,41 @@
           <span class="text-xs text-gray-500">Verification rates across active files</span>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-xs">
-          
           <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="Aadhaar & PAN (Applicant & Co-App)">Aadhaar & PAN</span>
+            <span class="font-medium text-gray-700 block text-[11px] truncate">Aadhaar & PAN</span>
             <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-aadhaar-pan">0%</span>
             <span class="text-[10px] text-gray-500" id="doc-sub-aadhaar-pan">0 files</span>
           </div>
-
           <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="1 Year Bank Statement">Bank Stmt (1 Yr)</span>
+            <span class="font-medium text-gray-700 block text-[11px] truncate">Bank Stmt (1 Yr)</span>
             <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-bank-stmt">0%</span>
             <span class="text-[10px] text-gray-500" id="doc-sub-bank-stmt">0 files</span>
           </div>
-
           <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="Business Proof">Business Proof</span>
+            <span class="font-medium text-gray-700 block text-[11px] truncate">Business Proof</span>
             <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-business">0%</span>
             <span class="text-[10px] text-gray-500" id="doc-sub-business">0 files</span>
           </div>
-
           <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="3 Month Salary Slip">Salary Slip (3M)</span>
+            <span class="font-medium text-gray-700 block text-[11px] truncate">Salary Slip (3M)</span>
             <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-salary">0%</span>
             <span class="text-[10px] text-gray-500" id="doc-sub-salary">0 files</span>
           </div>
-
           <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="Revenue Tax Slip">Revenue Tax Slip</span>
+            <span class="font-medium text-gray-700 block text-[11px] truncate">Revenue Tax Slip</span>
             <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-tax">0%</span>
             <span class="text-[10px] text-gray-500" id="doc-sub-tax">0 files</span>
           </div>
-
           <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="Sale Deed">Sale Deed</span>
+            <span class="font-medium text-gray-700 block text-[11px] truncate">Sale Deed</span>
             <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-deed">0%</span>
             <span class="text-[10px] text-gray-500" id="doc-sub-deed">0 files</span>
           </div>
-
           <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate" title="Udyam Aadhaar">Udyam Aadhaar</span>
+            <span class="font-medium text-gray-700 block text-[11px] truncate">Udyam Aadhaar</span>
             <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-udyam">0%</span>
             <span class="text-[10px] text-gray-500" id="doc-sub-udyam">0 files</span>
           </div>
-
         </div>
       </div>
     </section>
@@ -414,13 +388,13 @@
     </div>
   </div>
 
-  <!-- 2. CUSTOMER ENTRY & EDIT MODAL -->
+  <!-- 2. CUSTOMER ENTRY & EDIT MODAL (STRICT PHONE VALIDATION) -->
   <div id="modal-customer" class="modal-overlay hidden">
     <div class="modal-box max-w-2xl">
       <div class="px-5 py-3.5 border-b border-gray-200 flex items-center justify-between bg-gray-50">
         <div>
           <h3 class="text-sm font-bold text-gray-900" id="modal-customer-heading">New Customer Entry</h3>
-          <span class="text-xs text-gray-500">Enter borrower information and select collected documents</span>
+          <span class="text-xs text-gray-500">Enter borrower information and collected documents</span>
         </div>
         <button id="btn-close-customer" class="text-gray-400 hover:text-gray-700 p-1">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -448,6 +422,47 @@
           </div>
         </div>
 
+        <!-- Phone Number Inputs: Primary strictly validated & required -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">
+              Primary Mobile Number <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <span class="absolute left-3 top-2 text-xs text-gray-500 font-medium">+91</span>
+              <input 
+                type="tel" 
+                id="input-phone-number" 
+                required 
+                inputmode="numeric" 
+                pattern="^[6-9]\d{9}$" 
+                minlength="10" 
+                maxlength="10" 
+                placeholder="10-digit mobile number" 
+                title="Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9."
+                class="w-full pl-10 pr-3 py-2 text-xs rounded border border-gray-300 bg-white font-medium">
+            </div>
+            <span class="text-[10px] text-gray-500 mt-0.5 block">Mandatory 10-digit number. Cannot proceed without this.</span>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1">Alternative Contact Number</label>
+            <div class="relative">
+              <span class="absolute left-3 top-2 text-xs text-gray-500 font-medium">+91</span>
+              <input 
+                type="tel" 
+                id="input-alternate-phone" 
+                inputmode="numeric" 
+                pattern="^[6-9]\d{9}$" 
+                maxlength="10" 
+                placeholder="Optional 10-digit number" 
+                title="If entered, please provide a valid 10-digit mobile number."
+                class="w-full pl-10 pr-3 py-2 text-xs rounded border border-gray-300 bg-white font-medium">
+            </div>
+            <span class="text-[10px] text-gray-400 mt-0.5 block">Optional alternative contact.</span>
+          </div>
+        </div>
+
         <!-- Loan Amount with Dynamic Indian Numbering Indicator -->
         <div>
           <div class="flex items-center justify-between mb-1">
@@ -467,14 +482,12 @@
           <div>
             <label class="block text-xs font-semibold text-gray-700 mb-1">Loan Type <span class="text-red-500">*</span></label>
             <select id="select-loan-type" required class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
-              <!-- Populated via JS with 12 approved types -->
             </select>
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-gray-700 mb-1">Bank / NBFC Partner <span class="text-red-500">*</span></label>
             <select id="select-bank" required class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
-              <!-- Populated via JS with 30 approved banks -->
             </select>
           </div>
         </div>
@@ -483,7 +496,6 @@
         <div class="border border-gray-200 rounded p-3 bg-gray-50">
           <label class="block text-xs font-semibold text-gray-800 mb-2">Documents Collected (7 Required)</label>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-            
             <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
               <input type="checkbox" id="check-doc-aadhaar-pan" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
               <span class="text-gray-800 font-medium">1. Aadhaar Card & PAN Card (Applicant & Co-Applicant)</span>
@@ -518,21 +530,13 @@
               <input type="checkbox" id="check-doc-udyam" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
               <span class="text-gray-800 font-medium">7. Udyam Aadhaar</span>
             </label>
-
           </div>
         </div>
 
         <!-- Address -->
         <div>
           <label class="block text-xs font-semibold text-gray-700 mb-1">Customer Address <span class="text-red-500">*</span></label>
-          <textarea id="input-address" required rows="2" placeholder="Complete residential/business address with city and pin code..." class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white resize-none"></textarea>
-        </div>
-
-        <!-- Approver Name -->
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Approver Name <span class="text-red-500">*</span></label>
-          <input type="text" id="input-approver-name" required placeholder="Approver name" class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
-          <span id="hint-approver-name" class="text-[11px] text-gray-500 mt-1 block">Locked to Kailash Chandra Bishoyi during Admin session.</span>
+          <textarea id="input-address" required rows="2" placeholder="Complete address..." class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white resize-none"></textarea>
         </div>
 
         <!-- Modal Actions -->
@@ -592,10 +596,8 @@
     </div>
   </div>
 
-  <!-- ======================== PRINTABLE PDF REPORT CONTAINER ======================== -->
+  <!-- PRINTABLE PDF REPORT CONTAINER -->
   <div id="pdf-printable-area" class="p-8 bg-white text-gray-900 font-sans">
-    
-    <!-- PDF Header -->
     <div style="border-bottom: 2px solid #111827; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end;">
       <div>
         <h1 style="font-size: 20px; font-weight: bold; margin: 0; color: #111827;">RASHMI ASSOCIATES</h1>
@@ -607,7 +609,6 @@
       </div>
     </div>
 
-    <!-- Summary Box Strip -->
     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px;">
       <div style="border: 1px solid #d1d5db; padding: 8px; border-radius: 4px; background: #f9fafb;">
         <span style="font-size: 9px; color: #6b7280; display: block; font-weight: bold;">TOTAL LOAN VALUE</span>
@@ -627,48 +628,30 @@
       </div>
     </div>
 
-    <!-- Two-column Bank and Loan Type Breakdown -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px;">
-      
-      <!-- Bank breakdown table -->
-      <div style="border: 1px solid #e5e7eb; padding: 10px; border-radius: 4px;">
-        <h4 style="font-size: 10px; font-weight: bold; margin: 0 0 6px 0; border-bottom: 1px solid #e5e7eb; padding-bottom: 4px;">Top Banks & NBFCs by Volume</h4>
-        <div id="pdf-banks-breakdown" style="font-size: 9px;"></div>
-      </div>
-
-      <!-- Loan type breakdown table -->
-      <div style="border: 1px solid #e5e7eb; padding: 10px; border-radius: 4px;">
-        <h4 style="font-size: 10px; font-weight: bold; margin: 0 0 6px 0; border-bottom: 1px solid #e5e7eb; padding-bottom: 4px;">Top Loan Types by Files</h4>
-        <div id="pdf-types-breakdown" style="font-size: 9px;"></div>
-      </div>
-    </div>
-
-    <!-- Customer Records Summary Table -->
     <div>
       <h4 style="font-size: 10px; font-weight: bold; margin: 0 0 6px 0;">Customer Records Ledger</h4>
       <table style="width: 100%; border-collapse: collapse; font-size: 8.5px; text-align: left;">
         <thead>
           <tr style="background: #f3f4f6; border-top: 1px solid #d1d5db; border-bottom: 1px solid #d1d5db;">
             <th style="padding: 4px;">Customer Name</th>
+            <th style="padding: 4px;">Phone</th>
             <th style="padding: 4px;">Age</th>
             <th style="padding: 4px;">Loan Amount</th>
             <th style="padding: 4px;">Loan Type</th>
             <th style="padding: 4px;">Bank / NBFC</th>
             <th style="padding: 4px;">Docs Verified</th>
-            <th style="padding: 4px;">Approver</th>
+            <th style="padding: 4px;">Logged By</th>
           </tr>
         </thead>
         <tbody id="pdf-records-table-body">
-          <!-- Populated during PDF generation -->
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- ======================== APPLICATION LOGIC ======================== -->
+  <!-- APPLICATION LOGIC -->
   <script>
     (function () {
-      // 1. SUPABASE CLIENT
       const SUPABASE_PROJECT_URL = "https://aghrnlpkycuormsdweki.supabase.co";
       const SUPABASE_PUB_KEY = "sb_publishable_UEMVzmxLLtRRitiv1IpaTg_ZaUYcAUk";
       
@@ -681,68 +664,32 @@
         console.error("Supabase client init failed:", err);
       }
 
-      // 2. THE 30 APPROVED INSTITUTIONS (STRICTLY ENFORCED)
       const APPROVED_BANKS = [
-        "ICICI Bank",
-        "HDFC Bank",
-        "Axis Bank",
-        "IDFC FIRST Bank",
-        "DCB Bank",
-        "IndusInd Bank",
-        "Kotak Mahindra Bank",
-        "Bandhan Bank",
-        "HDB Financial Services",
-        "Yes Bank",
-        "State Bank of India (SBI)",
-        "Punjab National Bank (PNB)",
-        "Bank of India (BOI)",
-        "Indian Bank",
-        "Bank of Baroda (BOB)",
-        "IDBI Bank",
-        "Union Bank of India",
-        "Tata Capital Housing Finance (TCHFCL)",
-        "Piramal Capital & Housing Finance (PCHFCL)",
-        "Aditya Birla Housing Finance (ABHFCL)",
-        "Aavas Financiers",
-        "Cholamandalam Investment and Finance",
-        "LIC Housing Finance (LICHFL)",
-        "Veritas Finance",
-        "Vistaar Finance",
-        "Arka Fincap",
-        "Bajaj Housing Finance Ltd (Bajaj HFL)",
-        "Arthan Finance",
-        "Aptus Value Housing Finance",
-        "Manappuram Finance"
+        "ICICI Bank", "HDFC Bank", "Axis Bank", "IDFC FIRST Bank", "DCB Bank",
+        "IndusInd Bank", "Kotak Mahindra Bank", "Bandhan Bank", "HDB Financial Services", "Yes Bank",
+        "State Bank of India (SBI)", "Punjab National Bank (PNB)", "Bank of India (BOI)", "Indian Bank", "Bank of Baroda (BOB)",
+        "IDBI Bank", "Union Bank of India", "Tata Capital Housing Finance (TCHFCL)", "Piramal Capital & Housing Finance (PCHFCL)", "Aditya Birla Housing Finance (ABHFCL)",
+        "Aavas Financiers", "Cholamandalam Investment and Finance", "LIC Housing Finance (LICHFL)", "Veritas Finance", "Vistaar Finance",
+        "Arka Fincap", "Bajaj Housing Finance Ltd (Bajaj HFL)", "Arthan Finance", "Aptus Value Housing Finance", "Manappuram Finance"
       ];
 
-      // 3. THE 12 APPROVED LOAN TYPES
       const APPROVED_LOAN_TYPES = [
-        "Home Loan",
-        "Personal Loan",
-        "Business Loan",
-        "Loan Against Property (LAP)",
-        "Auto Loan",
-        "Car Loan",
-        "Two-Wheeler Loan",
-        "Gold Loan",
-        "Agriculture Loan",
-        "Education Loan",
-        "Consumer Durable Loan",
-        "Loan Against Fixed Deposit"
+        "Home Loan", "Personal Loan", "Business Loan", "Loan Against Property (LAP)",
+        "Auto Loan", "Car Loan", "Two-Wheeler Loan", "Gold Loan", "Agriculture Loan",
+        "Education Loan", "Consumer Durable Loan", "Loan Against Fixed Deposit"
       ];
 
-      // 4. APPLICATION STATE
-      let currentSession = null; // { username, role }
+      let currentSession = null;
       let customerRecords = [];
-      let currentStatsPeriod = 'all'; // 'weekly' | 'monthly' | 'yearly' | 'all'
+      let currentStatsPeriod = 'all';
       let activeTab = 'records';
 
-      // 5. APPLICATION STARTUP
       document.addEventListener("DOMContentLoaded", () => {
         initializeIcons();
         populateSelectOptions();
         restoreUserSession();
         bindEvents();
+        setupPhoneInputSanitization();
         fetchCustomerData();
       });
 
@@ -752,7 +699,6 @@
         }
       }
 
-      // Populate Select Dropdowns for Banks & Loan Types
       function populateSelectOptions() {
         const bankSelect = document.getElementById("select-bank");
         const filterBank = document.getElementById("filter-bank");
@@ -786,7 +732,6 @@
         });
       }
 
-      // 6. USER SESSION HANDLING
       function restoreUserSession() {
         const stored = localStorage.getItem("rashmi_user_session");
         if (stored) {
@@ -822,7 +767,7 @@
           if (isAdmin) {
             kpiLabelVolume.textContent = "Total Company Loan Volume";
             kpiLabelFiles.textContent = "All Customer Files";
-            kpiScopeHint.textContent = "All 6 staff + admin combined";
+            kpiScopeHint.textContent = "All staff + admin combined";
             statsScopeBadge.textContent = "Company-Wide Overview";
             statsScopeBadge.className = "px-2 py-0.5 text-[10px] font-semibold bg-gray-900 text-white rounded";
             statsScopeDesc.textContent = "Aggregating performance across all 6 staff members and admin.";
@@ -844,55 +789,56 @@
         initializeIcons();
       }
 
-      // 7. EVENT LISTENERS
+      function setupPhoneInputSanitization() {
+        const primaryInput = document.getElementById("input-phone-number");
+        const alternateInput = document.getElementById("input-alternate-phone");
+
+        [primaryInput, alternateInput].forEach(inp => {
+          if (!inp) return;
+          inp.addEventListener("input", (e) => {
+            // Strip any character that is not a numeric digit
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+          });
+        });
+      }
+
       function bindEvents() {
-        // Tab Navigation (Desktop)
         document.getElementById("tab-btn-records").addEventListener("click", () => switchWorkspaceTab('records'));
         document.getElementById("tab-btn-stats").addEventListener("click", () => switchWorkspaceTab('stats'));
-
-        // Tab Navigation (Mobile)
         document.getElementById("mob-btn-records").addEventListener("click", () => switchWorkspaceTab('records'));
         document.getElementById("mob-btn-stats").addEventListener("click", () => switchWorkspaceTab('stats'));
 
-        // Auth
         document.getElementById("btn-open-login").addEventListener("click", openLoginDialog);
         document.getElementById("btn-close-login").addEventListener("click", closeLoginDialog);
         document.getElementById("btn-logout").addEventListener("click", executeLogout);
         document.getElementById("form-login").addEventListener("submit", executeLogin);
 
-        // Customer Modal
         document.getElementById("btn-open-new-customer").addEventListener("click", () => openCustomerModal());
         document.getElementById("btn-close-customer").addEventListener("click", closeCustomerModal);
         document.getElementById("btn-cancel-customer").addEventListener("click", closeCustomerModal);
         document.getElementById("form-customer").addEventListener("submit", saveCustomerRecord);
 
-        // Password Modal (Self-service for both Kailash and Staff)
         document.getElementById("btn-open-password").addEventListener("click", openPasswordDialog);
         document.getElementById("btn-close-password").addEventListener("click", closePasswordDialog);
         document.getElementById("form-password").addEventListener("submit", executePasswordChange);
 
-        // Realtime Calculations
         document.getElementById("input-customer-dob").addEventListener("input", handleDobInput);
         document.getElementById("input-customer-dob").addEventListener("change", handleDobInput);
         document.getElementById("input-loan-amount").addEventListener("input", handleLoanAmountInput);
 
-        // Search & Filters
         document.getElementById("records-search").addEventListener("input", renderCustomerRecordsTable);
         document.getElementById("filter-bank").addEventListener("change", renderCustomerRecordsTable);
         document.getElementById("filter-type").addEventListener("change", renderCustomerRecordsTable);
         document.getElementById("btn-refresh-data").addEventListener("click", fetchCustomerData);
 
-        // Stats Period Filter
         document.getElementById("btn-period-weekly").addEventListener("click", () => setStatsPeriod('weekly'));
         document.getElementById("btn-period-monthly").addEventListener("click", () => setStatsPeriod('monthly'));
         document.getElementById("btn-period-yearly").addEventListener("click", () => setStatsPeriod('yearly'));
         document.getElementById("btn-period-all").addEventListener("click", () => setStatsPeriod('all'));
 
-        // Report Exports
         document.getElementById("btn-export-pdf").addEventListener("click", generateClientSidePdf);
         document.getElementById("btn-export-csv").addEventListener("click", exportCsvSheet);
 
-        // Modal backdrop dismissal
         document.querySelectorAll(".modal-overlay").forEach(overlay => {
           overlay.addEventListener("click", (e) => {
             if (e.target === overlay) {
@@ -904,12 +850,10 @@
         });
       }
 
-      // 8. WORKSPACE TAB SWITCHER
       function switchWorkspaceTab(tab) {
         activeTab = tab;
         const viewRecords = document.getElementById("view-records");
         const viewStats = document.getElementById("view-stats");
-
         const tabBtnRecords = document.getElementById("tab-btn-records");
         const tabBtnStats = document.getElementById("tab-btn-stats");
         const mobBtnRecords = document.getElementById("mob-btn-records");
@@ -918,29 +862,22 @@
         if (tab === 'records') {
           viewRecords.classList.remove("hidden");
           viewStats.classList.add("hidden");
-
           tabBtnRecords.className = "px-4 py-1.5 rounded text-gray-900 bg-white shadow-sm border border-gray-200";
           tabBtnStats.className = "px-4 py-1.5 rounded text-gray-600 hover:text-gray-900";
-
           mobBtnRecords.className = "flex-1 py-2 text-center rounded bg-gray-100 text-gray-900 font-semibold border border-gray-300";
           mobBtnStats.className = "flex-1 py-2 text-center rounded text-gray-600 border border-transparent";
-
           renderCustomerRecordsTable();
         } else {
           viewRecords.classList.add("hidden");
           viewStats.classList.remove("hidden");
-
           tabBtnStats.className = "px-4 py-1.5 rounded text-gray-900 bg-white shadow-sm border border-gray-200";
           tabBtnRecords.className = "px-4 py-1.5 rounded text-gray-600 hover:text-gray-900";
-
           mobBtnStats.className = "flex-1 py-2 text-center rounded bg-gray-100 text-gray-900 font-semibold border border-gray-300";
           mobBtnRecords.className = "flex-1 py-2 text-center rounded text-gray-600 border border-transparent";
-
           updateStatsView();
         }
       }
 
-      // 9. SUPABASE DATA SYNCHRONIZATION WITH STRICT MULTI-TENANCY
       async function fetchCustomerData() {
         if (!db) {
           showToast("Supabase client not loaded.", true);
@@ -950,8 +887,6 @@
         try {
           let query = db.from("customer_records").select("*").order("created_at", { ascending: false });
 
-          // STRICT DATA ISOLATION:
-          // Admin (kailash) sees all records. Staff only sees their own (created_by = currentSession.username)
           if (currentSession && currentSession.role !== 'admin' && currentSession.username !== 'kailash') {
             query = query.eq("created_by", currentSession.username);
           }
@@ -969,16 +904,13 @@
         }
       }
 
-      // 10. REALTIME INDIAN CURRENCY PREVIEWS
       function handleLoanAmountInput() {
         const val = parseFloat(document.getElementById("input-loan-amount").value);
         const badge = document.getElementById("badge-loan-amount-words");
-
         if (isNaN(val) || val <= 0) {
           badge.textContent = "₹0 (0 Lakh)";
           return;
         }
-
         badge.textContent = formatIndianCurrencyBadge(val);
       }
 
@@ -1008,16 +940,13 @@
         }
       }
 
-      // 11. REALTIME AGE CALCULATION
       function handleDobInput() {
         const val = document.getElementById("input-customer-dob").value;
         const badge = document.getElementById("badge-calculated-age");
-
         if (!val) {
           badge.textContent = "Age: —";
           return;
         }
-
         const age = calculateAge(val);
         if (age < 0 || isNaN(age)) {
           badge.textContent = "Age: Invalid";
@@ -1038,7 +967,6 @@
         return age >= 0 ? age : "—";
       }
 
-      // 12. LOGIN & LOGOUT ACTIONS
       function openLoginDialog() {
         document.getElementById("modal-login").classList.remove("hidden");
         document.getElementById("login-error-box").classList.add("hidden");
@@ -1102,7 +1030,6 @@
         showToast("Signed out.");
       }
 
-      // 13. CUSTOMER ENTRY MODAL
       function openCustomerModal(existing = null) {
         if (!currentSession) {
           openLoginDialog();
@@ -1112,8 +1039,6 @@
         const modal = document.getElementById("modal-customer");
         const heading = document.getElementById("modal-customer-heading");
         const editId = document.getElementById("edit-record-id");
-        const approverInput = document.getElementById("input-approver-name");
-        const approverHint = document.getElementById("hint-approver-name");
 
         document.getElementById("form-customer").reset();
         document.getElementById("badge-calculated-age").textContent = "Age: —";
@@ -1122,14 +1047,15 @@
         if (existing) {
           heading.textContent = "Edit Customer Details";
           editId.value = existing.id;
-          document.getElementById("input-customer-name").value = existing.customer_name;
-          document.getElementById("input-customer-dob").value = existing.date_of_birth;
-          document.getElementById("input-loan-amount").value = existing.loan_amount;
-          document.getElementById("input-address").value = existing.address;
-          document.getElementById("select-loan-type").value = existing.loan_type;
-          document.getElementById("select-bank").value = existing.bank_name;
+          document.getElementById("input-customer-name").value = existing.customer_name || '';
+          document.getElementById("input-customer-dob").value = existing.date_of_birth || '';
+          document.getElementById("input-phone-number").value = existing.phone_number || '';
+          document.getElementById("input-alternate-phone").value = existing.alternate_phone || '';
+          document.getElementById("input-loan-amount").value = existing.loan_amount || '';
+          document.getElementById("input-address").value = existing.address || '';
+          document.getElementById("select-loan-type").value = existing.loan_type || '';
+          document.getElementById("select-bank").value = existing.bank_name || '';
 
-          // The 7 document checkpoints
           document.getElementById("check-doc-aadhaar-pan").checked = !!existing.doc_aadhaar_pan;
           document.getElementById("check-doc-bank-stmt").checked = !!existing.doc_bank_statement_1yr;
           document.getElementById("check-doc-business").checked = !!existing.doc_business_proof;
@@ -1138,27 +1064,13 @@
           document.getElementById("check-doc-deed").checked = !!existing.doc_sale_deed;
           document.getElementById("check-doc-udyam").checked = !!existing.doc_udyam_aadhaar;
 
-          approverInput.value = existing.approver_name;
           handleDobInput();
           handleLoanAmountInput();
         } else {
           heading.textContent = "New Customer Entry";
           editId.value = "";
-          // Defaults
           document.getElementById("select-loan-type").selectedIndex = 0;
           document.getElementById("select-bank").selectedIndex = 0;
-        }
-
-        // Approver field behavior: Locked for Kailash, open for staff
-        if (currentSession.username === 'kailash' || currentSession.role === 'admin') {
-          approverInput.value = "Kailash Chandra Bishoyi";
-          approverInput.readOnly = true;
-          approverInput.classList.add("bg-gray-100", "text-gray-700", "cursor-not-allowed");
-          approverHint.textContent = "Locked to Kailash Chandra Bishoyi during Admin session.";
-        } else {
-          approverInput.readOnly = false;
-          approverInput.classList.remove("bg-gray-100", "text-gray-700", "cursor-not-allowed");
-          approverHint.textContent = "Enter assigned approver name for this file.";
         }
 
         modal.classList.remove("hidden");
@@ -1175,6 +1087,26 @@
           return;
         }
 
+        const phoneInput = document.getElementById("input-phone-number");
+        const altPhoneInput = document.getElementById("input-alternate-phone");
+
+        const phone = phoneInput.value.trim();
+        const altPhone = altPhoneInput.value.trim();
+
+        // Strict 10-Digit Phone Validation Check (starts with 6,7,8,9)
+        const phoneRegex = /^[6-9]\d{9}$/;
+        if (!phoneRegex.test(phone)) {
+          showToast("Primary Mobile Number must be an authentic 10-digit number starting with 6, 7, 8, or 9.", true);
+          phoneInput.focus();
+          return;
+        }
+
+        if (altPhone && !phoneRegex.test(altPhone)) {
+          showToast("Alternative Contact Number must be an authentic 10-digit number starting with 6, 7, 8, or 9.", true);
+          altPhoneInput.focus();
+          return;
+        }
+
         const id = document.getElementById("edit-record-id").value;
         const name = document.getElementById("input-customer-name").value.trim();
         const dob = document.getElementById("input-customer-dob").value;
@@ -1183,19 +1115,6 @@
         const bankName = document.getElementById("select-bank").value;
         const address = document.getElementById("input-address").value.trim();
 
-        // 7 document checkboxes
-        const docAadhaarPan = document.getElementById("check-doc-aadhaar-pan").checked;
-        const docBankStmt = document.getElementById("check-doc-bank-stmt").checked;
-        const docBusiness = document.getElementById("check-doc-business").checked;
-        const docSalary = document.getElementById("check-doc-salary").checked;
-        const docTax = document.getElementById("check-doc-tax").checked;
-        const docDeed = document.getElementById("check-doc-deed").checked;
-        const docUdyam = document.getElementById("check-doc-udyam").checked;
-
-        const approver = (currentSession.username === 'kailash')
-          ? "Kailash Chandra Bishoyi"
-          : document.getElementById("input-approver-name").value.trim();
-
         const submitBtn = document.getElementById("btn-submit-customer");
         submitBtn.disabled = true;
         submitBtn.textContent = "Saving...";
@@ -1203,33 +1122,29 @@
         const payload = {
           customer_name: name,
           date_of_birth: dob,
+          phone_number: phone,
+          alternate_phone: altPhone || null,
           loan_amount: amount,
           loan_type: loanType,
           bank_name: bankName,
-          doc_aadhaar_pan: docAadhaarPan,
-          doc_bank_statement_1yr: docBankStmt,
-          doc_business_proof: docBusiness,
-          doc_salary_slip_3m: docSalary,
-          doc_revenue_tax_slip: docTax,
-          doc_sale_deed: docDeed,
-          doc_udyam_aadhaar: docUdyam,
+          doc_aadhaar_pan: document.getElementById("check-doc-aadhaar-pan").checked,
+          doc_bank_statement_1yr: document.getElementById("check-doc-bank-stmt").checked,
+          doc_business_proof: document.getElementById("check-doc-business").checked,
+          doc_salary_slip_3m: document.getElementById("check-doc-salary").checked,
+          doc_revenue_tax_slip: document.getElementById("check-doc-tax").checked,
+          doc_sale_deed: document.getElementById("check-doc-deed").checked,
+          doc_udyam_aadhaar: document.getElementById("check-doc-udyam").checked,
           address: address,
-          approver_name: approver,
           created_by: currentSession.username
         };
 
         try {
           if (id) {
-            const { error } = await db
-              .from("customer_records")
-              .update(payload)
-              .eq("id", id);
+            const { error } = await db.from("customer_records").update(payload).eq("id", id);
             if (error) throw error;
             showToast(`Updated record for ${name}`);
           } else {
-            const { error } = await db
-              .from("customer_records")
-              .insert([payload]);
+            const { error } = await db.from("customer_records").insert([payload]);
             if (error) throw error;
             showToast(`New file logged for ${name}`);
           }
@@ -1245,7 +1160,6 @@
         }
       }
 
-      // 14. DELETE RECORD (KAILASH ONLY)
       async function deleteCustomerRecord(recordId, name) {
         if (!currentSession || (currentSession.role !== 'admin' && currentSession.username !== 'kailash')) {
           showToast("Permission denied: Only Administrator can delete records.", true);
@@ -1256,13 +1170,8 @@
         if (!confirmed) return;
 
         try {
-          const { error } = await db
-            .from("customer_records")
-            .delete()
-            .eq("id", recordId);
-
+          const { error } = await db.from("customer_records").delete().eq("id", recordId);
           if (error) throw error;
-
           showToast(`Deleted record for ${name}`);
           await fetchCustomerData();
         } catch (err) {
@@ -1271,7 +1180,6 @@
         }
       }
 
-      // 15. SELF-SERVICE PASSWORD CHANGE MODAL
       function openPasswordDialog() {
         if (!currentSession) {
           openLoginDialog();
@@ -1309,7 +1217,7 @@
         submitBtn.textContent = "Updating...";
 
         try {
-          const { data, error } = await db.rpc("change_own_password", {
+          const { error } = await db.rpc("change_own_password", {
             p_username: currentSession.username,
             p_current_password: currPass,
             p_new_password: newPass
@@ -1328,7 +1236,6 @@
         }
       }
 
-      // 16. RENDERING: CUSTOMER RECORDS TABLE
       function renderCustomerRecordsTable() {
         const tbody = document.getElementById("records-tbody");
         const emptyBox = document.getElementById("records-empty");
@@ -1339,7 +1246,8 @@
         const filtered = customerRecords.filter(r => {
           const matchesSearch = !search ||
             (r.customer_name && r.customer_name.toLowerCase().includes(search)) ||
-            (r.approver_name && r.approver_name.toLowerCase().includes(search)) ||
+            (r.phone_number && r.phone_number.toLowerCase().includes(search)) ||
+            (r.alternate_phone && r.alternate_phone.toLowerCase().includes(search)) ||
             (r.address && r.address.toLowerCase().includes(search));
 
           const matchesBank = !bankFilter || r.bank_name === bankFilter;
@@ -1362,7 +1270,6 @@
           const tr = document.createElement("tr");
           tr.className = "hover:bg-gray-50 transition-colors";
 
-          // Document Badges for 7 checkpoints
           const docPills = [];
           if (r.doc_aadhaar_pan) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-blue-50 text-blue-800 border border-blue-200 font-medium">Aadhaar/PAN</span>`);
           if (r.doc_bank_statement_1yr) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-gray-100 text-gray-800 border border-gray-300 font-medium">Bank Stmt</span>`);
@@ -1377,7 +1284,11 @@
           tr.innerHTML = `
             <td class="py-2.5 px-3">
               <div class="font-bold text-gray-900">${escapeHtml(r.customer_name)}</div>
-              <div class="text-[10px] text-gray-500">Logged by: <span class="font-medium text-gray-700">${escapeHtml(r.created_by || '—')}</span></div>
+              <div class="text-[10px] text-gray-500">By: <span class="font-medium text-gray-700">${escapeHtml(r.created_by || '—')}</span></div>
+            </td>
+            <td class="py-2.5 px-3">
+              ${r.phone_number ? `<a href="tel:${escapeHtml(r.phone_number)}" class="font-semibold text-blue-700 hover:underline block">${escapeHtml(r.phone_number)}</a>` : '<span class="text-red-500 font-medium text-[11px]">Missing</span>'}
+              ${r.alternate_phone ? `<span class="text-[10px] text-gray-500 block">Alt: ${escapeHtml(r.alternate_phone)}</span>` : ''}
             </td>
             <td class="py-2.5 px-3">
               <span class="font-medium text-gray-900">${age} yrs</span>
@@ -1403,16 +1314,12 @@
             <td class="py-2.5 px-3 text-gray-600 max-w-[160px] truncate" title="${escapeHtml(r.address)}">
               ${escapeHtml(r.address)}
             </td>
-            <td class="py-2.5 px-3 font-medium text-gray-900">
-              ${escapeHtml(r.approver_name)}
-            </td>
             <td class="py-2.5 px-3 text-right space-x-1" id="row-actions-${r.id}"></td>
           `;
 
           const actionsCell = tr.querySelector(`#row-actions-${r.id}`);
 
           if (currentSession) {
-            // Edit Button (Staff & Kailash)
             const editBtn = document.createElement("button");
             editBtn.title = "Edit Record";
             editBtn.className = "p-1 rounded text-gray-600 hover:text-black hover:bg-gray-100";
@@ -1420,7 +1327,6 @@
             editBtn.addEventListener("click", () => openCustomerModal(r));
             actionsCell.appendChild(editBtn);
 
-            // Delete Button (ONLY Kailash)
             if (isAdmin) {
               const delBtn = document.createElement("button");
               delBtn.title = "Delete Record";
@@ -1437,7 +1343,6 @@
         initializeIcons();
       }
 
-      // 17. KPIS & STATISTICAL INTELLIGENCE
       function updateKpis() {
         const total = customerRecords.reduce((sum, r) => sum + (parseFloat(r.loan_amount) || 0), 0);
         const count = customerRecords.length;
@@ -1495,12 +1400,10 @@
 
       function getFilteredRecordsForStats() {
         if (currentStatsPeriod === 'all') return customerRecords;
-
         const now = new Date();
         return customerRecords.filter(r => {
           const created = new Date(r.created_at);
           const diffDays = (now - created) / (1000 * 60 * 60 * 24);
-
           if (currentStatsPeriod === 'weekly') return diffDays <= 7;
           if (currentStatsPeriod === 'monthly') return diffDays <= 30;
           if (currentStatsPeriod === 'yearly') return diffDays <= 365;
@@ -1511,11 +1414,9 @@
       function updateStatsView() {
         const records = getFilteredRecordsForStats();
         const totalCount = records.length;
-
         const bankStats = {};
         const typeStats = {};
 
-        // 7 Document Counters
         let aadhaarPanCnt = 0;
         let bankStmtCnt = 0;
         let bizProofCnt = 0;
@@ -1546,7 +1447,6 @@
           if (r.doc_udyam_aadhaar) udyamCnt++;
         });
 
-        // 1. Bank Disbursal Leaderboard
         const bankContainer = document.getElementById("stat-banks-list");
         const sortedBanks = Object.entries(bankStats).sort((a, b) => b[1].volume - a[1].volume);
 
@@ -1575,7 +1475,6 @@
           }).join("");
         }
 
-        // 2. Loan Type Breakdown
         const typeContainer = document.getElementById("stat-types-list");
         const sortedTypes = Object.entries(typeStats).sort((a, b) => b[1].count - a[1].count);
 
@@ -1604,7 +1503,6 @@
           }).join("");
         }
 
-        // 3. 7 Document Compliance Ratios
         const pct = (c) => totalCount > 0 ? `${((c / totalCount) * 100).toFixed(0)}%` : "0%";
         document.getElementById("doc-stat-aadhaar-pan").textContent = pct(aadhaarPanCnt);
         document.getElementById("doc-sub-aadhaar-pan").textContent = `${aadhaarPanCnt} of ${totalCount}`;
@@ -1628,7 +1526,6 @@
         document.getElementById("doc-sub-udyam").textContent = `${udyamCnt} of ${totalCount}`;
       }
 
-      // 18. CLIENT-SIDE PDF GENERATOR
       function generateClientSidePdf() {
         if (!customerRecords || customerRecords.length === 0) {
           showToast("No customer records to generate PDF report.", true);
@@ -1668,20 +1565,6 @@
         document.getElementById("pdf-top-bank").textContent = sortedBanks.length > 0 ? sortedBanks[0][0] : "—";
         document.getElementById("pdf-top-type").textContent = sortedTypes.length > 0 ? sortedTypes[0][0] : "—";
 
-        document.getElementById("pdf-banks-breakdown").innerHTML = sortedBanks.slice(0, 5).map(([b, vol]) => `
-          <div style="display: flex; justify-content: space-between; padding: 2px 0;">
-            <span>${escapeHtml(b)}</span>
-            <strong>${formatIndianDisplay(vol)}</strong>
-          </div>
-        `).join("");
-
-        document.getElementById("pdf-types-breakdown").innerHTML = sortedTypes.slice(0, 5).map(([t, cnt]) => `
-          <div style="display: flex; justify-content: space-between; padding: 2px 0;">
-            <span>${escapeHtml(t)}</span>
-            <strong>${cnt} files</strong>
-          </div>
-        `).join("");
-
         const tbody = document.getElementById("pdf-records-table-body");
         tbody.innerHTML = customerRecords.map(r => {
           const age = calculateAge(r.date_of_birth);
@@ -1697,12 +1580,13 @@
           return `
             <tr style="border-bottom: 1px solid #e5e7eb;">
               <td style="padding: 4px; font-weight: bold;">${escapeHtml(r.customer_name)}</td>
+              <td style="padding: 4px;">${escapeHtml(r.phone_number || '—')}</td>
               <td style="padding: 4px;">${age} yrs</td>
               <td style="padding: 4px; font-weight: bold;">${formatIndianDisplay(r.loan_amount)}</td>
               <td style="padding: 4px;">${escapeHtml(r.loan_type)}</td>
               <td style="padding: 4px;">${escapeHtml(r.bank_name)}</td>
-              <td style="padding: 4px;">${docsCount} / 7 verified</td>
-              <td style="padding: 4px;">${escapeHtml(r.approver_name)}</td>
+              <td style="padding: 4px;">${docsCount} / 7</td>
+              <td style="padding: 4px;">${escapeHtml(r.created_by || '—')}</td>
             </tr>
           `;
         }).join("");
@@ -1729,7 +1613,6 @@
         });
       }
 
-      // 19. EXPORT CSV SHEET
       function exportCsvSheet() {
         if (!customerRecords || customerRecords.length === 0) {
           showToast("No records available to export.", true);
@@ -1738,6 +1621,8 @@
 
         const headers = [
           "Customer Name",
+          "Phone Number",
+          "Alternate Phone",
           "DOB",
           "Age",
           "Loan Amount (INR)",
@@ -1751,13 +1636,14 @@
           "Sale Deed",
           "Udyam Aadhaar",
           "Address",
-          "Approver Name",
           "Created By",
           "Created At"
         ];
 
         const rows = customerRecords.map(r => [
           `"${(r.customer_name || '').replace(/"/g, '""')}"`,
+          `"${r.phone_number || ''}"`,
+          `"${r.alternate_phone || ''}"`,
           `"${r.date_of_birth || ''}"`,
           `"${calculateAge(r.date_of_birth)}"`,
           r.loan_amount || 0,
@@ -1771,7 +1657,6 @@
           r.doc_sale_deed ? "Yes" : "No",
           r.doc_udyam_aadhaar ? "Yes" : "No",
           `"${(r.address || '').replace(/"/g, '""')}"`,
-          `"${(r.approver_name || '').replace(/"/g, '""')}"`,
           `"${(r.created_by || '').replace(/"/g, '""')}"`,
           `"${r.created_at || ''}"`
         ]);
@@ -1788,7 +1673,6 @@
         showToast("CSV export downloaded.");
       }
 
-      // 20. NOTIFICATION TOAST
       function showToast(msg, isError = false) {
         const box = document.getElementById("toast-box");
         const msgEl = document.getElementById("toast-message");
@@ -1814,7 +1698,6 @@
         }, 3200);
       }
 
-      // 21. UTILITY: ESCAPE HTML
       function escapeHtml(str) {
         if (!str) return '';
         return String(str)
