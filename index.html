@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Rashmi Associates - Loan & Customer Portal</title>
+  <title>Rashmi Associates - Loan Operations Portal</title>
 
-  <!-- Typography: Inter -->
+  <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -40,14 +40,13 @@
       background-color: #f4f5f7;
       color: #111827;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     .modal-overlay {
       position: fixed;
       inset: 0;
       z-index: 50;
-      background-color: rgba(17, 24, 39, 0.6);
+      background-color: rgba(17, 24, 39, 0.65);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -60,10 +59,10 @@
       background: #ffffff;
       border-radius: 0.5rem;
       border: 1px solid #d1d5db;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-direction: column;
-      max-height: 90dvh;
+      max-height: 92dvh;
       overflow: hidden;
     }
 
@@ -87,18 +86,18 @@
 
 <body class="h-full flex flex-col min-h-screen">
 
-  <!-- TOP HEADER / NAVIGATION -->
+  <!-- TOP HEADER -->
   <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       
-      <!-- Company Branding -->
+      <!-- Brand -->
       <div class="flex items-center space-x-3">
         <div class="w-9 h-9 rounded bg-gray-900 text-white flex items-center justify-center font-bold text-sm tracking-wide">
           RA
         </div>
         <div>
           <span class="text-base font-bold text-gray-900 leading-tight block">Rashmi Associates</span>
-          <span class="text-xs text-gray-500 font-medium leading-none block">Loan Tracking & Management</span>
+          <span class="text-xs text-gray-500 font-medium leading-none block">Loan Records & Intake Portal</span>
         </div>
       </div>
 
@@ -115,32 +114,28 @@
       <!-- User Auth Section -->
       <div class="flex items-center space-x-2">
         <div id="auth-logged-out" class="flex items-center">
-          <button id="btn-open-login" class="px-3.5 py-1.5 text-xs font-medium text-white bg-gray-900 hover:bg-black rounded transition-colors">
-            Login
+          <button id="btn-open-login" class="px-3.5 py-1.5 text-xs font-semibold text-white bg-gray-900 hover:bg-black rounded transition-colors shadow-sm">
+            Sign In
           </button>
         </div>
 
         <div id="auth-logged-in" class="hidden flex items-center space-x-2">
-          <!-- Role & User Pill -->
           <div class="hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded border border-gray-200 bg-gray-50 text-xs">
             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
             <span id="user-display-name" class="font-semibold text-gray-900 capitalize">user</span>
             <span id="user-role-badge" class="text-[10px] text-gray-500 uppercase font-medium">(Staff)</span>
           </div>
 
-          <!-- Add Customer Button -->
-          <button id="btn-open-new-customer" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 rounded transition-colors">
+          <button id="btn-open-new-customer" class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 rounded transition-colors shadow-sm">
             <i data-lucide="plus" class="w-4 h-4 mr-1"></i>
-            <span class="hidden sm:inline">New Customer Entry</span>
-            <span class="sm:hidden">New Entry</span>
+            <span class="hidden sm:inline">New Customer</span>
+            <span class="sm:hidden">New</span>
           </button>
 
-          <!-- Password Settings Button -->
           <button id="btn-open-password" title="Change Password" class="p-1.5 text-gray-600 hover:text-gray-900 border border-gray-200 rounded hover:bg-gray-50">
             <i data-lucide="key" class="w-4 h-4"></i>
           </button>
 
-          <!-- Logout Button -->
           <button id="btn-logout" title="Sign Out" class="p-1.5 text-gray-500 hover:text-red-600 border border-gray-200 rounded hover:bg-gray-50">
             <i data-lucide="log-out" class="w-4 h-4"></i>
           </button>
@@ -149,7 +144,7 @@
     </div>
   </header>
 
-  <!-- MOBILE TAB NAVIGATION BAR -->
+  <!-- MOBILE NAVIGATION BAR -->
   <div id="mobile-nav" class="md:hidden bg-white border-b border-gray-200 px-4 py-2 flex space-x-2 text-xs font-medium">
     <button id="mob-btn-records" class="flex-1 py-2 text-center rounded bg-gray-100 text-gray-900 font-semibold border border-gray-300">
       Customer Records
@@ -159,7 +154,7 @@
     </button>
   </div>
 
-  <!-- MAIN WORKSPACE -->
+  <!-- MAIN CONTENT AREA -->
   <main class="flex-grow max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5 space-y-5">
 
     <!-- KPI STRIP -->
@@ -173,7 +168,7 @@
       <div class="bg-white p-4 rounded border border-gray-200 shadow-sm">
         <span class="text-xs font-medium text-gray-500 block" id="kpi-label-files">Customer Files</span>
         <div class="mt-1.5 text-lg sm:text-xl font-bold text-gray-900" id="kpi-total-files">0</div>
-        <span class="text-[11px] text-gray-500" id="kpi-scope-hint">Logged records</span>
+        <span class="text-[11px] text-gray-500" id="kpi-scope-hint">Sign in to view</span>
       </div>
 
       <div class="bg-white p-4 rounded border border-gray-200 shadow-sm">
@@ -196,13 +191,11 @@
         <!-- Controls Bar -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-gray-200">
           
-          <!-- Search box -->
           <div class="relative flex-1 max-w-sm">
             <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
             <input type="text" id="records-search" placeholder="Search customer, phone, or address..." class="w-full pl-9 pr-3 py-1.5 text-xs rounded border border-gray-300 bg-white text-gray-900">
           </div>
 
-          <!-- Filters & Action Buttons -->
           <div class="flex flex-wrap items-center gap-2">
             <select id="filter-bank" class="px-2.5 py-1.5 text-xs rounded border border-gray-300 bg-white text-gray-900 font-medium">
               <option value="">All Banks & NBFCs</option>
@@ -214,7 +207,7 @@
 
             <button id="btn-export-pdf" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors shadow-sm">
               <i data-lucide="file-text" class="w-3.5 h-3.5 mr-1.5 text-red-600"></i>
-              <span>Download PDF</span>
+              <span>PDF Report</span>
             </button>
 
             <button id="btn-export-csv" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded transition-colors shadow-sm">
@@ -228,31 +221,29 @@
           </div>
         </div>
 
-        <!-- Responsive Records Table -->
+        <!-- Table View -->
         <div class="overflow-x-auto -mx-4 sm:mx-0 mt-3">
-          <table class="w-full text-left text-xs min-w-[1050px]">
+          <table class="w-full text-left text-xs min-w-[1100px]">
             <thead>
               <tr class="bg-gray-50 text-gray-600 border-b border-gray-200 font-semibold uppercase tracking-wider text-[11px]">
                 <th class="py-2.5 px-3">Customer Name</th>
-                <th class="py-2.5 px-3">Contact</th>
+                <th class="py-2.5 px-3">Phone Numbers</th>
                 <th class="py-2.5 px-3">Age / DOB</th>
                 <th class="py-2.5 px-3">Loan Amount</th>
                 <th class="py-2.5 px-3">Loan Type</th>
                 <th class="py-2.5 px-3">Bank / NBFC</th>
-                <th class="py-2.5 px-3">Documents (7)</th>
+                <th class="py-2.5 px-3">Documents (11)</th>
                 <th class="py-2.5 px-3">Address</th>
                 <th class="py-2.5 px-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody id="records-tbody" class="divide-y divide-gray-200 text-gray-800">
-              <!-- Dynamically populated via JS -->
             </tbody>
           </table>
         </div>
 
-        <!-- Empty State Container -->
-        <div id="records-empty" class="hidden text-center py-10 text-gray-500 text-xs">
-          No customer records found matching your filters.
+        <div id="records-empty" class="text-center py-10 text-gray-500 text-xs">
+          Sign in to view customer files.
         </div>
       </div>
     </section>
@@ -295,17 +286,32 @@
         </div>
       </div>
 
-      <!-- 7 Documents Compliance Summary -->
+      <!-- 11 Documents Compliance Summary -->
       <div class="bg-white p-4 sm:p-5 rounded border border-gray-200 shadow-sm">
         <div class="border-b border-gray-200 pb-2 mb-4">
-          <h3 class="text-sm font-bold text-gray-900">Documents Collected Summary (7 Required)</h3>
+          <h3 class="text-sm font-bold text-gray-900">Documents Collected Summary (11 Required)</h3>
           <span class="text-xs text-gray-500">Verification rates across active files</span>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-xs">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 text-xs">
           <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
-            <span class="font-medium text-gray-700 block text-[11px] truncate">Aadhaar & PAN</span>
-            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-aadhaar-pan">0%</span>
-            <span class="text-[10px] text-gray-500" id="doc-sub-aadhaar-pan">0 files</span>
+            <span class="font-medium text-gray-700 block text-[11px] truncate">Applicant Aadhaar</span>
+            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-app-aadhaar">0%</span>
+            <span class="text-[10px] text-gray-500" id="doc-sub-app-aadhaar">0 files</span>
+          </div>
+          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
+            <span class="font-medium text-gray-700 block text-[11px] truncate">Applicant PAN</span>
+            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-app-pan">0%</span>
+            <span class="text-[10px] text-gray-500" id="doc-sub-app-pan">0 files</span>
+          </div>
+          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
+            <span class="font-medium text-gray-700 block text-[11px] truncate">Co-App Aadhaar</span>
+            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-co-aadhaar">0%</span>
+            <span class="text-[10px] text-gray-500" id="doc-sub-co-aadhaar">0 files</span>
+          </div>
+          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
+            <span class="font-medium text-gray-700 block text-[11px] truncate">Co-App PAN</span>
+            <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-co-pan">0%</span>
+            <span class="text-[10px] text-gray-500" id="doc-sub-co-pan">0 files</span>
           </div>
           <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
             <span class="font-medium text-gray-700 block text-[11px] truncate">Bank Stmt (1 Yr)</span>
@@ -332,7 +338,12 @@
             <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-deed">0%</span>
             <span class="text-[10px] text-gray-500" id="doc-sub-deed">0 files</span>
           </div>
-          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded">
+          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded bg-amber-50/50">
+            <span class="font-medium text-amber-900 block text-[11px] truncate">Gharabari Patta</span>
+            <span class="text-base font-bold text-amber-950 mt-1 block" id="doc-stat-gharabari">0%</span>
+            <span class="text-[10px] text-amber-700" id="doc-sub-gharabari">0 files</span>
+          </div>
+          <div class="p-2.5 bg-gray-50 border border-gray-200 rounded sm:col-span-2 md:col-span-1">
             <span class="font-medium text-gray-700 block text-[11px] truncate">Udyam Aadhaar</span>
             <span class="text-base font-bold text-gray-900 mt-1 block" id="doc-stat-udyam">0%</span>
             <span class="text-[10px] text-gray-500" id="doc-sub-udyam">0 files</span>
@@ -359,7 +370,7 @@
       <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
         <div>
           <h3 class="text-sm font-bold text-gray-900">Sign In</h3>
-          <span class="text-[11px] text-gray-500">Access your loan records</span>
+          <span class="text-[11px] text-gray-500">Access loan records portal</span>
         </div>
         <button id="btn-close-login" class="text-gray-400 hover:text-gray-700 p-1">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -388,13 +399,13 @@
     </div>
   </div>
 
-  <!-- 2. CUSTOMER ENTRY & EDIT MODAL (STRICT PHONE VALIDATION) -->
+  <!-- 2. CUSTOMER ENTRY & EDIT MODAL (11 DOCUMENTS + STRICT PHONE) -->
   <div id="modal-customer" class="modal-overlay hidden">
     <div class="modal-box max-w-2xl">
       <div class="px-5 py-3.5 border-b border-gray-200 flex items-center justify-between bg-gray-50">
         <div>
           <h3 class="text-sm font-bold text-gray-900" id="modal-customer-heading">New Customer Entry</h3>
-          <span class="text-xs text-gray-500">Enter borrower information and collected documents</span>
+          <span class="text-xs text-gray-500">Enter applicant details and collected document checkpoints</span>
         </div>
         <button id="btn-close-customer" class="text-gray-400 hover:text-gray-700 p-1">
           <i data-lucide="x" class="w-4 h-4"></i>
@@ -404,7 +415,7 @@
       <form id="form-customer" class="modal-body p-5 space-y-4">
         <input type="hidden" id="edit-record-id" value="">
 
-        <!-- Row: Name and DOB/Age -->
+        <!-- Name & DOB -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <div>
             <label class="block text-xs font-semibold text-gray-700 mb-1">Customer Name <span class="text-red-500">*</span></label>
@@ -422,7 +433,7 @@
           </div>
         </div>
 
-        <!-- Phone Number Inputs: Primary strictly validated & required -->
+        <!-- Phone Numbers: Primary strictly validated & required -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <div>
             <label class="block text-xs font-semibold text-gray-700 mb-1">
@@ -439,10 +450,10 @@
                 minlength="10" 
                 maxlength="10" 
                 placeholder="10-digit mobile number" 
-                title="Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9."
+                title="Enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9."
                 class="w-full pl-10 pr-3 py-2 text-xs rounded border border-gray-300 bg-white font-medium">
             </div>
-            <span class="text-[10px] text-gray-500 mt-0.5 block">Mandatory 10-digit number. Cannot proceed without this.</span>
+            <span class="text-[10px] text-gray-500 mt-0.5 block">Mandatory 10-digit contact number.</span>
           </div>
 
           <div>
@@ -456,14 +467,14 @@
                 pattern="^[6-9]\d{9}$" 
                 maxlength="10" 
                 placeholder="Optional 10-digit number" 
-                title="If entered, please provide a valid 10-digit mobile number."
+                title="If provided, must be a 10-digit mobile number."
                 class="w-full pl-10 pr-3 py-2 text-xs rounded border border-gray-300 bg-white font-medium">
             </div>
             <span class="text-[10px] text-gray-400 mt-0.5 block">Optional alternative contact.</span>
           </div>
         </div>
 
-        <!-- Loan Amount with Dynamic Indian Numbering Indicator -->
+        <!-- Loan Amount -->
         <div>
           <div class="flex items-center justify-between mb-1">
             <label class="block text-xs font-semibold text-gray-700">Loan Amount (INR) <span class="text-red-500">*</span></label>
@@ -477,7 +488,7 @@
           </div>
         </div>
 
-        <!-- Row: Loan Type (12) and Bank (30) -->
+        <!-- Loan Type & Bank -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <div>
             <label class="block text-xs font-semibold text-gray-700 mb-1">Loan Type <span class="text-red-500">*</span></label>
@@ -492,43 +503,70 @@
           </div>
         </div>
 
-        <!-- The 7 Document Checkpoints -->
-        <div class="border border-gray-200 rounded p-3 bg-gray-50">
-          <label class="block text-xs font-semibold text-gray-800 mb-2">Documents Collected (7 Required)</label>
+        <!-- The 11 Document Checkpoints -->
+        <div class="border border-gray-200 rounded p-3.5 bg-gray-50">
+          <div class="flex items-center justify-between mb-2.5">
+            <label class="text-xs font-bold text-gray-900 block">Documents Collected (11 Checkpoints)</label>
+            <span class="text-[10px] font-semibold text-gray-500 bg-white px-2 py-0.5 rounded border border-gray-200">KYC & Income</span>
+          </div>
+          
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <!-- KYC Section -->
             <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
-              <input type="checkbox" id="check-doc-aadhaar-pan" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">1. Aadhaar Card & PAN Card (Applicant & Co-Applicant)</span>
+              <input type="checkbox" id="check-doc-app-aadhaar" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
+              <span class="text-gray-800 font-medium">1. Applicant Aadhaar Card</span>
             </label>
 
             <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
+              <input type="checkbox" id="check-doc-app-pan" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
+              <span class="text-gray-800 font-medium">2. Applicant PAN Card</span>
+            </label>
+
+            <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
+              <input type="checkbox" id="check-doc-co-aadhaar" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
+              <span class="text-gray-800 font-medium">3. Co-Applicant Aadhaar Card</span>
+            </label>
+
+            <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
+              <input type="checkbox" id="check-doc-co-pan" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
+              <span class="text-gray-800 font-medium">4. Co-Applicant PAN Card</span>
+            </label>
+
+            <!-- Income & Banking -->
+            <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
               <input type="checkbox" id="check-doc-bank-stmt" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">2. Bank Statement of 1 year</span>
+              <span class="text-gray-800 font-medium">5. Bank Statement (1 Year)</span>
             </label>
 
             <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
               <input type="checkbox" id="check-doc-business" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">3. Business Proof</span>
+              <span class="text-gray-800 font-medium">6. Business Proof</span>
             </label>
 
             <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
               <input type="checkbox" id="check-doc-salary" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">4. 3 Month Salary Slip</span>
+              <span class="text-gray-800 font-medium">7. Salary Slip (3 Months)</span>
             </label>
 
             <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
               <input type="checkbox" id="check-doc-tax" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">5. Revenue Tax Slip</span>
+              <span class="text-gray-800 font-medium">8. Revenue / Rent Tax Slip</span>
             </label>
 
+            <!-- Property & Business -->
             <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors">
               <input type="checkbox" id="check-doc-deed" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">6. Sale Deed</span>
+              <span class="text-gray-800 font-medium">9. Sale Deed</span>
+            </label>
+
+            <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors bg-amber-50/70 border border-amber-200/60">
+              <input type="checkbox" id="check-doc-gharabari" class="mt-0.5 rounded border-amber-400 text-amber-700 focus:ring-0">
+              <span class="text-amber-950 font-bold">10. Gharabari Patta (RoR)</span>
             </label>
 
             <label class="flex items-start space-x-2 cursor-pointer p-1.5 rounded hover:bg-white transition-colors sm:col-span-2">
               <input type="checkbox" id="check-doc-udyam" class="mt-0.5 rounded border-gray-300 text-blue-700 focus:ring-0">
-              <span class="text-gray-800 font-medium">7. Udyam Aadhaar</span>
+              <span class="text-gray-800 font-medium">11. Udyam Aadhaar (MSME)</span>
             </label>
           </div>
         </div>
@@ -539,12 +577,12 @@
           <textarea id="input-address" required rows="2" placeholder="Complete address..." class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white resize-none"></textarea>
         </div>
 
-        <!-- Modal Actions -->
+        <!-- Actions -->
         <div class="pt-3 border-t border-gray-200 flex items-center justify-end space-x-2">
           <button type="button" id="btn-cancel-customer" class="px-4 py-2 text-xs font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded bg-white">
             Cancel
           </button>
-          <button type="submit" id="btn-submit-customer" class="px-5 py-2 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 rounded transition-colors">
+          <button type="submit" id="btn-submit-customer" class="px-5 py-2 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 rounded transition-colors shadow-sm">
             Save Record
           </button>
         </div>
@@ -573,7 +611,7 @@
 
         <div>
           <label class="block text-xs font-semibold text-gray-700 mb-1">New Password</label>
-          <input type="password" id="input-new-password" required placeholder="Enter new password (min 6 chars)" class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
+          <input type="password" id="input-new-password" required placeholder="Enter new password (min 1 char)" class="w-full px-3 py-2 text-xs rounded border border-gray-300 bg-white">
         </div>
 
         <div>
@@ -601,7 +639,7 @@
     <div style="border-bottom: 2px solid #111827; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end;">
       <div>
         <h1 style="font-size: 20px; font-weight: bold; margin: 0; color: #111827;">RASHMI ASSOCIATES</h1>
-        <p style="font-size: 11px; color: #4b5563; margin: 2px 0 0 0;">Customer Loan Records & Disbursal Performance Summary</p>
+        <p style="font-size: 11px; color: #4b5563; margin: 2px 0 0 0;">Customer Loan Records & Intake Disbursal Summary</p>
       </div>
       <div style="text-align: right; font-size: 10px; color: #4b5563;">
         <div>Scope: <strong id="pdf-scope-label">Company Total</strong></div>
@@ -630,7 +668,7 @@
 
     <div>
       <h4 style="font-size: 10px; font-weight: bold; margin: 0 0 6px 0;">Customer Records Ledger</h4>
-      <table style="width: 100%; border-collapse: collapse; font-size: 8.5px; text-align: left;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 8px; text-align: left;">
         <thead>
           <tr style="background: #f3f4f6; border-top: 1px solid #d1d5db; border-bottom: 1px solid #d1d5db;">
             <th style="padding: 4px;">Customer Name</th>
@@ -639,7 +677,7 @@
             <th style="padding: 4px;">Loan Amount</th>
             <th style="padding: 4px;">Loan Type</th>
             <th style="padding: 4px;">Bank / NBFC</th>
-            <th style="padding: 4px;">Docs Verified</th>
+            <th style="padding: 4px;">Docs (11)</th>
             <th style="padding: 4px;">Logged By</th>
           </tr>
         </thead>
@@ -654,6 +692,7 @@
     (function () {
       const SUPABASE_PROJECT_URL = "https://aghrnlpkycuormsdweki.supabase.co";
       const SUPABASE_PUB_KEY = "sb_publishable_UEMVzmxLLtRRitiv1IpaTg_ZaUYcAUk";
+      const INACTIVITY_TIMEOUT_MS = 8 * 60 * 60 * 1000; // 8 Hours auto-logout
       
       let db = null;
       try {
@@ -690,7 +729,13 @@
         restoreUserSession();
         bindEvents();
         setupPhoneInputSanitization();
-        fetchCustomerData();
+        setupInactivityMonitoring();
+        
+        if (currentSession) {
+          fetchCustomerData();
+        } else {
+          clearWorkspaceData();
+        }
       });
 
       function initializeIcons() {
@@ -732,14 +777,59 @@
         });
       }
 
+      function recordUserActivity() {
+        if (currentSession) {
+          localStorage.setItem("rashmi_last_activity", Date.now().toString());
+        }
+      }
+
+      function checkSessionExpiration() {
+        if (!currentSession) return;
+        const lastActive = parseInt(localStorage.getItem("rashmi_last_activity") || "0", 10);
+        if (lastActive > 0 && (Date.now() - lastActive > INACTIVITY_TIMEOUT_MS)) {
+          executeLogout("Session expired after 8 hours of inactivity. Please sign in again.");
+        }
+      }
+
+      function setupInactivityMonitoring() {
+        const events = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
+        let throttleTimer = null;
+
+        events.forEach(evt => {
+          window.addEventListener(evt, () => {
+            if (!throttleTimer) {
+              recordUserActivity();
+              throttleTimer = setTimeout(() => {
+                throttleTimer = null;
+              }, 30000);
+            }
+          }, { passive: true });
+        });
+
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) checkSessionExpiration();
+        });
+
+        setInterval(checkSessionExpiration, 60000);
+      }
+
       function restoreUserSession() {
         const stored = localStorage.getItem("rashmi_user_session");
+        const lastActive = parseInt(localStorage.getItem("rashmi_last_activity") || "0", 10);
+
         if (stored) {
-          try {
-            currentSession = JSON.parse(stored);
-          } catch (e) {
+          if (lastActive > 0 && (Date.now() - lastActive > INACTIVITY_TIMEOUT_MS)) {
             currentSession = null;
             localStorage.removeItem("rashmi_user_session");
+            localStorage.removeItem("rashmi_last_activity");
+          } else {
+            try {
+              currentSession = JSON.parse(stored);
+              recordUserActivity();
+            } catch (e) {
+              currentSession = null;
+              localStorage.removeItem("rashmi_user_session");
+            }
           }
         }
         updateAuthHeader();
@@ -770,7 +860,7 @@
             kpiScopeHint.textContent = "All staff + admin combined";
             statsScopeBadge.textContent = "Company-Wide Overview";
             statsScopeBadge.className = "px-2 py-0.5 text-[10px] font-semibold bg-gray-900 text-white rounded";
-            statsScopeDesc.textContent = "Aggregating performance across all 6 staff members and admin.";
+            statsScopeDesc.textContent = "Aggregating performance across all staff members and admin.";
           } else {
             kpiLabelVolume.textContent = "My Total Loan Volume";
             kpiLabelFiles.textContent = "My Customer Files";
@@ -796,7 +886,6 @@
         [primaryInput, alternateInput].forEach(inp => {
           if (!inp) return;
           inp.addEventListener("input", (e) => {
-            // Strip any character that is not a numeric digit
             e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
           });
         });
@@ -810,7 +899,7 @@
 
         document.getElementById("btn-open-login").addEventListener("click", openLoginDialog);
         document.getElementById("btn-close-login").addEventListener("click", closeLoginDialog);
-        document.getElementById("btn-logout").addEventListener("click", executeLogout);
+        document.getElementById("btn-logout").addEventListener("click", () => executeLogout());
         document.getElementById("form-login").addEventListener("submit", executeLogin);
 
         document.getElementById("btn-open-new-customer").addEventListener("click", () => openCustomerModal());
@@ -878,7 +967,35 @@
         }
       }
 
+      function clearWorkspaceData() {
+        customerRecords = [];
+        document.getElementById("records-tbody").innerHTML = "";
+        document.getElementById("records-empty").textContent = "Sign in to view customer files.";
+        document.getElementById("records-empty").classList.remove("hidden");
+        document.getElementById("kpi-total-volume").textContent = "₹0";
+        document.getElementById("kpi-total-files").textContent = "0";
+        document.getElementById("kpi-total-volume-sub").textContent = "0 Lakhs / 0 Cr";
+        document.getElementById("kpi-top-bank").textContent = "—";
+        document.getElementById("kpi-top-bank-sub").textContent = "Highest loan volume";
+        document.getElementById("kpi-top-loan").textContent = "—";
+        document.getElementById("kpi-top-loan-sub").textContent = "Most frequent";
+        document.getElementById("stat-banks-list").innerHTML = `<div class="text-gray-400 py-6 text-center">Sign in to view performance stats.</div>`;
+        document.getElementById("stat-types-list").innerHTML = `<div class="text-gray-400 py-6 text-center">Sign in to view performance stats.</div>`;
+        
+        ['app-aadhaar', 'app-pan', 'co-aadhaar', 'co-pan', 'bank-stmt', 'business', 'salary', 'tax', 'deed', 'gharabari', 'udyam'].forEach(d => {
+          const statEl = document.getElementById(`doc-stat-${d}`);
+          const subEl = document.getElementById(`doc-sub-${d}`);
+          if (statEl) statEl.textContent = "0%";
+          if (subEl) subEl.textContent = "0 files";
+        });
+      }
+
       async function fetchCustomerData() {
+        if (!currentSession) {
+          clearWorkspaceData();
+          return;
+        }
+
         if (!db) {
           showToast("Supabase client not loaded.", true);
           return;
@@ -887,7 +1004,7 @@
         try {
           let query = db.from("customer_records").select("*").order("created_at", { ascending: false });
 
-          if (currentSession && currentSession.role !== 'admin' && currentSession.username !== 'kailash') {
+          if (currentSession.role !== 'admin' && currentSession.username !== 'kailash') {
             query = query.eq("created_by", currentSession.username);
           }
 
@@ -920,7 +1037,7 @@
           return `₹${amount.toLocaleString('en-IN')} (${cr} Cr)`;
         } else if (amount >= 100000) {
           const l = (amount / 100000).toFixed(2);
-          return `₹${amount.toLocaleString('en-IN')} (${l} Lakh / ${parseFloat(l)}L)`;
+          return `₹${amount.toLocaleString('en-IN')} (${l} Lakh)`;
         } else if (amount >= 1000) {
           const k = (amount / 1000).toFixed(1);
           return `₹${amount.toLocaleString('en-IN')} (${k}K)`;
@@ -1004,6 +1121,7 @@
               role: data[0].role
             };
             localStorage.setItem("rashmi_user_session", JSON.stringify(currentSession));
+            recordUserActivity();
             updateAuthHeader();
             closeLoginDialog();
             showToast(`Signed in as ${currentSession.username}`);
@@ -1022,12 +1140,13 @@
         }
       }
 
-      function executeLogout() {
+      function executeLogout(customMsg = null) {
         currentSession = null;
         localStorage.removeItem("rashmi_user_session");
+        localStorage.removeItem("rashmi_last_activity");
+        clearWorkspaceData();
         updateAuthHeader();
-        fetchCustomerData();
-        showToast("Signed out.");
+        showToast(customMsg || "Signed out.");
       }
 
       function openCustomerModal(existing = null) {
@@ -1056,12 +1175,17 @@
           document.getElementById("select-loan-type").value = existing.loan_type || '';
           document.getElementById("select-bank").value = existing.bank_name || '';
 
-          document.getElementById("check-doc-aadhaar-pan").checked = !!existing.doc_aadhaar_pan;
+          // 11 Documents
+          document.getElementById("check-doc-app-aadhaar").checked = !!existing.doc_applicant_aadhaar;
+          document.getElementById("check-doc-app-pan").checked = !!existing.doc_applicant_pan;
+          document.getElementById("check-doc-co-aadhaar").checked = !!existing.doc_co_applicant_aadhaar;
+          document.getElementById("check-doc-co-pan").checked = !!existing.doc_co_applicant_pan;
           document.getElementById("check-doc-bank-stmt").checked = !!existing.doc_bank_statement_1yr;
           document.getElementById("check-doc-business").checked = !!existing.doc_business_proof;
           document.getElementById("check-doc-salary").checked = !!existing.doc_salary_slip_3m;
           document.getElementById("check-doc-tax").checked = !!existing.doc_revenue_tax_slip;
           document.getElementById("check-doc-deed").checked = !!existing.doc_sale_deed;
+          document.getElementById("check-doc-gharabari").checked = !!existing.doc_gharabari_patta;
           document.getElementById("check-doc-udyam").checked = !!existing.doc_udyam_aadhaar;
 
           handleDobInput();
@@ -1093,7 +1217,6 @@
         const phone = phoneInput.value.trim();
         const altPhone = altPhoneInput.value.trim();
 
-        // Strict 10-Digit Phone Validation Check (starts with 6,7,8,9)
         const phoneRegex = /^[6-9]\d{9}$/;
         if (!phoneRegex.test(phone)) {
           showToast("Primary Mobile Number must be an authentic 10-digit number starting with 6, 7, 8, or 9.", true);
@@ -1127,12 +1250,16 @@
           loan_amount: amount,
           loan_type: loanType,
           bank_name: bankName,
-          doc_aadhaar_pan: document.getElementById("check-doc-aadhaar-pan").checked,
+          doc_applicant_aadhaar: document.getElementById("check-doc-app-aadhaar").checked,
+          doc_applicant_pan: document.getElementById("check-doc-app-pan").checked,
+          doc_co_applicant_aadhaar: document.getElementById("check-doc-co-aadhaar").checked,
+          doc_co_applicant_pan: document.getElementById("check-doc-co-pan").checked,
           doc_bank_statement_1yr: document.getElementById("check-doc-bank-stmt").checked,
           doc_business_proof: document.getElementById("check-doc-business").checked,
           doc_salary_slip_3m: document.getElementById("check-doc-salary").checked,
           doc_revenue_tax_slip: document.getElementById("check-doc-tax").checked,
           doc_sale_deed: document.getElementById("check-doc-deed").checked,
+          doc_gharabari_patta: document.getElementById("check-doc-gharabari").checked,
           doc_udyam_aadhaar: document.getElementById("check-doc-udyam").checked,
           address: address,
           created_by: currentSession.username
@@ -1149,6 +1276,7 @@
             showToast(`New file logged for ${name}`);
           }
 
+          recordUserActivity();
           closeCustomerModal();
           await fetchCustomerData();
         } catch (err) {
@@ -1173,6 +1301,7 @@
           const { error } = await db.from("customer_records").delete().eq("id", recordId);
           if (error) throw error;
           showToast(`Deleted record for ${name}`);
+          recordUserActivity();
           await fetchCustomerData();
         } catch (err) {
           console.error("Delete error:", err);
@@ -1208,11 +1337,6 @@
           return;
         }
 
-        if (newPass.length < 6) {
-          showToast("Password must be at least 6 characters.", true);
-          return;
-        }
-
         submitBtn.disabled = true;
         submitBtn.textContent = "Updating...";
 
@@ -1225,6 +1349,7 @@
 
           if (error) throw error;
 
+          recordUserActivity();
           showToast("Password updated successfully.");
           closePasswordDialog();
         } catch (err) {
@@ -1243,6 +1368,13 @@
         const bankFilter = document.getElementById("filter-bank").value;
         const typeFilter = document.getElementById("filter-type").value;
 
+        if (!currentSession) {
+          tbody.innerHTML = "";
+          emptyBox.textContent = "Sign in to view customer files.";
+          emptyBox.classList.remove("hidden");
+          return;
+        }
+
         const filtered = customerRecords.filter(r => {
           const matchesSearch = !search ||
             (r.customer_name && r.customer_name.toLowerCase().includes(search)) ||
@@ -1258,6 +1390,7 @@
 
         if (filtered.length === 0) {
           tbody.innerHTML = "";
+          emptyBox.textContent = "No customer records found matching your filters.";
           emptyBox.classList.remove("hidden");
           return;
         }
@@ -1271,12 +1404,16 @@
           tr.className = "hover:bg-gray-50 transition-colors";
 
           const docPills = [];
-          if (r.doc_aadhaar_pan) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-blue-50 text-blue-800 border border-blue-200 font-medium">Aadhaar/PAN</span>`);
+          if (r.doc_applicant_aadhaar) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-blue-50 text-blue-800 border border-blue-200 font-medium">App Aadhaar</span>`);
+          if (r.doc_applicant_pan) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-indigo-50 text-indigo-800 border border-indigo-200 font-medium">App PAN</span>`);
+          if (r.doc_co_applicant_aadhaar) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-sky-50 text-sky-800 border border-sky-200 font-medium">Co Aadhaar</span>`);
+          if (r.doc_co_applicant_pan) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-cyan-50 text-cyan-800 border border-cyan-200 font-medium">Co PAN</span>`);
           if (r.doc_bank_statement_1yr) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-gray-100 text-gray-800 border border-gray-300 font-medium">Bank Stmt</span>`);
           if (r.doc_business_proof) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-amber-50 text-amber-800 border border-amber-200 font-medium">Biz Proof</span>`);
           if (r.doc_salary_slip_3m) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-purple-50 text-purple-800 border border-purple-200 font-medium">Salary</span>`);
           if (r.doc_revenue_tax_slip) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-rose-50 text-rose-800 border border-rose-200 font-medium">Tax Slip</span>`);
           if (r.doc_sale_deed) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium">Sale Deed</span>`);
+          if (r.doc_gharabari_patta) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-amber-100 text-amber-900 border border-amber-300 font-bold">Gharabari Patta</span>`);
           if (r.doc_udyam_aadhaar) docPills.push(`<span class="px-1.5 py-0.5 rounded text-[10px] bg-teal-50 text-teal-800 border border-teal-200 font-medium">Udyam</span>`);
 
           const isAdmin = currentSession && (currentSession.role === 'admin' || currentSession.username === 'kailash');
@@ -1306,9 +1443,9 @@
             <td class="py-2.5 px-3 font-medium text-gray-900">
               ${escapeHtml(r.bank_name)}
             </td>
-            <td class="py-2.5 px-3 max-w-[200px]">
+            <td class="py-2.5 px-3 max-w-[220px]">
               <div class="flex flex-wrap gap-1">
-                ${docPills.length > 0 ? docPills.join('') : '<span class="text-gray-400 text-[11px]">0 / 7</span>'}
+                ${docPills.length > 0 ? docPills.join('') : '<span class="text-gray-400 text-[11px]">0 / 11</span>'}
               </div>
             </td>
             <td class="py-2.5 px-3 text-gray-600 max-w-[160px] truncate" title="${escapeHtml(r.address)}">
@@ -1412,17 +1549,26 @@
       }
 
       function updateStatsView() {
+        if (!currentSession) {
+          clearWorkspaceData();
+          return;
+        }
+
         const records = getFilteredRecordsForStats();
         const totalCount = records.length;
         const bankStats = {};
         const typeStats = {};
 
-        let aadhaarPanCnt = 0;
+        let appAadhaarCnt = 0;
+        let appPanCnt = 0;
+        let coAadhaarCnt = 0;
+        let coPanCnt = 0;
         let bankStmtCnt = 0;
         let bizProofCnt = 0;
         let salaryCnt = 0;
         let taxSlipCnt = 0;
         let saleDeedCnt = 0;
+        let gharabariCnt = 0;
         let udyamCnt = 0;
 
         records.forEach(r => {
@@ -1438,12 +1584,16 @@
           typeStats[type].volume += amt;
           typeStats[type].count += 1;
 
-          if (r.doc_aadhaar_pan) aadhaarPanCnt++;
+          if (r.doc_applicant_aadhaar) appAadhaarCnt++;
+          if (r.doc_applicant_pan) appPanCnt++;
+          if (r.doc_co_applicant_aadhaar) coAadhaarCnt++;
+          if (r.doc_co_applicant_pan) coPanCnt++;
           if (r.doc_bank_statement_1yr) bankStmtCnt++;
           if (r.doc_business_proof) bizProofCnt++;
           if (r.doc_salary_slip_3m) salaryCnt++;
           if (r.doc_revenue_tax_slip) taxSlipCnt++;
           if (r.doc_sale_deed) saleDeedCnt++;
+          if (r.doc_gharabari_patta) gharabariCnt++;
           if (r.doc_udyam_aadhaar) udyamCnt++;
         });
 
@@ -1504,8 +1654,18 @@
         }
 
         const pct = (c) => totalCount > 0 ? `${((c / totalCount) * 100).toFixed(0)}%` : "0%";
-        document.getElementById("doc-stat-aadhaar-pan").textContent = pct(aadhaarPanCnt);
-        document.getElementById("doc-sub-aadhaar-pan").textContent = `${aadhaarPanCnt} of ${totalCount}`;
+        
+        document.getElementById("doc-stat-app-aadhaar").textContent = pct(appAadhaarCnt);
+        document.getElementById("doc-sub-app-aadhaar").textContent = `${appAadhaarCnt} of ${totalCount}`;
+
+        document.getElementById("doc-stat-app-pan").textContent = pct(appPanCnt);
+        document.getElementById("doc-sub-app-pan").textContent = `${appPanCnt} of ${totalCount}`;
+
+        document.getElementById("doc-stat-co-aadhaar").textContent = pct(coAadhaarCnt);
+        document.getElementById("doc-sub-co-aadhaar").textContent = `${coAadhaarCnt} of ${totalCount}`;
+
+        document.getElementById("doc-stat-co-pan").textContent = pct(coPanCnt);
+        document.getElementById("doc-sub-co-pan").textContent = `${coPanCnt} of ${totalCount}`;
 
         document.getElementById("doc-stat-bank-stmt").textContent = pct(bankStmtCnt);
         document.getElementById("doc-sub-bank-stmt").textContent = `${bankStmtCnt} of ${totalCount}`;
@@ -1522,11 +1682,19 @@
         document.getElementById("doc-stat-deed").textContent = pct(saleDeedCnt);
         document.getElementById("doc-sub-deed").textContent = `${saleDeedCnt} of ${totalCount}`;
 
+        document.getElementById("doc-stat-gharabari").textContent = pct(gharabariCnt);
+        document.getElementById("doc-sub-gharabari").textContent = `${gharabariCnt} of ${totalCount}`;
+
         document.getElementById("doc-stat-udyam").textContent = pct(udyamCnt);
         document.getElementById("doc-sub-udyam").textContent = `${udyamCnt} of ${totalCount}`;
       }
 
       function generateClientSidePdf() {
+        if (!currentSession) {
+          showToast("Please sign in to generate reports.", true);
+          return;
+        }
+
         if (!customerRecords || customerRecords.length === 0) {
           showToast("No customer records to generate PDF report.", true);
           return;
@@ -1569,12 +1737,16 @@
         tbody.innerHTML = customerRecords.map(r => {
           const age = calculateAge(r.date_of_birth);
           let docsCount = 0;
-          if (r.doc_aadhaar_pan) docsCount++;
+          if (r.doc_applicant_aadhaar) docsCount++;
+          if (r.doc_applicant_pan) docsCount++;
+          if (r.doc_co_applicant_aadhaar) docsCount++;
+          if (r.doc_co_applicant_pan) docsCount++;
           if (r.doc_bank_statement_1yr) docsCount++;
           if (r.doc_business_proof) docsCount++;
           if (r.doc_salary_slip_3m) docsCount++;
           if (r.doc_revenue_tax_slip) docsCount++;
           if (r.doc_sale_deed) docsCount++;
+          if (r.doc_gharabari_patta) docsCount++;
           if (r.doc_udyam_aadhaar) docsCount++;
 
           return `
@@ -1585,7 +1757,7 @@
               <td style="padding: 4px; font-weight: bold;">${formatIndianDisplay(r.loan_amount)}</td>
               <td style="padding: 4px;">${escapeHtml(r.loan_type)}</td>
               <td style="padding: 4px;">${escapeHtml(r.bank_name)}</td>
-              <td style="padding: 4px;">${docsCount} / 7</td>
+              <td style="padding: 4px;">${docsCount} / 11</td>
               <td style="padding: 4px;">${escapeHtml(r.created_by || '—')}</td>
             </tr>
           `;
@@ -1596,7 +1768,7 @@
         const filename = `Rashmi_Associates_Report_${currentSession ? currentSession.username : 'public'}_${new Date().toISOString().split("T")[0]}.pdf`;
 
         const opt = {
-          margin: 10,
+          margin: 8,
           filename: filename,
           image: { type: 'jpeg', quality: 0.98 },
           html2canvas: { scale: 2, useCORS: true },
@@ -1614,6 +1786,11 @@
       }
 
       function exportCsvSheet() {
+        if (!currentSession) {
+          showToast("Please sign in to export records.", true);
+          return;
+        }
+
         if (!customerRecords || customerRecords.length === 0) {
           showToast("No records available to export.", true);
           return;
@@ -1628,12 +1805,16 @@
           "Loan Amount (INR)",
           "Loan Type",
           "Bank / NBFC",
-          "Aadhaar & PAN",
+          "Applicant Aadhaar",
+          "Applicant PAN",
+          "Co-Applicant Aadhaar",
+          "Co-Applicant PAN",
           "1Yr Bank Stmt",
           "Business Proof",
           "3M Salary Slip",
           "Revenue Tax Slip",
           "Sale Deed",
+          "Gharabari Patta",
           "Udyam Aadhaar",
           "Address",
           "Created By",
@@ -1649,12 +1830,16 @@
           r.loan_amount || 0,
           `"${(r.loan_type || '').replace(/"/g, '""')}"`,
           `"${(r.bank_name || '').replace(/"/g, '""')}"`,
-          r.doc_aadhaar_pan ? "Yes" : "No",
+          r.doc_applicant_aadhaar ? "Yes" : "No",
+          r.doc_applicant_pan ? "Yes" : "No",
+          r.doc_co_applicant_aadhaar ? "Yes" : "No",
+          r.doc_co_applicant_pan ? "Yes" : "No",
           r.doc_bank_statement_1yr ? "Yes" : "No",
           r.doc_business_proof ? "Yes" : "No",
           r.doc_salary_slip_3m ? "Yes" : "No",
           r.doc_revenue_tax_slip ? "Yes" : "No",
           r.doc_sale_deed ? "Yes" : "No",
+          r.doc_gharabari_patta ? "Yes" : "No",
           r.doc_udyam_aadhaar ? "Yes" : "No",
           `"${(r.address || '').replace(/"/g, '""')}"`,
           `"${(r.created_by || '').replace(/"/g, '""')}"`,
