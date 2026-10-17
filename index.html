@@ -419,7 +419,7 @@
       <div class="flex items-center space-x-2">
           <span>Hosted on Cloudflare Pages</span>
           <span class="w-1 h-1 rounded-full bg-gray-300"></span>
-          <span>Version 3.0</span>
+          <span>Version 3.1</span>
       </div>
     </div>
   </footer>
@@ -914,6 +914,186 @@
       }
 
       // ---------------------------------------------------------
+      // EVENT BINDING (THE MISSING PIECE RESTORED)
+      // ---------------------------------------------------------
+      function bindEvents() {
+        // Tabs
+        document.getElementById("tab-btn-records").addEventListener("click", () => switchWorkspaceTab('records'));
+        document.getElementById("tab-btn-stats").addEventListener("click", () => switchWorkspaceTab('stats'));
+        document.getElementById("mob-btn-records").addEventListener("click", () => switchWorkspaceTab('records'));
+        document.getElementById("mob-btn-stats").addEventListener("click", () => switchWorkspaceTab('stats'));
+
+        // Auth & Modals
+        document.getElementById("btn-open-login").addEventListener("click", openLoginDialog);
+        document.getElementById("btn-close-login").addEventListener("click", closeLoginDialog);
+        document.getElementById("btn-logout").addEventListener("click", () => executeLogout());
+        document.getElementById("form-login").addEventListener("submit", executeLogin);
+
+        // Staff Manager
+        const btnStaffMgr = document.getElementById("btn-open-staff-manager");
+        if(btnStaffMgr) btnStaffMgr.addEventListener("click", openStaffManagerDialog);
+        document.getElementById("btn-close-staff").addEventListener("click", closeStaffManagerDialog);
+        document.getElementById("form-new-staff").addEventListener("submit", submitNewStaff);
+
+        // Customer Entry
+        document.getElementById("btn-open-new-customer").addEventListener("click", () => openCustomerModal());
+        document.getElementById("btn-close-customer").addEventListener("click", closeCustomerModal);
+        document.getElementById("btn-cancel-customer").addEventListener("click", closeCustomerModal);
+        document.getElementById("form-customer").addEventListener("submit", saveCustomerRecord);
+
+        // Password
+        document.getElementById("btn-open-password").addEventListener("click", openPasswordDialog);
+        document.getElementById("btn-close-password").addEventListener("click", closePasswordDialog);
+        document.getElementById("form-password").addEventListener("submit", executePasswordChange);
+
+        // Form Inputs (Auto format/calculate)
+        document.getElementById("input-customer-dob").addEventListener("input", handleDobInput);
+        document.getElementById("input-customer-dob").addEventListener("change", handleDobInput);
+        document.getElementById("input-loan-amount").addEventListener("input", handleLoanAmountInput);
+
+        // Filters & Search
+        document.getElementById("records-search").addEventListener("input", () => { renderCustomerRecordsTable(); updateKpis(); });
+        document.getElementById("filter-bank").addEventListener("change", () => { renderCustomerRecordsTable(); updateKpis(); });
+        document.getElementById("filter-bank-mob").addEventListener("change", () => { 
+            document.getElementById("filter-bank").value = document.getElementById("filter-bank-mob").value;
+            renderCustomerRecordsTable(); 
+            updateKpis(); 
+        });
+        document.getElementById("filter-status").addEventListener("change", () => { renderCustomerRecordsTable(); updateKpis(); });
+        document.getElementById("filter-staff").addEventListener("change", () => { renderCustomerRecordsTable(); updateKpis(); updateStatsView(); });
+        document.getElementById("btn-refresh-data").addEventListener("click", fetchCustomerData);
+
+        // Stats Period
+        document.getElementById("btn-period-weekly").addEventListener("click", () => setStatsPeriod('weekly'));
+        document.getElementById("btn-period-monthly").addEventListener("click", () => setStatsPeriod('monthly'));
+        document.getElementById("btn-period-all").addEventListener("click", () => setStatsPeriod('all'));
+
+        // Exports
+        document.getElementById("btn-export-pdf").addEventListener("click", generateClientSidePdf);
+        document.getElementById("btn-export-csv").addEventListener("click", exportCsvSheet);
+        document.getElementById("btn-export-pdf-mob").addEventListener("click", generateClientSidePdf);
+        document.getElementById("btn-export-csv-mob").addEventListener("click", exportCsvSheet);
+
+        // Modals overlay click to close
+        document.querySelectorAll(".modal-overlay").forEach(overlay => {
+          overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) {
+              closeLoginDialog();
+              closeCustomerModal();
+              closePasswordDialog();
+              closeStaffManagerDialog();
+            }
+          });
+        });
+      }
+
+      function switchWorkspaceTab(tab) {
+        activeTab = tab;
+        const viewRecords = document.getElementById("view-records");
+        const viewStats = document.getElementById("view-stats");
+        const tabBtnRecords = document.getElementById("tab-btn-records");
+        const tabBtnStats = document.getElementById("tab-btn-stats");
+        const mobBtnRecords = document.getElementById("mob-btn-records");
+        const mobBtnStats = document.getElementById("mob-btn-stats");
+
+        if (tab === 'records') {
+          viewRecords.classList.remove("hidden");
+          viewStats.classList.add("hidden");
+          tabBtnRecords.className = "px-4 py-1.5 rounded text-gray-900 bg-white shadow-sm border border-gray-200";
+          tabBtnStats.className = "px-4 py-1.5 rounded text-gray-600 hover:text-gray-900";
+          mobBtnRecords.className = "flex-1 py-2 text-center rounded bg-gray-100 text-gray-900 font-semibold border border-gray-300 transition-colors";
+          mobBtnStats.className = "flex-1 py-2 text-center rounded text-gray-600 border border-transparent transition-colors";
+          renderCustomerRecordsTable();
+        } else {
+          viewRecords.classList.add("hidden");
+          viewStats.classList.remove("hidden");
+          tabBtnStats.className = "px-4 py-1.5 rounded text-gray-900 bg-white shadow-sm border border-gray-200";
+          tabBtnRecords.className = "px-4 py-1.5 rounded text-gray-600 hover:text-gray-900";
+          mobBtnStats.className = "flex-1 py-2 text-center rounded bg-gray-100 text-gray-900 font-semibold border border-gray-300 transition-colors";
+          mobBtnRecords.className = "flex-1 py-2 text-center rounded text-gray-600 border border-transparent transition-colors";
+          updateStatsView();
+        }
+      }
+
+      // ---------------------------------------------------------
+      // FORMATTING UTILITIES (RESTORED)
+      // ---------------------------------------------------------
+      function formatIndianCurrencyBadge(amount) {
+        if (amount >= 10000000) {
+          const cr = (amount / 10000000).toFixed(2);
+          return `₹${amount.toLocaleString('en-IN')} (${cr} Cr)`;
+        } else if (amount >= 100000) {
+          const l = (amount / 100000).toFixed(2);
+          return `₹${amount.toLocaleString('en-IN')} (${l} Lakh)`;
+        } else if (amount >= 1000) {
+          const k = (amount / 1000).toFixed(1);
+          return `₹${amount.toLocaleString('en-IN')} (${k}K)`;
+        } else {
+          return `₹${amount.toLocaleString('en-IN')}`;
+        }
+      }
+
+      function formatIndianDisplay(amount) {
+        const num = parseFloat(amount) || 0;
+        if (num >= 10000000) {
+          return `₹${(num / 10000000).toFixed(2)} Cr`;
+        } else if (num >= 100000) {
+          return `₹${(num / 100000).toFixed(2)} L`;
+        } else {
+          return `₹${num.toLocaleString('en-IN')}`;
+        }
+      }
+
+      function handleLoanAmountInput() {
+        const val = parseFloat(document.getElementById("input-loan-amount").value);
+        const badge = document.getElementById("badge-loan-amount-words");
+        if (isNaN(val) || val <= 0) {
+          badge.textContent = "₹0 (0 Lakh)";
+          return;
+        }
+        badge.textContent = formatIndianCurrencyBadge(val);
+      }
+
+      function calculateAge(dobString) {
+        if (!dobString) return "—";
+        const dob = new Date(dobString);
+        const now = new Date();
+        let age = now.getFullYear() - dob.getFullYear();
+        const m = now.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) {
+          age--;
+        }
+        return age >= 0 ? age : "—";
+      }
+
+      function handleDobInput() {
+        const val = document.getElementById("input-customer-dob").value;
+        const badge = document.getElementById("badge-calculated-age");
+        if (!val) {
+          badge.textContent = "Age: —";
+          return;
+        }
+        const age = calculateAge(val);
+        if (age < 0 || isNaN(age)) {
+          badge.textContent = "Age: Invalid";
+        } else {
+          badge.textContent = `Age: ${age} Years`;
+        }
+      }
+      
+      function setupPhoneInputSanitization() {
+        const primaryInput = document.getElementById("input-phone-number");
+        const alternateInput = document.getElementById("input-alternate-phone");
+
+        [primaryInput, alternateInput].forEach(inp => {
+          if (!inp) return;
+          inp.addEventListener("input", (e) => {
+            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+          });
+        });
+      }
+
+      // ---------------------------------------------------------
       // AUTHENTICATION & SECURITY
       // ---------------------------------------------------------
       function recordUserActivity() {
@@ -1017,6 +1197,16 @@
         initializeIcons();
       }
 
+      function openLoginDialog() {
+        document.getElementById("modal-login").classList.remove("hidden");
+        document.getElementById("login-error-box").classList.add("hidden");
+        document.getElementById("login-username").focus();
+      }
+
+      function closeLoginDialog() {
+        document.getElementById("modal-login").classList.add("hidden");
+      }
+
       async function executeLogin(e) {
         e.preventDefault();
         const username = document.getElementById("login-username").value.trim().toLowerCase();
@@ -1103,8 +1293,6 @@
         if (!currentSession || !db) return;
         try {
           // Both Admin and Staff pull their allowed rows. RLS / filtering handled via query if needed.
-          // Since we use custom role logic, we filter explicitly on client for admin view toggles, 
-          // but we only fetch what we are allowed.
           let query = db.from("customer_records").select("*").order("created_at", { ascending: false });
           if (currentSession.role !== 'admin') {
             query = query.eq("created_by", currentSession.username);
@@ -1130,15 +1318,12 @@
       async function fetchStaffList() {
           if (!currentSession || currentSession.role !== 'admin' || !db) return;
           try {
-              const { data, error } = await db.rpc('app_login', { p_username: 'kailash', p_password: '1' }); // Dirty trick: we don't have a read-users RPC, but we can query table directly if anon key has read access, OR we just pull unique created_by from records.
-              // To properly read users, anon key must have SELECT on app_users, which we assume it does based on previous setup, but let's query directly.
               const { data: users, error: uErr } = await db.from("app_users").select("username, role, created_at").order("role", {ascending: false});
               if (uErr) throw uErr;
               activeStaffMembers = users || [];
               renderStaffManagerList();
           } catch(err) {
               console.error("Staff fetch error:", err);
-              // Fallback to extracting from records
               const uniqueStaff = [...new Set(customerRecords.map(r => r.created_by).filter(Boolean))];
               activeStaffMembers = uniqueStaff.map(s => ({username: s, role: s==='kailash'?'admin':'staff', created_at: null}));
               renderStaffManagerList();
@@ -1152,7 +1337,7 @@
           
           filter.innerHTML = `<option value="">All Staff Members</option>`;
           uniqueStaff.forEach(s => {
-              if(s !== 'kailash') { // Usually admin doesn't log standard files, but if they do, include them.
+              if(s !== 'kailash') { 
                   const opt = document.createElement("option");
                   opt.value = s;
                   opt.textContent = `Staff: ${s}`;
@@ -1169,7 +1354,7 @@
           const search = document.getElementById("records-search").value.toLowerCase().trim();
           const bankFilterMob = document.getElementById("filter-bank-mob").value;
           const bankFilterDesk = document.getElementById("filter-bank").value;
-          const bankFilter = bankFilterMob || bankFilterDesk; // Mobile takes precedence if used
+          const bankFilter = bankFilterMob || bankFilterDesk; 
           const statusFilter = document.getElementById("filter-status").value;
           const staffFilter = currentSession?.role === 'admin' ? document.getElementById("filter-staff").value : null;
 
@@ -1213,7 +1398,6 @@
           const tr = document.createElement("tr");
           tr.className = "hover:bg-gray-50 transition-colors";
 
-          // Calculate Missing Docs
           let docsChecked = 0;
           let missingList = [];
           ALL_DOC_KEYS.forEach(doc => {
@@ -1244,7 +1428,6 @@
               `;
           }
 
-          // Approval Status Badge
           let statusHtml = '';
           if (r.is_approved) {
               const dateStr = r.approved_at ? new Date(r.approved_at).toLocaleDateString('en-IN', {day:'2-digit', month:'short'}) : '';
@@ -1385,7 +1568,7 @@
 
       function setStatsPeriod(period) {
         currentStatsPeriod = period;
-        document.getElementById("input-stats-month").value = ""; // Clear month picker
+        document.getElementById("input-stats-month").value = ""; 
         resetPeriodButtons();
         updateStatsView();
       }
@@ -1418,7 +1601,6 @@
               return (now - created) / (1000 * 60 * 60 * 24) <= 30;
           }
           if (currentStatsPeriod.includes('-')) {
-              // YYYY-MM match
               const rYyyy = created.getFullYear();
               const rMm = String(created.getMonth() + 1).padStart(2, '0');
               return `${rYyyy}-${rMm}` === currentStatsPeriod;
@@ -1432,17 +1614,13 @@
 
         const records = getFilteredRecordsForStats();
         
-        // 1. Ticket Size Distribution
         let micro = { vol: 0, cnt: 0 }; // < 5L
         let mid = { vol: 0, cnt: 0 };   // 5L - 25L
         let high = { vol: 0, cnt: 0 };  // > 25L
         let maxBracketVol = 1;
 
-        // 2. Bank & Type Maps
         const bankStats = {};
         const typeStats = {};
-        
-        // 3. Leaderboard
         const staffStats = {};
 
         records.forEach(r => {
@@ -1451,12 +1629,10 @@
           const type = r.loan_type || "Unspecified";
           const staff = r.created_by || "Unknown";
 
-          // Ticket Size
           if (amt < 500000) { micro.vol += amt; micro.cnt++; }
           else if (amt <= 2500000) { mid.vol += amt; mid.cnt++; }
           else { high.vol += amt; high.cnt++; }
 
-          // Bank & Type
           if (!bankStats[bank]) bankStats[bank] = { applied: 0, approved: 0 };
           bankStats[bank].applied += amt;
           if (r.is_approved) bankStats[bank].approved += amt;
@@ -1465,7 +1641,6 @@
           typeStats[type].vol += amt;
           typeStats[type].cnt += 1;
           
-          // Staff Leaderboard
           if (!staffStats[staff]) staffStats[staff] = { appVol: 0, appCnt: 0, aprVol: 0, aprCnt: 0 };
           staffStats[staff].appVol += amt;
           staffStats[staff].appCnt++;
@@ -1475,7 +1650,6 @@
           }
         });
 
-        // Update Ticket Bracket UI
         maxBracketVol = Math.max(micro.vol, mid.vol, high.vol, 1);
         const updateBracket = (id, data) => {
             document.getElementById(`stat-bracket-${id}-val`).textContent = formatIndianDisplay(data.vol);
@@ -1486,7 +1660,6 @@
         updateBracket('mid', mid);
         updateBracket('high', high);
 
-        // Update Banks List
         const bankContainer = document.getElementById("stat-banks-list");
         const sortedBanks = Object.entries(bankStats).sort((a, b) => b[1].applied - a[1].applied);
         if (sortedBanks.length === 0) {
@@ -1506,7 +1679,6 @@
                     <span class="font-bold text-gray-900">${formatIndianDisplay(data.applied)}</span>
                   </div>
                 </div>
-                <!-- Dual Bar (Background Applied, Foreground Approved) -->
                 <div class="w-full h-1.5 rounded bg-gray-100 overflow-hidden relative">
                   <div class="absolute top-0 left-0 h-full bg-blue-200 rounded" style="width: ${barWApplied}%"></div>
                   <div class="absolute top-0 left-0 h-full bg-emerald-500 rounded" style="width: ${(data.approved/maxBankVol)*100}%"></div>
@@ -1520,7 +1692,6 @@
           }).join("");
         }
 
-        // Update Types List
         const typeContainer = document.getElementById("stat-types-list");
         const sortedTypes = Object.entries(typeStats).sort((a, b) => b[1].cnt - a[1].cnt);
         if (sortedTypes.length === 0) {
@@ -1550,9 +1721,8 @@
           }).join("");
         }
         
-        // Update Leaderboard
         const lbContainer = document.getElementById("stat-leaderboard-list");
-        const sortedStaff = Object.entries(staffStats).sort((a, b) => b[1].aprVol - a[1].aprVol); // Rank by approved volume
+        const sortedStaff = Object.entries(staffStats).sort((a, b) => b[1].aprVol - a[1].aprVol); 
         
         if (sortedStaff.length === 0) {
             lbContainer.innerHTML = `<div class="text-gray-400 py-6 text-center">No data for this period.</div>`;
@@ -1615,7 +1785,6 @@
           document.getElementById("select-loan-type").value = existing.loan_type || '';
           document.getElementById("select-bank").value = existing.bank_name || '';
 
-          // 11 Docs
           ALL_DOC_KEYS.forEach(doc => {
               const el = document.getElementById(`check-doc-${doc.key.replace('doc_','').replace(/_/g,'-').replace('applicant','app').replace('statement_1yr','stmt').replace('business_proof','business').replace('salary_slip_3m','salary').replace('revenue_tax_slip','tax').replace('sale_deed','deed').replace('gharabari_patta','gharabari').replace('udyam_aadhaar','udyam')}`);
               if(el) el.checked = !!existing[doc.key];
@@ -1773,6 +1942,15 @@
       // ---------------------------------------------------------
       // STAFF MANAGEMENT (ADMIN)
       // ---------------------------------------------------------
+      function openStaffManagerDialog() {
+        if (!currentSession || currentSession.role !== 'admin') return;
+        document.getElementById("modal-staff").classList.remove("hidden");
+      }
+
+      function closeStaffManagerDialog() {
+        document.getElementById("modal-staff").classList.add("hidden");
+      }
+
       function renderStaffManagerList() {
           const tbody = document.getElementById("staff-list-tbody");
           tbody.innerHTML = activeStaffMembers.map(u => {
@@ -1802,9 +1980,6 @@
           btn.textContent = "Creating...";
           
           try {
-              // We need admin's current password to authorize. Since we don't store it in memory for security, 
-              // we will prompt for it once, or assume '1' for Kailash. For a robust system, prompt.
-              // For smooth UX here, we ask via a simple prompt.
               const adminPass = prompt("Enter your admin password to authorize account creation:");
               if(!adminPass) throw new Error("Authorization cancelled.");
               
