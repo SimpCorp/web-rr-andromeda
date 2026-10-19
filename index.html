@@ -419,7 +419,7 @@
       <div class="flex items-center space-x-2">
           <span>Hosted on Cloudflare Pages</span>
           <span class="w-1 h-1 rounded-full bg-gray-300"></span>
-          <span>Version 3.1</span>
+          <span>Version 3.2</span>
       </div>
     </div>
   </footer>
@@ -715,7 +715,21 @@
           </div>
         </div>
 
+        <!-- Address -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Customer Address <span class="text-red-500">*</span></label>
+          <textarea id="input-address" required rows="2" placeholder="Complete residential or business address..." class="w-full px-3 py-2 text-sm sm:text-xs rounded border border-gray-300 bg-white resize-none"></textarea>
+        </div>
         
+        <!-- Status Override (Admin Only inside Edit Mode) -->
+        <div id="admin-status-override" class="hidden pt-3 border-t border-gray-200">
+            <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="checkbox" id="check-admin-approve" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500">
+                <span class="text-xs font-bold text-gray-900">Mark as Approved & Disbursed</span>
+            </label>
+            <span class="text-[10px] text-gray-500 ml-6 block mt-0.5">Overrides current status. This will stamp your name as the approver.</span>
+        </div>
+
         <!-- Actions -->
         <div class="pt-4 mt-2 flex flex-col-reverse sm:flex-row items-center justify-end sm:space-x-2 gap-2 sm:gap-0">
           <button type="button" id="btn-cancel-customer" class="w-full sm:w-auto px-5 py-2 sm:py-2 text-sm sm:text-xs font-semibold text-gray-700 hover:bg-gray-100 border border-gray-300 rounded bg-white transition-colors">
@@ -905,18 +919,24 @@
         "Education Loan", "Consumer Durable Loan", "Loan Against Fixed Deposit"
       ];
 
+      // Updated to 16 possible document checkpoints matching the DB schema
       const ALL_DOC_KEYS = [
-          { key: 'doc_applicant_aadhaar', label: 'App Aadhaar' },
-          { key: 'doc_applicant_pan', label: 'App PAN' },
-          { key: 'doc_co_applicant_aadhaar', label: 'Co-App Aadhaar' },
-          { key: 'doc_co_applicant_pan', label: 'Co-App PAN' },
-          { key: 'doc_bank_statement_1yr', label: 'Bank Stmt' },
-          { key: 'doc_business_proof', label: 'Biz Proof' },
-          { key: 'doc_salary_slip_3m', label: 'Salary Slip' },
-          { key: 'doc_revenue_tax_slip', label: 'Tax Slip' },
-          { key: 'doc_sale_deed', label: 'Sale Deed' },
+          { key: 'doc_applicant_aadhaar', label: 'Applicant Aadhaar' },
+          { key: 'doc_applicant_pan', label: 'Applicant PAN' },
+          { key: 'doc_co_applicant_aadhaar', label: 'Co-Applicant Aadhaar' },
+          { key: 'doc_co_applicant_pan', label: 'Co-Applicant PAN' },
+          { key: 'doc_bank_statement_1yr', label: 'Bank Statement (1-year) PDF' },
           { key: 'doc_gharabari_patta', label: 'Gharabari Patta' },
-          { key: 'doc_udyam_aadhaar', label: 'Udyam (MSME)' }
+          { key: 'doc_deed', label: 'Sale Deed' },
+          { key: 'doc_tax', label: 'Revenue Tax Slip' },
+          { key: 'doc_salary', label: 'Salary Slip (3M)' },
+          { key: 'doc_form16', label: 'Form 16' },
+          { key: 'doc_itr', label: 'ITR (last 2 years)' },
+          { key: 'doc_balance_sheet', label: 'Balance Sheet & Computation' },
+          { key: 'doc_business', label: 'Business Proof' },
+          { key: 'doc_udyam', label: 'Udyam Aadhaar' },
+          { key: 'doc_gst_3b', label: 'GST 3B' },
+          { key: 'doc_plan_estimate', label: 'Plan and Estimate' }
       ];
 
       let currentSession = null;
@@ -972,7 +992,7 @@
       }
 
       // ---------------------------------------------------------
-      // EVENT BINDING (THE MISSING PIECE RESTORED)
+      // EVENT BINDING
       // ---------------------------------------------------------
       function bindEvents() {
         // Tabs
@@ -1009,7 +1029,7 @@
         document.getElementById("input-customer-dob").addEventListener("change", handleDobInput);
         document.getElementById("input-loan-amount").addEventListener("input", handleLoanAmountInput);
 
-        // Filters & Search
+        // Filters & Universal Search
         document.getElementById("records-search").addEventListener("input", () => { renderCustomerRecordsTable(); updateKpis(); });
         document.getElementById("filter-bank").addEventListener("change", () => { renderCustomerRecordsTable(); updateKpis(); });
         document.getElementById("filter-bank-mob").addEventListener("change", () => { 
@@ -1074,7 +1094,7 @@
       }
 
       // ---------------------------------------------------------
-      // FORMATTING UTILITIES (RESTORED)
+      // FORMATTING UTILITIES 
       // ---------------------------------------------------------
       function formatIndianCurrencyBadge(amount) {
         if (amount >= 10000000) {
@@ -1472,8 +1492,8 @@
           let docStatusHtml = '';
           let whatsappMsg = `Namaste ${escapeHtml(r.customer_name.split(' ')[0])}, this is regarding your ${r.loan_type} application at Rashmi Associates. We require your pending documents to proceed: %0A%0A`;
           
-          if (docsChecked === 11) {
-              docStatusHtml = `<span class="inline-flex items-center px-2 py-1 rounded bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200"><i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> All 11 Ready</span>`;
+          if (docsChecked === ALL_DOC_KEYS.length) {
+              docStatusHtml = `<span class="inline-flex items-center px-2 py-1 rounded bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200"><i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> All Docs Ready</span>`;
           } else {
               whatsappMsg += missingList.map((m,i) => `${i+1}. ${m}`).join('%0A');
               whatsappMsg += `%0A%0APlease share them at the earliest.`;
@@ -1482,9 +1502,9 @@
               docStatusHtml = `
                 <div class="tooltip-container inline-block">
                     <span class="inline-flex items-center px-2 py-1 rounded bg-amber-50 text-amber-700 text-[10px] font-bold border border-amber-200 cursor-help">
-                        <i data-lucide="alert-triangle" class="w-3 h-3 mr-1"></i> ${11 - docsChecked} Missing
+                        <i data-lucide="alert-triangle" class="w-3 h-3 mr-1"></i> ${ALL_DOC_KEYS.length - docsChecked} Missing
                     </span>
-                    <div class="tooltip-content hidden absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 mb-1 w-40 p-2 bg-gray-900 text-white text-[10px] rounded shadow-lg">
+                    <div class="tooltip-content hidden absolute z-10 bottom-full left-1/2 transform -translate-x-1/2 mb-1 w-48 p-2 bg-gray-900 text-white text-[10px] rounded shadow-lg">
                         <div class="font-bold mb-1 text-amber-300 border-b border-gray-700 pb-1">Missing Documents:</div>
                         ${tooltipList}
                     </div>
@@ -1850,7 +1870,7 @@
           document.getElementById("select-bank").value = existing.bank_name || '';
 
           ALL_DOC_KEYS.forEach(doc => {
-              const el = document.getElementById(`check-doc-${doc.key.replace('doc_','').replace(/_/g,'-').replace('applicant','app').replace('statement_1yr','stmt').replace('business_proof','business').replace('salary_slip_3m','salary').replace('revenue_tax_slip','tax').replace('sale_deed','deed').replace('gharabari_patta','gharabari').replace('udyam_aadhaar','udyam')}`);
+              const el = document.getElementById(`check-${doc.key.replace(/_/g,'-')}`);
               if(el) el.checked = !!existing[doc.key];
           });
           
@@ -1918,24 +1938,28 @@
           loan_type: loanType,
           bank_name: bankName,
           address: address,
-          doc_applicant_aadhaar: document.getElementById("check-doc-app-aadhaar").checked,
-          doc_applicant_pan: document.getElementById("check-doc-app-pan").checked,
-          doc_co_applicant_aadhaar: document.getElementById("check-doc-co-aadhaar").checked,
-          doc_co_applicant_pan: document.getElementById("check-doc-co-pan").checked,
+          doc_applicant_aadhaar: document.getElementById("check-doc-applicant-aadhaar").checked,
+          doc_applicant_pan: document.getElementById("check-doc-applicant-pan").checked,
+          doc_co_applicant_aadhaar: document.getElementById("check-doc-co-applicant-aadhaar").checked,
+          doc_co_applicant_pan: document.getElementById("check-doc-co-applicant-pan").checked,
           doc_bank_statement_1yr: document.getElementById("check-doc-bank-stmt").checked,
-          doc_business_proof: document.getElementById("check-doc-business").checked,
-          doc_salary_slip_3m: document.getElementById("check-doc-salary").checked,
-          doc_revenue_tax_slip: document.getElementById("check-doc-tax").checked,
-          doc_sale_deed: document.getElementById("check-doc-deed").checked,
+          doc_deed: document.getElementById("check-doc-deed").checked,
+          doc_tax: document.getElementById("check-doc-tax").checked,
+          doc_salary: document.getElementById("check-doc-salary").checked,
+          doc_form16: document.getElementById("check-doc-form16").checked,
+          doc_itr: document.getElementById("check-doc-itr").checked,
+          doc_balance_sheet: document.getElementById("check-doc-balance-sheet").checked,
+          doc_business: document.getElementById("check-doc-business").checked,
           doc_gharabari_patta: document.getElementById("check-doc-gharabari").checked,
-          doc_udyam_aadhaar: document.getElementById("check-doc-udyam").checked
+          doc_udyam: document.getElementById("check-doc-udyam").checked,
+          doc_gst_3b: document.getElementById("check-doc-gst").checked,
+          doc_plan_estimate: document.getElementById("check-doc-plan-estimate").checked
         };
 
         if (!id) {
             payload.created_by = currentSession.username;
         }
 
-        // Admin Override check
         if (id && currentSession.role === 'admin') {
             const isAppr = document.getElementById("check-admin-approve").checked;
             const existing = customerRecords.find(r => r.id.toString() === id);
@@ -1999,7 +2023,7 @@
               await fetchCustomerData();
           } catch(err) {
               console.error("Toggle error:", err);
-              showToast("Failed to update status.", true);
+              showToast("Failed to update status. Check permissions.", true);
           }
       }
 
@@ -2153,7 +2177,7 @@
               <td style="padding: 4px; font-weight: bold;">${formatIndianDisplay(r.loan_amount)}</td>
               <td style="padding: 4px;">${escapeHtml(r.loan_type)}</td>
               <td style="padding: 4px;">${escapeHtml(r.bank_name)}</td>
-              <td style="padding: 4px;">${docsCount}/11</td>
+              <td style="padding: 4px;">${docsCount}/${ALL_DOC_KEYS.length}</td>
               <td style="padding: 4px;">${escapeHtml(r.created_by)}</td>
               <td style="padding: 4px;">${dt}</td>
             </tr>
@@ -2211,7 +2235,8 @@
             return rowData;
         });
 
-        const csvContent = [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+        const csvContent = [headers.join(","), ...rows.map(e => e.join(","))].join("
+");
         const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
