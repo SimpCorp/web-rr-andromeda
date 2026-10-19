@@ -615,91 +615,107 @@
             </div>
         </div>
 
-        <!-- The 11 Document Checkpoints -->
+        <!-- The Document Checkpoints -->
         <div class="border border-gray-200 rounded p-3 bg-gray-50 shadow-inner">
           <div class="flex items-center justify-between mb-3 border-b border-gray-200 pb-2">
-            <label class="text-xs font-bold text-gray-900 block">Verification Checkpoints (11 Required)</label>
-            <span class="text-[10px] font-semibold text-gray-500 bg-white px-2 py-0.5 rounded border border-gray-200">KYC & Income</span>
+            <label class="text-xs font-bold text-gray-900 block">Verification Checkpoints</label>
+            <span class="text-[10px] font-semibold text-gray-500 bg-white px-2 py-0.5 rounded border border-gray-200">Dynamic Checklist</span>
           </div>
-          
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
-            <!-- KYC Applicant -->
-            <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
-              <input type="checkbox" id="check-doc-app-aadhaar" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
-              <span class="text-gray-800 font-medium leading-tight">1. App Aadhaar</span>
-            </label>
 
-            <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
-              <input type="checkbox" id="check-doc-app-pan" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
-              <span class="text-gray-800 font-medium leading-tight">2. App PAN</span>
-            </label>
+          <!-- Universal Documents -->
+          <div class="mb-3">
+            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">Universal Documents</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-applicant-aadhaar" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Applicant Aadhaar</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-applicant-pan" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Applicant PAN</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-co-applicant-aadhaar" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Co-Applicant Aadhaar</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-co-applicant-pan" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Co-Applicant PAN</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-bank-stmt" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Bank Statement (1-year) PDF</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-gharabari" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Gharabari Patta</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-deed" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Sale Deed</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-tax" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Revenue Tax Slip (Updated)</span>
+              </label>
+            </div>
+          </div>
 
-            <!-- KYC Co-App -->
-            <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
-              <input type="checkbox" id="check-doc-co-aadhaar" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
-              <span class="text-gray-800 font-medium leading-tight">3. Co-App Aadhaar</span>
-            </label>
+          <!-- If Salaried -->
+          <div class="mb-3 border-t border-gray-200 pt-2">
+            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">If Salaried</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-salary" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Salary Slip (3Months Recent)</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-form16" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Form 16</span>
+              </label>
+            </div>
+          </div>
 
-            <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
-              <input type="checkbox" id="check-doc-co-pan" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
-              <span class="text-gray-800 font-medium leading-tight">4. Co-App PAN</span>
-            </label>
+          <!-- If Business -->
+          <div class="mb-3 border-t border-gray-200 pt-2">
+            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">If Business</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-itr" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">ITR (last 2 years)</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-balance-sheet" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Balance Sheet & Computation</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-business" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Business Proof</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-udyam" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Udyam Aadhaar</span>
+              </label>
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-gst" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">GST 3B</span>
+              </label>
+            </div>
+          </div>
 
-            <!-- Income & Banking -->
-            <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
-              <input type="checkbox" id="check-doc-bank-stmt" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
-              <span class="text-gray-800 font-medium leading-tight">5. Bank Stmt (1 Yr)</span>
-            </label>
-
-            <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
-              <input type="checkbox" id="check-doc-business" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
-              <span class="text-gray-800 font-medium leading-tight">6. Business Proof</span>
-            </label>
-
-            <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
-              <input type="checkbox" id="check-doc-salary" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
-              <span class="text-gray-800 font-medium leading-tight">7. Salary Slip (3M)</span>
-            </label>
-
-            <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
-              <input type="checkbox" id="check-doc-tax" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
-              <span class="text-gray-800 font-medium leading-tight">8. Revenue Tax Slip</span>
-            </label>
-
-            <!-- Property -->
-            <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
-              <input type="checkbox" id="check-doc-deed" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
-              <span class="text-gray-800 font-medium leading-tight">9. Sale Deed</span>
-            </label>
-
-            <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded bg-amber-100/50 border border-amber-200 transition-colors">
-              <input type="checkbox" id="check-doc-gharabari" class="w-4 h-4 rounded border-amber-400 text-amber-600 focus:ring-amber-500">
-              <span class="text-amber-950 font-bold leading-tight">10. Gharabari Patta (RoR)</span>
-            </label>
-
-            <!-- Business Extra -->
-            <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200 lg:col-span-2">
-              <input type="checkbox" id="check-doc-udyam" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
-              <span class="text-gray-800 font-medium leading-tight">11. Udyam Aadhaar (MSME)</span>
-            </label>
+          <!-- If Home Loan -->
+          <div class="border-t border-gray-200 pt-2">
+            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 block">If Home Loan</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 text-xs">
+              <label class="flex items-center space-x-2.5 cursor-pointer p-1.5 rounded hover:bg-white transition-colors border border-transparent hover:border-gray-200">
+                <input type="checkbox" id="check-doc-plan-estimate" class="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-500">
+                <span class="text-gray-800 font-medium leading-tight">Plan and Estimate</span>
+              </label>
+            </div>
           </div>
         </div>
 
-        <!-- Address -->
-        <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Customer Address <span class="text-red-500">*</span></label>
-          <textarea id="input-address" required rows="2" placeholder="Complete residential or business address..." class="w-full px-3 py-2 text-sm sm:text-xs rounded border border-gray-300 bg-white resize-none"></textarea>
-        </div>
         
-        <!-- Status Override (Admin Only inside Edit Mode) -->
-        <div id="admin-status-override" class="hidden pt-3 border-t border-gray-200">
-            <label class="flex items-center space-x-2 cursor-pointer">
-                <input type="checkbox" id="check-admin-approve" class="w-4 h-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500">
-                <span class="text-xs font-bold text-gray-900">Mark as Approved & Disbursed</span>
-            </label>
-            <span class="text-[10px] text-gray-500 ml-6 block mt-0.5">Overrides current status. This will stamp your name as the approver.</span>
-        </div>
-
         <!-- Actions -->
         <div class="pt-4 mt-2 flex flex-col-reverse sm:flex-row items-center justify-end sm:space-x-2 gap-2 sm:gap-0">
           <button type="button" id="btn-cancel-customer" class="w-full sm:w-auto px-5 py-2 sm:py-2 text-sm sm:text-xs font-semibold text-gray-700 hover:bg-gray-100 border border-gray-300 rounded bg-white transition-colors">
