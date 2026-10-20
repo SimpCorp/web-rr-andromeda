@@ -1869,10 +1869,22 @@
           document.getElementById("select-loan-type").value = existing.loan_type || '';
           document.getElementById("select-bank").value = existing.bank_name || '';
 
-          ALL_DOC_KEYS.forEach(doc => {
-              const el = document.getElementById(`check-${doc.key.replace(/_/g,'-')}`);
-              if(el) el.checked = !!existing[doc.key];
-          });
+          document.getElementById("check-doc-applicant-aadhaar").checked = !!existing.doc_applicant_aadhaar;
+          document.getElementById("check-doc-applicant-pan").checked = !!existing.doc_applicant_pan;
+          document.getElementById("check-doc-co-applicant-aadhaar").checked = !!existing.doc_co_applicant_aadhaar;
+          document.getElementById("check-doc-co-applicant-pan").checked = !!existing.doc_co_applicant_pan;
+          document.getElementById("check-doc-bank-stmt").checked = !!existing.doc_bank_statement_1yr;
+          document.getElementById("check-doc-gharabari").checked = !!existing.doc_gharabari_patta;
+          document.getElementById("check-doc-deed").checked = !!existing.doc_sale_deed;
+          document.getElementById("check-doc-tax").checked = !!existing.doc_revenue_tax_slip;
+          document.getElementById("check-doc-salary").checked = !!existing.doc_salary_slip_3m;
+          document.getElementById("check-doc-form16").checked = !!existing.doc_form16;
+          document.getElementById("check-doc-itr").checked = !!existing.doc_itr;
+          document.getElementById("check-doc-balance-sheet").checked = !!existing.doc_balance_sheet;
+          document.getElementById("check-doc-business").checked = !!existing.doc_business_proof;
+          document.getElementById("check-doc-udyam").checked = !!existing.doc_udyam_aadhaar;
+          document.getElementById("check-doc-gst").checked = !!existing.doc_gst_3b;
+          document.getElementById("check-doc-plan-estimate").checked = !!existing.doc_plan_estimate;
           
           if (currentSession.role === 'admin') {
               adminOverride.classList.remove("hidden");
@@ -1943,15 +1955,15 @@
           doc_co_applicant_aadhaar: document.getElementById("check-doc-co-applicant-aadhaar").checked,
           doc_co_applicant_pan: document.getElementById("check-doc-co-applicant-pan").checked,
           doc_bank_statement_1yr: document.getElementById("check-doc-bank-stmt").checked,
-          doc_deed: document.getElementById("check-doc-deed").checked,
-          doc_tax: document.getElementById("check-doc-tax").checked,
-          doc_salary: document.getElementById("check-doc-salary").checked,
+          doc_gharabari_patta: document.getElementById("check-doc-gharabari").checked,
+          doc_sale_deed: document.getElementById("check-doc-deed").checked,
+          doc_revenue_tax_slip: document.getElementById("check-doc-tax").checked,
+          doc_salary_slip_3m: document.getElementById("check-doc-salary").checked,
           doc_form16: document.getElementById("check-doc-form16").checked,
           doc_itr: document.getElementById("check-doc-itr").checked,
           doc_balance_sheet: document.getElementById("check-doc-balance-sheet").checked,
-          doc_business: document.getElementById("check-doc-business").checked,
-          doc_gharabari_patta: document.getElementById("check-doc-gharabari").checked,
-          doc_udyam: document.getElementById("check-doc-udyam").checked,
+          doc_business_proof: document.getElementById("check-doc-business").checked,
+          doc_udyam_aadhaar: document.getElementById("check-doc-udyam").checked,
           doc_gst_3b: document.getElementById("check-doc-gst").checked,
           doc_plan_estimate: document.getElementById("check-doc-plan-estimate").checked
         };
