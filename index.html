@@ -2025,7 +2025,7 @@
           if (!currentSession) return;
           try {
               const { error } = await db.rpc('toggle_customer_approval', {
-                  p_record_id: parseInt(recordId),
+                  p_record_id: recordId,
                   p_acting_username: currentSession.username
               });
               if(error) throw error;
